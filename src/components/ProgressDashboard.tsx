@@ -1,9 +1,9 @@
-
-import { TrendingUp, Clock, Target, Award, Calendar } from 'lucide-react';
+import { TrendingUp, Clock, Target, Award, Calendar, CheckCircle, Circle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useState } from 'react';
 
 const ProgressDashboard = () => {
@@ -103,6 +103,37 @@ const ProgressDashboard = () => {
     }
   };
 
+  // Habit tracker data - last 14 days
+  const habitTrackerData = [
+    { date: 'Dec 18', day: 'Today', reading: true, listening: true, speaking: false, writing: true, mockTest: false },
+    { date: 'Dec 17', day: 'Yesterday', reading: true, listening: false, speaking: true, writing: true, mockTest: false },
+    { date: 'Dec 16', day: 'Mon', reading: true, listening: true, speaking: true, writing: false, mockTest: false },
+    { date: 'Dec 15', day: 'Sun', reading: false, listening: false, speaking: false, writing: false, mockTest: true },
+    { date: 'Dec 14', day: 'Sat', reading: true, listening: true, speaking: false, writing: true, mockTest: false },
+    { date: 'Dec 13', day: 'Fri', reading: true, listening: false, speaking: true, writing: true, mockTest: false },
+    { date: 'Dec 12', day: 'Thu', reading: true, listening: true, speaking: true, writing: true, mockTest: false },
+    { date: 'Dec 11', day: 'Wed', reading: false, listening: true, speaking: false, writing: false, mockTest: false },
+    { date: 'Dec 10', day: 'Tue', reading: true, listening: false, speaking: true, writing: true, mockTest: false },
+    { date: 'Dec 9', day: 'Mon', reading: true, listening: true, speaking: false, writing: false, mockTest: false },
+    { date: 'Dec 8', day: 'Sun', reading: false, listening: false, speaking: false, writing: false, mockTest: true },
+    { date: 'Dec 7', day: 'Sat', reading: true, listening: true, speaking: true, writing: true, mockTest: false },
+    { date: 'Dec 6', day: 'Fri', reading: true, listening: false, speaking: false, writing: true, mockTest: false },
+    { date: 'Dec 5', day: 'Thu', reading: false, listening: true, speaking: true, writing: false, mockTest: false },
+  ];
+
+  const toggleHabit = (dateIndex: number, habitType: string) => {
+    // In a real app, this would update the data in a database
+    console.log(`Toggling ${habitType} for ${habitTrackerData[dateIndex].date}`);
+  };
+
+  const getCompletionIcon = (completed: boolean) => {
+    return completed ? (
+      <CheckCircle className="h-5 w-5 text-green-600" />
+    ) : (
+      <Circle className="h-5 w-5 text-gray-300" />
+    );
+  };
+
   return (
     <section id="progress" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="max-w-7xl mx-auto">
@@ -197,6 +228,93 @@ const ProgressDashboard = () => {
             </Card>
           ))}
         </div>
+
+        {/* Habit Tracker */}
+        <Card className="border-0 shadow-lg mb-8">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <CheckCircle className="h-5 w-5 text-green-600" />
+              Daily Study Tracker
+            </CardTitle>
+            <p className="text-sm text-gray-600">Track your daily study habits and stay consistent</p>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-20">Date</TableHead>
+                    <TableHead className="w-16">Day</TableHead>
+                    <TableHead className="text-center w-20">Reading</TableHead>
+                    <TableHead className="text-center w-20">Listening</TableHead>
+                    <TableHead className="text-center w-20">Speaking</TableHead>
+                    <TableHead className="text-center w-20">Writing</TableHead>
+                    <TableHead className="text-center w-24">Mock Test</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {habitTrackerData.map((day, index) => (
+                    <TableRow key={day.date} className="hover:bg-gray-50">
+                      <TableCell className="font-medium text-sm">{day.date}</TableCell>
+                      <TableCell className="text-sm text-gray-600">{day.day}</TableCell>
+                      <TableCell className="text-center">
+                        <button 
+                          onClick={() => toggleHabit(index, 'reading')}
+                          className="hover:scale-110 transition-transform"
+                        >
+                          {getCompletionIcon(day.reading)}
+                        </button>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <button 
+                          onClick={() => toggleHabit(index, 'listening')}
+                          className="hover:scale-110 transition-transform"
+                        >
+                          {getCompletionIcon(day.listening)}
+                        </button>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <button 
+                          onClick={() => toggleHabit(index, 'speaking')}
+                          className="hover:scale-110 transition-transform"
+                        >
+                          {getCompletionIcon(day.speaking)}
+                        </button>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <button 
+                          onClick={() => toggleHabit(index, 'writing')}
+                          className="hover:scale-110 transition-transform"
+                        >
+                          {getCompletionIcon(day.writing)}
+                        </button>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <button 
+                          onClick={() => toggleHabit(index, 'mockTest')}
+                          className="hover:scale-110 transition-transform"
+                        >
+                          {getCompletionIcon(day.mockTest)}
+                        </button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            
+            <div className="mt-6 flex flex-wrap gap-4 justify-center text-sm">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-600" />
+                <span className="text-gray-600">Completed</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Circle className="h-4 w-4 text-gray-300" />
+                <span className="text-gray-600">Not completed</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <Card className="border-0 shadow-lg">
           <CardHeader>
