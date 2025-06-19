@@ -10,7 +10,7 @@ const HeroSection = () => {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
             Master the{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              TOEFL
+              TOEFL iBT
             </span>{' '}
             with Confidence
           </h1>
