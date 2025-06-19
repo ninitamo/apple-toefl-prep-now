@@ -2,8 +2,11 @@
 import { BookOpen, Headphones, Mic, PenTool } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const TestSections = () => {
+  const navigate = useNavigate();
+
   const sections = [
     {
       icon: BookOpen,
@@ -13,6 +16,7 @@ const TestSections = () => {
       questions: '30-40 questions',
       color: 'from-blue-500 to-blue-600',
       bgColor: 'bg-blue-50',
+      practiceUrl: '/practice/reading',
     },
     {
       icon: Headphones,
@@ -22,6 +26,7 @@ const TestSections = () => {
       questions: '28-39 questions',
       color: 'from-green-500 to-green-600',
       bgColor: 'bg-green-50',
+      practiceUrl: '#',
     },
     {
       icon: Mic,
@@ -31,17 +36,25 @@ const TestSections = () => {
       questions: '4 tasks',
       color: 'from-purple-500 to-purple-600',
       bgColor: 'bg-purple-50',
+      practiceUrl: '#',
     },
     {
       icon: PenTool,
-      title: 'Writing',
+      title: /Writing',
       description: 'Master academic writing with integrated and independent tasks.',
       duration: '50 minutes',
       questions: '2 tasks',
       color: 'from-orange-500 to-orange-600',
       bgColor: 'bg-orange-50',
+      practiceUrl: '#',
     },
   ];
+
+  const handlePracticeClick = (practiceUrl: string) => {
+    if (practiceUrl !== '#') {
+      navigate(practiceUrl);
+    }
+  };
 
   return (
     <section id="practice" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
@@ -72,7 +85,10 @@ const TestSections = () => {
                   <div className="text-sm text-gray-500">Duration: {section.duration}</div>
                   <div className="text-sm text-gray-500">{section.questions}</div>
                 </div>
-                <Button className={`w-full bg-gradient-to-r ${section.color} hover:opacity-90 text-white rounded-full font-medium`}>
+                <Button 
+                  onClick={() => handlePracticeClick(section.practiceUrl)}
+                  className={`w-full bg-gradient-to-r ${section.color} hover:opacity-90 text-white rounded-full font-medium`}
+                >
                   Practice Now
                 </Button>
               </CardContent>
