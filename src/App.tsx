@@ -11,6 +11,8 @@ import ListeningPracticeList from "./pages/ListeningPracticeList";
 import ListeningPractice from "./pages/ListeningPractice";
 import SpeakingPracticeList from "./pages/SpeakingPracticeList";
 import SpeakingPractice from "./pages/SpeakingPractice";
+import WritingPracticeList from "./pages/WritingPracticeList";
+import WritingPractice from "./pages/WritingPractice";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
