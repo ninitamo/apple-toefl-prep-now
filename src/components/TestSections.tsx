@@ -1,4 +1,3 @@
-
 import { BookOpen, Headphones, Mic, PenTool } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,7 +25,7 @@ const TestSections = () => {
       questions: '28-39 questions',
       color: 'from-green-500 to-green-600',
       bgColor: 'bg-green-50',
-      practiceUrl: '#',
+      practiceUrl: '/practice/listening',
     },
     {
       icon: Mic,
