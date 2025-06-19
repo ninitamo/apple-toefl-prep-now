@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Clock, Volume2, PenTool, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -171,7 +170,7 @@ const WritingPractice = () => {
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <Card className="bg-white shadow-xl">
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -210,17 +209,31 @@ const WritingPractice = () => {
                 </div>
               )}
 
-              {phase === 'reading' && (
-                <div className="space-y-4">
-                  <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Clock className="h-4 w-4 text-blue-600" />
-                      <span className="font-semibold text-blue-800">Reading Time: {formatTime(timeLeft)}</span>
+              {phase === 'reading' && currentTaskData.type === 'integrated' && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Reading Passage - Left Side */}
+                  <div className="space-y-4">
+                    <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Clock className="h-4 w-4 text-blue-600" />
+                        <span className="font-semibold text-blue-800">Reading Time: {formatTime(timeLeft)}</span>
+                      </div>
+                    </div>
+                    <div className="bg-gray-50 p-6 rounded-lg h-96 overflow-y-auto">
+                      <div className="text-gray-700 leading-relaxed whitespace-pre-line">{currentTaskData.reading}</div>
                     </div>
                   </div>
-                  <div className="bg-gray-50 p-6 rounded-lg max-h-96 overflow-y-auto">
-                    <h3 className="font-semibold mb-3">Reading Passage</h3>
-                    <div className="text-gray-700 leading-relaxed whitespace-pre-line">{currentTaskData.reading}</div>
+                  
+                  {/* Directions and Question - Right Side */}
+                  <div className="space-y-4">
+                    <div className="bg-orange-50 p-6 rounded-lg">
+                      <h3 className="font-semibold text-orange-900 mb-3">Directions</h3>
+                      <p className="text-orange-800 text-sm mb-4">You have 20 minutes to plan and write your response. Typically, an effective response will be 150 to 225 words.</p>
+                      <div className="bg-white p-4 rounded border">
+                        <h4 className="font-semibold mb-2">Question:</h4>
+                        <p className="text-gray-700">{currentTaskData.prompt}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
@@ -254,16 +267,38 @@ const WritingPractice = () => {
                     </div>
                   </div>
 
-                  {currentTaskData.type === 'integrated' && (
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold mb-2">Reading Passage (Reference)</h3>
-                      <div className="text-sm text-gray-600 max-h-32 overflow-y-auto whitespace-pre-line">
-                        {currentTaskData.reading}
+                  {currentTaskData.type === 'integrated' ? (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      {/* Reading Passage Reference - Left Side */}
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <h3 className="font-semibold mb-2">Reading Passage (Reference)</h3>
+                        <div className="text-sm text-gray-600 h-96 overflow-y-auto whitespace-pre-line">
+                          {currentTaskData.reading}
+                        </div>
+                      </div>
+                      
+                      {/* Question and Writing Area - Right Side */}
+                      <div className="space-y-4">
+                        <div className="bg-orange-50 p-4 rounded-lg">
+                          <h4 className="font-semibold mb-2">Question:</h4>
+                          <p className="text-sm text-gray-700">{currentTaskData.prompt}</p>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <h3 className="font-semibold">Your Response:</h3>
+                          <Textarea
+                            value={response}
+                            onChange={(e) => setResponse(e.target.value)}
+                            placeholder="Type your response here..."
+                            className="h-64 resize-none"
+                          />
+                          <div className="text-sm text-gray-500">
+                            Word count: {response.trim().split(/\s+/).filter(word => word.length > 0).length} words
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  )}
-
-                  {currentTaskData.type === 'discussion' && (
+                  ) : (
                     <div className="space-y-4">
                       <div className="bg-gray-50 p-4 rounded-lg">
                         <h3 className="font-semibold mb-2">{currentTaskData.professorPost?.name}</h3>
@@ -280,21 +315,21 @@ const WritingPractice = () => {
                           </div>
                         ))}
                       </div>
+
+                      <div className="space-y-2">
+                        <h3 className="font-semibold">Your Response:</h3>
+                        <Textarea
+                          value={response}
+                          onChange={(e) => setResponse(e.target.value)}
+                          placeholder="Type your response here..."
+                          className="min-h-[300px] resize-none"
+                        />
+                        <div className="text-sm text-gray-500">
+                          Word count: {response.trim().split(/\s+/).filter(word => word.length > 0).length} words
+                        </div>
+                      </div>
                     </div>
                   )}
-
-                  <div className="space-y-2">
-                    <h3 className="font-semibold">Your Response:</h3>
-                    <Textarea
-                      value={response}
-                      onChange={(e) => setResponse(e.target.value)}
-                      placeholder="Type your response here..."
-                      className="min-h-[300px] resize-none"
-                    />
-                    <div className="text-sm text-gray-500">
-                      Word count: {response.trim().split(/\s+/).filter(word => word.length > 0).length} words
-                    </div>
-                  </div>
                 </div>
               )}
             </CardContent>
