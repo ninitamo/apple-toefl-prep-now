@@ -29,6 +29,8 @@ const App = () => (
           <Route path="/practice/listening/library-resources" element={<ListeningPractice />} />
           <Route path="/practice/speaking" element={<SpeakingPracticeList />} />
           <Route path="/practice/speaking/:practiceId" element={<SpeakingPractice />} />
+          <Route path="/practice/writing" element={<WritingPracticeList />} />
+          <Route path="/practice/writing/:practiceId" element={<WritingPractice />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

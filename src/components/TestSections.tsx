@@ -46,7 +46,7 @@ const TestSections = () => {
       questions: '2 tasks',
       color: 'from-orange-500 to-orange-600',
       bgColor: 'bg-orange-50',
-      practiceUrl: '#',
+      practiceUrl: '/practice/writing',
     },
   ];
 
