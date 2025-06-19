@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ArrowLeft, PenTool, Clock, FileText } from 'lucide-react';
+import { ArrowLeft, PenTool, Clock, FileText, Target } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -42,6 +42,10 @@ const WritingPracticeList = () => {
     navigate(`/practice/writing/${practiceId}`);
   };
 
+  const handleExamPracticeClick = () => {
+    navigate('/practice/writing/exam-mode');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-100">
       <div className="container mx-auto px-4 py-8">
@@ -60,6 +64,55 @@ const WritingPracticeList = () => {
         </div>
 
         <div className="max-w-4xl mx-auto">
+          {/* Exam Mode Practice Section */}
+          <div className="mb-8">
+            <Card className="bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-xl">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold flex items-center gap-3">
+                  <Target className="h-8 w-8" />
+                  Practice Like on the Exam
+                </CardTitle>
+                <CardDescription className="text-orange-100">
+                  Complete all writing tasks in exam conditions with time limits
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <h3 className="font-semibold mb-2">What you'll practice:</h3>
+                    <ul className="space-y-1 text-sm text-orange-100">
+                      <li>• Task 1: Integrated Writing (20 minutes)</li>
+                      <li>• Task 2: Academic Discussion (10 minutes)</li>
+                      <li>• Real exam timing and conditions</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-2">Benefits:</h3>
+                    <ul className="space-y-1 text-sm text-orange-100">
+                      <li>• Experience actual test pressure</li>
+                      <li>• Practice time management</li>
+                      <li>• Get comfortable with exam format</li>
+                    </ul>
+                  </div>
+                </div>
+                <Button 
+                  onClick={handleExamPracticeClick}
+                  className="w-full bg-white text-orange-600 hover:bg-orange-50 font-semibold py-3 text-lg"
+                >
+                  Start Exam Practice (30 minutes)
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center my-8">
+            <div className="flex-1 border-t border-gray-300"></div>
+            <span className="px-4 text-gray-500 font-medium">or practice individual questions</span>
+            <div className="flex-1 border-t border-gray-300"></div>
+          </div>
+
+          {/* About Writing Practice */}
           <div className="mb-8 bg-white rounded-lg p-6 shadow-md">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <PenTool className="h-5 w-5 text-orange-500" />
@@ -87,6 +140,7 @@ const WritingPracticeList = () => {
             </div>
           </div>
 
+          {/* Individual Practice Exercises */}
           <div className="grid gap-6">
             {practiceExercises.map((exercise) => (
               <Card key={exercise.id} className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
