@@ -9,6 +9,7 @@ import ReadingPracticeList from "./pages/ReadingPracticeList";
 import ReadingPractice from "./pages/ReadingPractice";
 import ListeningPracticeList from "./pages/ListeningPracticeList";
 import ListeningPractice from "./pages/ListeningPractice";
+import SpeakingPracticeList from "./pages/SpeakingPracticeList";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
