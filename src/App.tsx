@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import ReadingPracticeList from "./pages/ReadingPracticeList";
 import ReadingPractice from "./pages/ReadingPractice";
 import ListeningPracticeList from "./pages/ListeningPracticeList";
+import ListeningPractice from "./pages/ListeningPractice";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/practice/reading" element={<ReadingPracticeList />} />
           <Route path="/practice/reading/urbanization" element={<ReadingPractice />} />
           <Route path="/practice/listening" element={<ListeningPracticeList />} />
+          <Route path="/practice/listening/library-resources" element={<ListeningPractice />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

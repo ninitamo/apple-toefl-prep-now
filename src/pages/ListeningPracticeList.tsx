@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { ArrowLeft, Lock, Play, CheckCircle, Clock, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -19,7 +18,7 @@ const ListeningPracticeList = () => {
       isFree: true,
       isPremium: false,
       isCompleted: false,
-      practiceUrl: '#',
+      practiceUrl: '/practice/listening/library-resources',
     },
     {
       id: 2,
