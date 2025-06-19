@@ -18,33 +18,33 @@ const WritingPractice = () => {
   const tasks = [
     {
       type: 'integrated',
-      title: 'Task 1: Integrated Writing',
+      title: 'Writing Question 1',
       instructions: 'For this task, you will read a passage and then hear a lecture about an academic topic. You will have 3 minutes to read the passage. You may take notes during the reading and the listening. The reading passage will be shown again during the time when you are supposed to write, but you will listen to the lecture only once.',
       reading: 'Sea otters are a small mammal that lives in the waters along North America\'s west coast from California to Alaska. A few years ago some of the sea otter populations off of the Alaskan coast started to decline rapidly and raised several concerns because of their important role in the coastal ecosystem.\n\nExperts began investigating and came up with two possible explanations. One explanation was environmental pollution and the second was attacks by predators. At first it seemed as if the pollution was the most likely cause for the population decline. One reason pollution was more likely was because of the known pollution sources along the Alaskan coast such as oil rigs. Also water samples taken in the area showed increased levels of chemicals that could decrease the otters\' immune systems and indirectly result in their deaths.\n\nAnother thing that pointed to pollution as the culprit was the decline of other sea mammals such as seals in the same areas. This indicated that whatever was affecting the otters was also affecting the other sea mammals. Environmental pollution usually affects an entire ecosystem instead of just one species. Only predators that occurred in a large area, such as orcas (a large predatory whale), could cause the same effect, but they usually hunt larger prey.\n\nFinally, scientists believed the pollution hypothesis would also explain the uneven pattern of otter decline. In some Alaskan locations the otter population declined greatly while other populations remained stable. Some experts suggested this could be explained by ocean currents, or other environmental factors.',
-      prompt: 'Summarize the points made in the lecture, being sure to explain how they cast doubt on specific points made in the reading passage.',
+      directions: 'Read the question below. You have 20 minutes to plan and write your response. Your response will be judged on the basis of the quality of your writing and on how well your response presents the points in the lecture and their relationship to the reading passage. Typically, an effective response will be 150 to 225 words.',
+      question: 'Summarize the points made in the lecture, being sure to explain how they oppose specific points made in the reading passage.',
       readingTime: 180, // 3 minutes
       listeningTime: 120, // 2 minutes
       writingTime: 1200, // 20 minutes
     },
     {
       type: 'discussion',
-      title: 'Task 2: Academic Discussion',
-      instructions: 'In this task, you will need to answer a question posed by a professor. You will also be able to see how two other students answered it. You will have 10 minutes to write your response. Effective responses will have at least 100 words.',
+      title: 'Writing Question 2',
+      instructions: 'Your professor is teaching a class on economics. Write a post responding to the professor\'s question. In your response, you should express and support your personal opinion and make a contribution to the discussion. An effective response will contain at least 100 words.',
       professorPost: {
-        name: 'Mr. Adams',
-        question: 'Your professor is teaching a class on business. Write a post responding to the professor\'s question. In your response, you should:\n\n-express and support your personal opinion\n-make a contribution to the discussion in your own words\n\nNext week, we\'re going to spend a lot of time in class discussing the positive and negative ways in which companies affect the world around us. Before we start talking about that in class, I want to hear what you think about the topic. So here\'s a question for the message board: In your opinion, what is the best way for a company to have a positive impact on society?'
+        name: 'Professor Henson',
+        question: 'When people are asked about the most important discoveries or inventions made in the last two hundred years, they usually mention something very obvious, like the computer or the cell phone. But there are thousands of other discoveries or inventions that have had a huge impact on how we live today. What scientific discovery or technological invention from the last 200 years—other than computers and cell phones—would you choose as being important? Why?'
       },
       studentResponses: [
         {
-          name: 'Sarah',
-          response: 'I believe that companies should focus on making their operations more socially and environmentally friendly. While charitable giving can be beneficial, it doesn\'t address the root causes of serious social and environmental problems. By doing business in more responsible ways, companies can have a more meaningful and lasting impact on society. Moreover, if they attract positive attention from consumers they could inspire other companies to do the same. That\'s the only way we can really solve today\'s problems.'
+          name: 'Paul N',
+          response: 'I mean, we\'re so used to science and technology that we are not even aware of all the things we use in our daily lives. I would probably choose space satellites. This technology happened in the last hundred years, and it has become important for so many things. Just think about navigation, or telecommunications, or even the military.'
         },
         {
-          name: 'John',
-          response: 'While those are very good points, I think that companies should focus on charitable giving. Philanthropy can provide immediate relief to those in need and contribute to the overall well-being of society right away. It could take years or decades for business changes to have a positive impact on society, and most people just can\'t wait that long.'
+          name: 'Lena A',
+          response: 'I am thinking about medical progress. Like, for example, when scientists discovered things about healthy nutrition. I am thinking of identifying all the vitamins we need to stay healthy. I am not sure exactly when the vitamin discoveries happened, but I know they are very important. Our health is much better than it was 200 years ago.'
         }
       ],
-      prompt: 'Write your response to the professor\'s question.',
       writingTime: 600, // 10 minutes
     },
   ];
@@ -228,10 +228,10 @@ const WritingPractice = () => {
                   <div className="space-y-4">
                     <div className="bg-orange-50 p-6 rounded-lg">
                       <h3 className="font-semibold text-orange-900 mb-3">Directions</h3>
-                      <p className="text-orange-800 text-sm mb-4">You have 20 minutes to plan and write your response. Typically, an effective response will be 150 to 225 words.</p>
+                      <p className="text-orange-800 text-sm mb-4">{currentTaskData.directions}</p>
                       <div className="bg-white p-4 rounded border">
                         <h4 className="font-semibold mb-2">Question:</h4>
-                        <p className="text-gray-700">{currentTaskData.prompt}</p>
+                        <p className="text-gray-700">{currentTaskData.question}</p>
                       </div>
                     </div>
                   </div>
@@ -271,7 +271,7 @@ const WritingPractice = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       {/* Reading Passage Reference - Left Side */}
                       <div className="bg-gray-50 p-4 rounded-lg">
-                        <h3 className="font-semibold mb-2">Reading Passage (Reference)</h3>
+                        <h3 className="font-semibold mb-2">Reading Passage</h3>
                         <div className="text-sm text-gray-600 h-96 overflow-y-auto whitespace-pre-line">
                           {currentTaskData.reading}
                         </div>
@@ -280,53 +280,78 @@ const WritingPractice = () => {
                       {/* Question and Writing Area - Right Side */}
                       <div className="space-y-4">
                         <div className="bg-orange-50 p-4 rounded-lg">
-                          <h4 className="font-semibold mb-2">Question:</h4>
-                          <p className="text-sm text-gray-700">{currentTaskData.prompt}</p>
+                          <h4 className="font-semibold mb-2">Directions:</h4>
+                          <p className="text-sm text-gray-700 mb-3">{currentTaskData.directions}</p>
+                          <div className="bg-white p-3 rounded border">
+                            <h5 className="font-semibold mb-1">Question:</h5>
+                            <p className="text-sm text-gray-700">{currentTaskData.question}</p>
+                          </div>
                         </div>
                         
                         <div className="space-y-2">
-                          <h3 className="font-semibold">Your Response:</h3>
+                          <div className="flex items-center justify-between">
+                            <h3 className="font-semibold">Your Response:</h3>
+                            <div className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                              Word Count: {response.trim().split(/\s+/).filter(word => word.length > 0).length}
+                            </div>
+                          </div>
                           <Textarea
                             value={response}
                             onChange={(e) => setResponse(e.target.value)}
                             placeholder="Type your response here..."
                             className="h-64 resize-none"
                           />
-                          <div className="text-sm text-gray-500">
-                            Word count: {response.trim().split(/\s+/).filter(word => word.length > 0).length} words
-                          </div>
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="space-y-4">
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h3 className="font-semibold mb-2">{currentTaskData.professorPost?.name}</h3>
-                        <div className="text-sm text-gray-700 whitespace-pre-line">
-                          {currentTaskData.professorPost?.question}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      {/* Instructions and Discussion - Left Side */}
+                      <div className="space-y-4">
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                          <h3 className="font-semibold mb-2">Instructions:</h3>
+                          <p className="text-sm text-gray-700 mb-4">{currentTaskData.instructions}</p>
+                          
+                          <div className="bg-white p-4 rounded border mb-4">
+                            <div className="flex items-center gap-3 mb-3">
+                              <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                {currentTaskData.professorPost?.name.split(' ').map(n => n[0]).join('')}
+                              </div>
+                              <h4 className="font-semibold">{currentTaskData.professorPost?.name}</h4>
+                            </div>
+                            <p className="text-sm text-gray-700 whitespace-pre-line">
+                              {currentTaskData.professorPost?.question}
+                            </p>
+                          </div>
+                          
+                          {currentTaskData.studentResponses?.map((student, index) => (
+                            <div key={index} className="bg-white p-4 rounded border mb-3">
+                              <div className="flex items-center gap-3 mb-2">
+                                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                                  {student.name.split(' ').map(n => n[0]).join('')}
+                                </div>
+                                <h5 className="font-semibold text-sm">{student.name}</h5>
+                              </div>
+                              <p className="text-sm text-gray-700">{student.response}</p>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                      
-                      <div className="grid gap-4">
-                        {currentTaskData.studentResponses?.map((student, index) => (
-                          <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                            <h4 className="font-semibold mb-2">{student.name}</h4>
-                            <p className="text-sm text-gray-700">{student.response}</p>
-                          </div>
-                        ))}
-                      </div>
 
-                      <div className="space-y-2">
-                        <h3 className="font-semibold">Your Response:</h3>
+                      {/* Writing Area - Right Side */}
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-semibold">Your Response:</h3>
+                          <div className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                            Word Count: {response.trim().split(/\s+/).filter(word => word.length > 0).length}
+                          </div>
+                        </div>
                         <Textarea
                           value={response}
                           onChange={(e) => setResponse(e.target.value)}
                           placeholder="Type your response here..."
-                          className="min-h-[300px] resize-none"
+                          className="min-h-[500px] resize-none"
                         />
-                        <div className="text-sm text-gray-500">
-                          Word count: {response.trim().split(/\s+/).filter(word => word.length > 0).length} words
-                        </div>
                       </div>
                     </div>
                   )}
