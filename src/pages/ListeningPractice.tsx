@@ -1,8 +1,9 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { ArrowLeft, Play, Pause, Volume2, RotateCcw, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Play, Pause, Volume2, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { useNavigate } from 'react-router-dom';
 
 const ListeningPractice = () => {
@@ -10,10 +11,10 @@ const ListeningPractice = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<{[key: number]: string}>({});
   const [showResults, setShowResults] = useState(false);
 
@@ -106,6 +107,10 @@ const ListeningPractice = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
+    if (!hasStarted) {
+      setHasStarted(true);
+    }
+
     if (isPlaying) {
       audio.pause();
     } else {
@@ -121,14 +126,6 @@ const ListeningPractice = () => {
     const newTime = parseFloat(e.target.value);
     audio.currentTime = newTime;
     setCurrentTime(newTime);
-  };
-
-  const restartAudio = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    audio.currentTime = 0;
-    setCurrentTime(0);
   };
 
   const handleAnswerSelect = (questionIndex: number, answer: string) => {
@@ -156,6 +153,11 @@ const ListeningPractice = () => {
       }
     });
     return correct;
+  };
+
+  const getProgressPercentage = () => {
+    if (!duration) return 0;
+    return (currentTime / duration) * 100;
   };
 
   return (
@@ -189,31 +191,31 @@ const ListeningPractice = () => {
                     <Button
                       onClick={togglePlayPause}
                       className="w-12 h-12 rounded-full bg-green-600 hover:bg-green-700"
+                      disabled={hasStarted && !isPlaying && currentTime === 0}
                     >
                       {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                     </Button>
                     
-                    <Button
-                      onClick={restartAudio}
-                      variant="outline"
-                      size="sm"
-                      className="flex items-center gap-2"
-                    >
-                      <RotateCcw className="h-4 w-4" />
-                      Restart
-                    </Button>
+                    {!hasStarted && (
+                      <span className="text-gray-600 text-sm">Click to start listening</span>
+                    )}
                   </div>
 
                   {/* Progress Bar */}
                   <div className="space-y-2">
-                    <input
-                      type="range"
-                      min="0"
-                      max={duration || 0}
-                      value={currentTime}
-                      onChange={handleSeek}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                    />
+                    <div className="relative">
+                      <input
+                        type="range"
+                        min="0"
+                        max={duration || 0}
+                        value={currentTime}
+                        onChange={handleSeek}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        style={{
+                          background: `linear-gradient(to right, #059669 0%, #059669 ${getProgressPercentage()}%, #e5e7eb ${getProgressPercentage()}%, #e5e7eb 100%)`
+                        }}
+                      />
+                    </div>
                     <div className="flex justify-between text-sm text-gray-500">
                       <span>{formatTime(currentTime)}</span>
                       <span>{formatTime(duration)}</span>
@@ -249,6 +251,7 @@ const ListeningPractice = () => {
                   <ul className="text-sm text-gray-600 space-y-1">
                     <li>• Listen to the audio carefully</li>
                     <li>• You can replay the audio as many times as needed</li>
+                    <li>• Navigate through questions using the arrow buttons</li>
                     <li>• Answer all questions based on what you hear</li>
                     <li>• Click "Submit Answers" when you're done</li>
                   </ul>
@@ -264,78 +267,88 @@ const ListeningPractice = () => {
                     Questions ({questions.length} total)
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  {questions.map((question, index) => (
-                    <div key={question.id} className="border-b pb-4 last:border-b-0">
-                      <div className="flex items-start gap-2 mb-3">
-                        <span className="bg-green-100 text-green-800 text-sm font-medium px-2 py-1 rounded">
-                          {index + 1}
-                        </span>
-                        <p className="font-medium text-gray-900">{question.question}</p>
-                      </div>
-                      
-                      <div className="space-y-2 ml-8">
-                        {question.options.map((option, optionIndex) => {
-                          const optionLetter = String.fromCharCode(65 + optionIndex);
-                          const isSelected = answers[index] === optionLetter;
-                          const isCorrect = showResults && question.correctAnswer === optionLetter;
-                          const isWrong = showResults && isSelected && question.correctAnswer !== optionLetter;
-                          
-                          return (
-                            <label
-                              key={optionIndex}
-                              className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer border transition-colors ${
-                                showResults
-                                  ? isCorrect
-                                    ? 'bg-green-50 border-green-200'
-                                    : isWrong
-                                    ? 'bg-red-50 border-red-200'
-                                    : 'bg-gray-50 border-gray-200'
-                                  : isSelected
-                                  ? 'bg-green-50 border-green-200'
-                                  : 'bg-white border-gray-200 hover:bg-gray-50'
-                              }`}
-                            >
-                              <input
-                                type="radio"
-                                name={`question-${index}`}
-                                value={optionLetter}
-                                checked={isSelected}
-                                onChange={() => handleAnswerSelect(index, optionLetter)}
-                                disabled={showResults}
-                                className="w-4 h-4 text-green-600"
-                              />
-                              <span className="font-medium text-gray-700">{optionLetter}.</span>
-                              <span className="text-gray-900">{option}</span>
-                              {showResults && isCorrect && (
-                                <CheckCircle className="h-4 w-4 text-green-600 ml-auto" />
-                              )}
-                            </label>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
+                <CardContent>
+                  <Carousel className="w-full">
+                    <CarouselContent>
+                      {questions.map((question, index) => (
+                        <CarouselItem key={question.id}>
+                          <div className="space-y-4">
+                            <div className="flex items-start gap-2 mb-3">
+                              <span className="bg-green-100 text-green-800 text-sm font-medium px-2 py-1 rounded">
+                                {index + 1} of {questions.length}
+                              </span>
+                              <p className="font-medium text-gray-900">{question.question}</p>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              {question.options.map((option, optionIndex) => {
+                                const optionLetter = String.fromCharCode(65 + optionIndex);
+                                const isSelected = answers[index] === optionLetter;
+                                const isCorrect = showResults && question.correctAnswer === optionLetter;
+                                const isWrong = showResults && isSelected && question.correctAnswer !== optionLetter;
+                                
+                                return (
+                                  <label
+                                    key={optionIndex}
+                                    className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer border transition-colors ${
+                                      showResults
+                                        ? isCorrect
+                                          ? 'bg-green-50 border-green-200'
+                                          : isWrong
+                                          ? 'bg-red-50 border-red-200'
+                                          : 'bg-gray-50 border-gray-200'
+                                        : isSelected
+                                        ? 'bg-green-50 border-green-200'
+                                        : 'bg-white border-gray-200 hover:bg-gray-50'
+                                    }`}
+                                  >
+                                    <input
+                                      type="radio"
+                                      name={`question-${index}`}
+                                      value={optionLetter}
+                                      checked={isSelected}
+                                      onChange={() => handleAnswerSelect(index, optionLetter)}
+                                      disabled={showResults}
+                                      className="w-4 h-4 text-green-600"
+                                    />
+                                    <span className="font-medium text-gray-700">{optionLetter}.</span>
+                                    <span className="text-gray-900">{option}</span>
+                                    {showResults && isCorrect && (
+                                      <CheckCircle className="h-4 w-4 text-green-600 ml-auto" />
+                                    )}
+                                  </label>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
                   
-                  {!showResults ? (
-                    <Button
-                      onClick={handleSubmit}
-                      className="w-full bg-green-600 hover:bg-green-700 text-white"
-                      disabled={Object.keys(answers).length < questions.length}
-                    >
-                      Submit Answers
-                    </Button>
-                  ) : (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <h3 className="font-semibold text-blue-900 mb-2">Results</h3>
-                      <p className="text-blue-800">
-                        You scored {getScore()} out of {questions.length} questions correctly.
-                      </p>
-                      <p className="text-blue-700 text-sm mt-1">
-                        Percentage: {Math.round((getScore() / questions.length) * 100)}%
-                      </p>
-                    </div>
-                  )}
+                  <div className="mt-6">
+                    {!showResults ? (
+                      <Button
+                        onClick={handleSubmit}
+                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                        disabled={Object.keys(answers).length < questions.length}
+                      >
+                        Submit Answers
+                      </Button>
+                    ) : (
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h3 className="font-semibold text-blue-900 mb-2">Results</h3>
+                        <p className="text-blue-800">
+                          You scored {getScore()} out of {questions.length} questions correctly.
+                        </p>
+                        <p className="text-blue-700 text-sm mt-1">
+                          Percentage: {Math.round((getScore() / questions.length) * 100)}%
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             </div>
