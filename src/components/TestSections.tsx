@@ -40,7 +40,7 @@ const TestSections = () => {
     },
     {
       icon: PenTool,
-      title: /Writing',
+      title: 'Writing',
       description: 'Master academic writing with integrated and independent tasks.',
       duration: '50 minutes',
       questions: '2 tasks',
