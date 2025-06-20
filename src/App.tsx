@@ -4,7 +4,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
 import ReadingPracticeList from "./pages/ReadingPracticeList";
 import ReadingPractice from "./pages/ReadingPractice";
 import ListeningPracticeList from "./pages/ListeningPracticeList";
@@ -19,26 +22,64 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/practice/reading" element={<ReadingPracticeList />} />
-          <Route path="/practice/reading/urbanization" element={<ReadingPractice />} />
-          <Route path="/practice/listening" element={<ListeningPracticeList />} />
-          <Route path="/practice/listening/library-resources" element={<ListeningPractice />} />
-          <Route path="/practice/speaking" element={<SpeakingPracticeList />} />
-          <Route path="/practice/speaking/:practiceId" element={<SpeakingPractice />} />
-          <Route path="/practice/writing" element={<WritingPracticeList />} />
-          <Route path="/practice/writing/exam-mode" element={<WritingPractice />} />
-          <Route path="/practice/writing/:practiceId" element={<WritingPractice />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/practice/reading" element={
+              <ProtectedRoute>
+                <ReadingPracticeList />
+              </ProtectedRoute>
+            } />
+            <Route path="/practice/reading/urbanization" element={
+              <ProtectedRoute>
+                <ReadingPractice />
+              </ProtectedRoute>
+            } />
+            <Route path="/practice/listening" element={
+              <ProtectedRoute>
+                <ListeningPracticeList />
+              </ProtectedRoute>
+            } />
+            <Route path="/practice/listening/library-resources" element={
+              <ProtectedRoute>
+                <ListeningPractice />
+              </ProtectedRoute>
+            } />
+            <Route path="/practice/speaking" element={
+              <ProtectedRoute>
+                <SpeakingPracticeList />
+              </ProtectedRoute>
+            } />
+            <Route path="/practice/speaking/:practiceId" element={
+              <ProtectedRoute>
+                <SpeakingPractice />
+              </ProtectedRoute>
+            } />
+            <Route path="/practice/writing" element={
+              <ProtectedRoute>
+                <WritingPracticeList />
+              </ProtectedRoute>
+            } />
+            <Route path="/practice/writing/exam-mode" element={
+              <ProtectedRoute>
+                <WritingPractice />
+              </ProtectedRoute>
+            } />
+            <Route path="/practice/writing/:practiceId" element={
+              <ProtectedRoute>
+                <WritingPractice />
+              </ProtectedRoute>
+            } />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

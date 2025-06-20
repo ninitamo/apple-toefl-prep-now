@@ -1,10 +1,21 @@
 
 import { useState } from 'react';
-import { Menu, X, BookOpen } from 'lucide-react';
+import { Menu, X, BookOpen, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const navItems = [
     { name: 'Practice Tests', href: '#practice' },
@@ -13,11 +24,24 @@ const Navbar = () => {
     { name: 'About', href: '#about' },
   ];
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
+  const handleAuthClick = () => {
+    if (user) {
+      navigate('/practice/reading');
+    } else {
+      navigate('/auth');
+    }
+  };
+
   return (
     <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-200/50 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
             <BookOpen className="h-8 w-8 text-blue-600" />
             <span className="text-xl font-semibold text-gray-900">TOEFL Prep</span>
           </div>
@@ -32,9 +56,34 @@ const Navbar = () => {
                 {item.name}
               </a>
             ))}
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6">
-              Start Practice
-            </Button>
+            
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center space-x-2">
+                    <User className="h-4 w-4" />
+                    <span className="text-sm">{user.email}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => navigate('/practice/reading')}>
+                    Practice Tests
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                onClick={handleAuthClick}
+                className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6"
+              >
+                Sign In
+              </Button>
+            )}
           </div>
 
           <div className="md:hidden">
@@ -60,9 +109,34 @@ const Navbar = () => {
                   {item.name}
                 </a>
               ))}
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full">
-                Start Practice
-              </Button>
+              
+              {user ? (
+                <div className="space-y-2">
+                  <div className="text-sm text-gray-600 px-2">
+                    Signed in as: {user.email}
+                  </div>
+                  <Button 
+                    onClick={() => { navigate('/practice/reading'); setIsMenuOpen(false); }}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
+                  >
+                    Practice Tests
+                  </Button>
+                  <Button 
+                    onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <Button 
+                  onClick={() => { handleAuthClick(); setIsMenuOpen(false); }}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
+                >
+                  Sign In
+                </Button>
+              )}
             </div>
           </div>
         )}
