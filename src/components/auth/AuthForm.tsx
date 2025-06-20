@@ -13,8 +13,10 @@ interface AuthFormProps {
 
 const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
   const [email, setEmail] = useState('');
+  const [confirmEmail, setConfirmEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
   const [loading, setLoading] = useState(false);
   const { signIn, signUp } = useAuth();
 
@@ -24,6 +26,17 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
 
     try {
       if (mode === 'signup') {
+        if (email !== confirmEmail) {
+          toast({
+            title: "Email mismatch",
+            description: "Please make sure both email fields match.",
+            variant: "destructive"
+          });
+          setLoading(false);
+          return;
+        }
+
+        const fullName = `${name} ${surname}`.trim();
         const { error } = await signUp(email, password, fullName);
         if (error) {
           toast({
@@ -79,15 +92,28 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'signup' && (
-            <div>
-              <Input
-                type="text"
-                placeholder="Full Name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-              />
-            </div>
+            <>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <Input
+                    type="text"
+                    placeholder="Surname"
+                    value={surname}
+                    onChange={(e) => setSurname(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            </>
           )}
           <div>
             <Input
@@ -98,6 +124,17 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
               required
             />
           </div>
+          {mode === 'signup' && (
+            <div>
+              <Input
+                type="email"
+                placeholder="Confirm Email"
+                value={confirmEmail}
+                onChange={(e) => setConfirmEmail(e.target.value)}
+                required
+              />
+            </div>
+          )}
           <div>
             <Input
               type="password"
