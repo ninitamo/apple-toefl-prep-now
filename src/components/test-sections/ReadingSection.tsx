@@ -131,10 +131,13 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
     {
       id: 9,
       type: "Insert Text",
-      text: "Where would the following sentence best fit in paragraph 1? \"This rapid diversification is often compared to a biological big bang, due to its dramatic impact on life's complexity.\"",
+      text: "Where would the following sentence best fit in paragraph 1?",
+      insertSentence: "This rapid diversification is often compared to a biological big bang, due to its dramatic impact on life's complexity.",
+      targetParagraph: 1,
+      paragraphText: "The Cambrian Explosion refers to a relatively brief period in Earth's history, roughly 541 million years ago, during which a vast number of complex, multicellular organisms rapidly appeared in the fossil record. Prior to this event, most organisms were simple, composed mostly of individual cells or small multicellular structures. Within just a few tens of millions of years, nearly all the major groups of animals known today had appeared, including early arthropods, mollusks, and chordates. This evolutionary burst is one of the most significant biological events in Earth's history.",
       options: [
         "After the first sentence",
-        "After the second sentence",
+        "After the second sentence", 
         "After the third sentence",
         "At the end of the paragraph"
       ],
@@ -220,6 +223,34 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
     }
   };
 
+  const renderInsertTextParagraph = (paragraphText: string, insertSentence: string) => {
+    const sentences = paragraphText.split('. ').map((sentence, index, array) => {
+      if (index < array.length - 1) {
+        return sentence + '.';
+      }
+      return sentence;
+    });
+
+    return (
+      <div className="bg-gray-50 p-4 rounded mb-4">
+        <p className="text-sm mb-4 font-medium">
+          Examine the four ⬛ in the selection below and indicate at which block the following sentence could be inserted into the passage:
+        </p>
+        <div className="bg-white p-3 rounded border mb-4">
+          <p className="text-sm italic">"{insertSentence}"</p>
+        </div>
+        <div className="text-sm">
+          <span className="bg-black text-white px-1 mr-1">[A]</span>
+          {sentences[0]} <span className="bg-black text-white px-1 mx-1">[B]</span>
+          {sentences[1]} <span className="bg-black text-white px-1 mx-1">[C]</span>
+          {sentences[2]} <span className="bg-black text-white px-1 mx-1">[D]</span>
+          {sentences[3]}
+        </div>
+        <p className="text-xs text-gray-600 mt-3">Paragraph {(questions.find(q => q.id === 9) as any)?.targetParagraph} is marked with an arrow. ➤</p>
+      </div>
+    );
+  };
+
   if (showInstructions) {
     return (
       <div className="min-h-screen bg-white p-6">
@@ -275,6 +306,7 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
           
           <div className="prose prose-sm max-w-none text-gray-800 leading-relaxed">
             {passage.content.split('\n\n').map((paragraph, index) => {
+              // Handle highlighted sentence for question 7
               if (currentQuestion === 7 && paragraph.includes('Some researchers argue that the apparent suddenness')) {
                 return (
                   <p key={index} className="mb-4">
@@ -286,6 +318,17 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
                   </p>
                 );
               }
+              
+              // Add arrow marker for question 9 to paragraph 1
+              if (currentQuestion === 9 && index === 0) {
+                return (
+                  <p key={index} className="mb-4">
+                    <span className="font-bold text-lg mr-1">➤</span>
+                    {paragraph}
+                  </p>
+                );
+              }
+              
               return (
                 <p key={index} className="mb-4">
                   {paragraph}
@@ -319,6 +362,10 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
                 </div>
               )}
 
+              {currentQuestionData.type === "Insert Text" && (currentQuestionData as any).insertSentence && (
+                renderInsertTextParagraph((currentQuestionData as any).paragraphText, (currentQuestionData as any).insertSentence)
+              )}
+
               {currentQuestionData.isDragDrop ? (
                 <div className="space-y-6">
                   <div className="bg-gray-50 p-4 rounded">
@@ -328,7 +375,7 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
                   </div>
 
                   <div className="bg-white border-2 border-gray-300 p-4 rounded">
-                    <p className="text-sm font-medium mb-4">{currentQuestionData.introductory}</p>
+                    <p className="text-sm font-medium mb-4">{(currentQuestionData as any).introductory}</p>
                     
                     <div className="space-y-3">
                       {proseSummarySelections.map((selection, index) => (
@@ -374,6 +421,21 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
                     </div>
                   </div>
                 </div>
+              ) : currentQuestionData.type === "Insert Text" ? (
+                <RadioGroup 
+                  value={answers[currentQuestionData.id] || ''} 
+                  onValueChange={(value) => handleAnswerChange(currentQuestionData.id, value)}
+                  className="space-y-3"
+                >
+                  {["[A]", "[B]", "[C]", "[D]"].map((option, index) => (
+                    <div key={index} className="flex items-start space-x-3">
+                      <RadioGroupItem value={index.toString()} id={`q${currentQuestionData.id}-${index}`} className="mt-1" />
+                      <Label htmlFor={`q${currentQuestionData.id}-${index}`} className="text-sm leading-relaxed cursor-pointer">
+                        {option}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
               ) : (
                 <RadioGroup 
                   value={answers[currentQuestionData.id] || ''} 
@@ -389,12 +451,6 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
                     </div>
                   ))}
                 </RadioGroup>
-              )}
-
-              {currentQuestion === 9 && (
-                <div className="mt-6 text-sm text-gray-600">
-                  <p><strong>Paragraph 1</strong> is marked with an arrow. ➤</p>
-                </div>
               )}
             </div>
           </div>
