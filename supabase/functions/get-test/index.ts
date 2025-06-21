@@ -32,14 +32,26 @@ serve(async (req) => {
       )
     }
 
+    // Map numeric test IDs to actual UUIDs
+    const testIdMap: Record<string, string> = {
+      '1': '00000000-0000-0000-0000-000000000001',
+      '2': '00000000-0000-0000-0000-000000000002',
+      '3': '00000000-0000-0000-0000-000000000003',
+    }
+
+    const actualTestId = testIdMap[testId] || testId
+
+    console.log(`Looking for test with ID: ${actualTestId}`)
+
     // Fetch test data
     const { data: test, error: testError } = await supabaseClient
       .from('toefl_tests')
       .select('*')
-      .eq('id', testId)
+      .eq('id', actualTestId)
       .single()
 
     if (testError || !test) {
+      console.error('Test error:', testError)
       return new Response(
         JSON.stringify({ error: 'Test not found' }),
         { 
@@ -53,10 +65,11 @@ serve(async (req) => {
     const { data: passages, error: passagesError } = await supabaseClient
       .from('test_passages')
       .select('*')
-      .eq('test_id', testId)
+      .eq('test_id', actualTestId)
       .order('order_number')
 
     if (passagesError) {
+      console.error('Passages error:', passagesError)
       return new Response(
         JSON.stringify({ error: 'Failed to fetch passages' }),
         { 
@@ -70,10 +83,11 @@ serve(async (req) => {
     const { data: questions, error: questionsError } = await supabaseClient
       .from('test_questions')
       .select('*')
-      .eq('test_id', testId)
+      .eq('test_id', actualTestId)
       .order('question_number')
 
     if (questionsError) {
+      console.error('Questions error:', questionsError)
       return new Response(
         JSON.stringify({ error: 'Failed to fetch questions' }),
         { 
@@ -82,6 +96,8 @@ serve(async (req) => {
         }
       )
     }
+
+    console.log(`Found test: ${test.title}, passages: ${passages?.length || 0}, questions: ${questions?.length || 0}`)
 
     // Structure the response
     const response = {
@@ -98,6 +114,7 @@ serve(async (req) => {
     )
 
   } catch (error) {
+    console.error('Function error:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       { 
