@@ -1,10 +1,8 @@
 
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import TestSections from '@/components/TestSections';
-import ProgressDashboard from '@/components/ProgressDashboard';
+import ToeflTestsList from '@/components/ToeflTestsList';
 import StudyMaterials from '@/components/StudyMaterials';
-import PricingSection from '@/components/PricingSection';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -12,10 +10,8 @@ const Index = () => {
     <div className="min-h-screen bg-white">
       <Navbar />
       <HeroSection />
-      <TestSections />
-      <ProgressDashboard />
+      <ToeflTestsList />
       <StudyMaterials />
-      <PricingSection />
       <Footer />
     </div>
   );
