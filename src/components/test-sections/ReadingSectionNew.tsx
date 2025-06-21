@@ -19,6 +19,11 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
   const readingPassages = testData.passages.filter(p => p.section_type === 'reading');
   const readingQuestions = testData.questions.filter(q => q.section_type === 'reading');
 
+  console.log('Reading passages:', readingPassages.length);
+  console.log('Reading questions:', readingQuestions.length);
+  console.log('Current question index:', currentQuestion - 1);
+  console.log('All questions:', readingQuestions);
+
   const handleAnswerChange = (questionId: number, value: string) => {
     setAnswers(prev => ({
       ...prev,
@@ -43,6 +48,10 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
   // Get current passage based on question
   const getCurrentPassage = () => {
     const currentQ = readingQuestions[currentQuestion - 1];
+    if (!currentQ) {
+      console.log('No current question found');
+      return null;
+    }
     return readingPassages.find(p => p.id === currentQ.passage_id);
   };
 
@@ -77,11 +86,41 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
     );
   }
 
+  // Add safety checks for when questions aren't loaded yet
+  if (readingQuestions.length === 0) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading questions...</p>
+        </div>
+      </div>
+    );
+  }
+
   const currentQuestionData = readingQuestions[currentQuestion - 1];
   const currentPassage = getCurrentPassage();
 
-  if (!currentQuestionData || !currentPassage) {
-    return <div>Loading...</div>;
+  if (!currentQuestionData) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Question not found</p>
+          <Button onClick={onNext}>Continue to next section</Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentPassage) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Passage not found for this question</p>
+          <Button onClick={onNext}>Continue to next section</Button>
+        </div>
+      </div>
+    );
   }
 
   return (
