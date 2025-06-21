@@ -1,0 +1,184 @@
+
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import { TestData } from '@/hooks/useTestData';
+
+interface ReadingSectionProps {
+  onNext: () => void;
+  testData: TestData;
+}
+
+const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
+  const [currentQuestion, setCurrentQuestion] = useState(1);
+  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [showInstructions, setShowInstructions] = useState(true);
+
+  // Filter reading questions and passages
+  const readingPassages = testData.passages.filter(p => p.section_type === 'reading');
+  const readingQuestions = testData.questions.filter(q => q.section_type === 'reading');
+
+  const handleAnswerChange = (questionId: number, value: string) => {
+    setAnswers(prev => ({
+      ...prev,
+      [questionId]: value
+    }));
+  };
+
+  const handleNext = () => {
+    if (currentQuestion < readingQuestions.length) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      onNext();
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestion > 1) {
+      setCurrentQuestion(currentQuestion - 1);
+    }
+  };
+
+  // Get current passage based on question
+  const getCurrentPassage = () => {
+    const currentQ = readingQuestions[currentQuestion - 1];
+    return readingPassages.find(p => p.id === currentQ.passage_id);
+  };
+
+  if (showInstructions) {
+    return (
+      <div className="min-h-screen bg-white p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-blue-700 mb-4">Reading Section Instructions</h1>
+          </div>
+          
+          <div className="border border-gray-300 p-8 rounded">
+            <div className="space-y-6 text-gray-800 leading-relaxed">
+              <p>In the <strong>Reading</strong> section, you will read passages and answer questions about them.</p>
+              <p>You have <strong>54 minutes</strong> to read the passages and answer the questions.</p>
+              <p>Most questions are worth 1 point, but the last question in each set is worth more than 1 point.</p>
+              <p>The directions indicate how many points you may receive.</p>
+            </div>
+            
+            <div className="text-center mt-8">
+              <p className="text-gray-600 mb-4">(Click on <strong>Continue</strong> to go on.)</p>
+              <Button 
+                onClick={() => setShowInstructions(false)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2"
+              >
+                Continue
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const currentQuestionData = readingQuestions[currentQuestion - 1];
+  const currentPassage = getCurrentPassage();
+
+  if (!currentQuestionData || !currentPassage) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      <div className="flex">
+        {/* Left side - Passage */}
+        <div className="w-1/2 p-6 border-r border-gray-300">
+          <div className="mb-4">
+            <h2 className="text-xl font-bold text-gray-800">{currentPassage.title}</h2>
+          </div>
+          
+          <div className="prose prose-sm max-w-none text-gray-800 leading-relaxed">
+            {currentPassage.content.split('\n\n').map((paragraph, index) => (
+              <p key={index} className="mb-4">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        {/* Right side - Questions */}
+        <div className="w-1/2 p-6">
+          <div className="mb-6">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Reading | Question {currentQuestion} of {readingQuestions.length}</span>
+              <span className="text-sm text-gray-600">00:35:57 ⏰ Hide Time</span>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div>
+              <div className="mb-2">
+                <span className="text-xs text-blue-600 font-medium">{currentQuestionData.question_type}</span>
+              </div>
+              <h3 className="font-bold text-gray-800 mb-4">
+                ➤ [{currentQuestionData.question_number}] {currentQuestionData.question_text}
+              </h3>
+
+              {currentQuestionData.question_type === "Prose Summary" ? (
+                <div className="space-y-4">
+                  <div className="bg-gray-50 p-4 rounded">
+                    <p className="text-sm"><strong>Directions:</strong> Complete the summary by selecting the THREE answer choices that express the most important ideas in the passage. This question is worth 2 points.</p>
+                  </div>
+                  <RadioGroup 
+                    value={answers[currentQuestionData.question_number] || ''} 
+                    onValueChange={(value) => handleAnswerChange(currentQuestionData.question_number, value)}
+                    className="space-y-3"
+                  >
+                    {currentQuestionData.options?.map((option: string, index: number) => (
+                      <div key={index} className="flex items-start space-x-3">
+                        <RadioGroupItem value={index.toString()} id={`q${currentQuestionData.question_number}-${index}`} className="mt-1" />
+                        <Label htmlFor={`q${currentQuestionData.question_number}-${index}`} className="text-sm leading-relaxed cursor-pointer">
+                          {option}
+                        </Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </div>
+              ) : (
+                <RadioGroup 
+                  value={answers[currentQuestionData.question_number] || ''} 
+                  onValueChange={(value) => handleAnswerChange(currentQuestionData.question_number, value)}
+                  className="space-y-3"
+                >
+                  {currentQuestionData.options?.map((option: string, index: number) => (
+                    <div key={index} className="flex items-start space-x-3">
+                      <RadioGroupItem value={index.toString()} id={`q${currentQuestionData.question_number}-${index}`} className="mt-1" />
+                      <Label htmlFor={`q${currentQuestionData.question_number}-${index}`} className="text-sm leading-relaxed cursor-pointer">
+                        {option}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-8 flex justify-between">
+            <Button 
+              onClick={handlePrevious}
+              disabled={currentQuestion === 1}
+              variant="outline"
+              className="px-6 py-2"
+            >
+              Previous
+            </Button>
+            <Button 
+              onClick={handleNext}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
+            >
+              {currentQuestion < readingQuestions.length ? 'Next' : 'Continue to Listening'}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ReadingSectionNew;

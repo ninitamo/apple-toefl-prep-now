@@ -5,10 +5,11 @@ import { ArrowLeft, Clock, Users, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import ReadingSection from '@/components/test-sections/ReadingSection';
+import ReadingSectionNew from '@/components/test-sections/ReadingSectionNew';
 import ListeningSection from '@/components/test-sections/ListeningSection';
 import SpeakingSection from '@/components/test-sections/SpeakingSection';
 import WritingSection from '@/components/test-sections/WritingSection';
+import { useTestData } from '@/hooks/useTestData';
 
 const ToeflTest = () => {
   const { testId } = useParams();
@@ -16,13 +17,7 @@ const ToeflTest = () => {
   const [currentSection, setCurrentSection] = useState<'reading' | 'listening' | 'speaking' | 'writing' | 'overview'>('overview');
   const [testStarted, setTestStarted] = useState(false);
 
-  const testData = {
-    id: testId || '1',
-    title: `TOEFL Test ${testId}`,
-    difficulty: 'Intermediate',
-    duration: '3 hours',
-    students: '2,120'
-  };
+  const { data: testData, isLoading, error } = useTestData(testId || '1');
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -64,6 +59,28 @@ const ToeflTest = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading test data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !testData) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Failed to load test data</p>
+          <Button onClick={() => navigate('/')}>Back to Home</Button>
+        </div>
+      </div>
+    );
+  }
+
   if (!testStarted) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -83,16 +100,15 @@ const ToeflTest = () => {
             <Card className="border-0 shadow-lg">
               <CardHeader className="text-center pb-6">
                 <div className="flex items-center justify-center mb-4">
-                  <Badge className={getDifficultyColor(testData.difficulty)}>
-                    {testData.difficulty}
+                  <Badge className={getDifficultyColor(testData.test.difficulty)}>
+                    {testData.test.difficulty}
                   </Badge>
                 </div>
                 <CardTitle className="text-3xl font-bold text-gray-900 mb-4">
-                  {testData.title}
+                  {testData.test.title}
                 </CardTitle>
                 <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                  A Sample Test is shorter than our other tests and takes around 1 hour to complete. 
-                  It'll give you a good feel for what you can expect from our full TOEFL practice tests.
+                  {testData.test.description}
                 </p>
               </CardHeader>
               
@@ -100,11 +116,11 @@ const ToeflTest = () => {
                 <div className="flex items-center justify-center space-x-8 mb-8 text-sm text-gray-500">
                   <div className="flex items-center space-x-1">
                     <Clock className="h-4 w-4" />
-                    <span>{testData.duration}</span>
+                    <span>{testData.test.duration}</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Users className="h-4 w-4" />
-                    <span>{testData.students} taken</span>
+                    <span>{testData.test.students_taken} taken</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Award className="h-4 w-4" />
@@ -157,7 +173,7 @@ const ToeflTest = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {currentSection === 'reading' && <ReadingSection onNext={nextSection} />}
+      {currentSection === 'reading' && <ReadingSectionNew onNext={nextSection} testData={testData} />}
       {currentSection === 'listening' && <ListeningSection onNext={nextSection} />}
       {currentSection === 'speaking' && <SpeakingSection onNext={nextSection} />}
       {currentSection === 'writing' && <WritingSection onNext={nextSection} />}

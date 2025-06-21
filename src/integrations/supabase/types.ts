@@ -66,6 +66,134 @@ export type Database = {
         }
         Relationships: []
       }
+      test_passages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          order_number: number
+          section_type: string
+          test_id: string
+          title: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          order_number: number
+          section_type: string
+          test_id: string
+          title: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          order_number?: number
+          section_type?: string
+          test_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_passages_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "toefl_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      test_questions: {
+        Row: {
+          correct_answer: Json | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          options: Json | null
+          passage_id: string | null
+          question_number: number
+          question_text: string
+          question_type: string
+          section_type: string
+          test_id: string
+        }
+        Insert: {
+          correct_answer?: Json | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          options?: Json | null
+          passage_id?: string | null
+          question_number: number
+          question_text: string
+          question_type: string
+          section_type: string
+          test_id: string
+        }
+        Update: {
+          correct_answer?: Json | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          options?: Json | null
+          passage_id?: string | null
+          question_number?: number
+          question_text?: string
+          question_type?: string
+          section_type?: string
+          test_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_questions_passage_id_fkey"
+            columns: ["passage_id"]
+            isOneToOne: false
+            referencedRelation: "test_passages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_questions_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "toefl_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      toefl_tests: {
+        Row: {
+          created_at: string
+          description: string | null
+          difficulty: string
+          duration: string
+          id: string
+          students_taken: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          difficulty: string
+          duration: string
+          id?: string
+          students_taken?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          difficulty?: string
+          duration?: string
+          id?: string
+          students_taken?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
