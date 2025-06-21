@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +12,8 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [showInstructions, setShowInstructions] = useState(true);
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  const [proseSummarySelections, setProseSummarySelections] = useState<(string | null)[]>([null, null, null]);
 
   const passage = {
     title: "The Cambrian Explosion",
@@ -142,7 +143,8 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
     {
       id: 10,
       type: "Prose Summary",
-      text: "Select the three answer choices that express the most important ideas in the passage. (This question is worth 2 points.)",
+      text: "An introductory sentence for a brief summary of the passage is provided below. Complete the summary by selecting the THREE answer choices that express the most important ideas in the passage. Some sentences do not belong in the summary because they express ideas that are not presented in the passage or are minor ideas in the passage. This question is worth 2 points.",
+      introductory: "The Cambrian Explosion was a significant period in evolutionary history marked by a rapid diversification of animal life.",
       options: [
         "The development of Hox genes may have enabled the evolution of complex body plans.",
         "Some fossils from the Cambrian period remain difficult to classify.",
@@ -151,10 +153,51 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
         "The Cambrian Explosion likely occurred because of a combination of genetic, ecological, and environmental factors.",
         "The Earth's magnetic field changed significantly during the Cambrian period."
       ],
-      correct: [0, 3, 4], // Multiple correct answers
-      isMultiple: true
+      correct: [0, 3, 4],
+      isDragDrop: true
     }
   ];
+
+  const handleDragStart = (e: React.DragEvent, optionIndex: number) => {
+    setDraggedItem(optionIndex.toString());
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e: React.DragEvent, targetIndex: number) => {
+    e.preventDefault();
+    if (draggedItem !== null) {
+      const newSelections = [...proseSummarySelections];
+      
+      // Check if the item is already placed somewhere, remove it
+      const existingIndex = newSelections.indexOf(draggedItem);
+      if (existingIndex !== -1) {
+        newSelections[existingIndex] = null;
+      }
+      
+      // Place the item in the new position
+      newSelections[targetIndex] = draggedItem;
+      setProseSummarySelections(newSelections);
+      
+      // Update answers
+      const selectedIndices = newSelections.filter(item => item !== null);
+      handleAnswerChange(10, selectedIndices.join(','));
+    }
+    setDraggedItem(null);
+  };
+
+  const handleRemoveFromZone = (zoneIndex: number) => {
+    const newSelections = [...proseSummarySelections];
+    newSelections[zoneIndex] = null;
+    setProseSummarySelections(newSelections);
+    
+    const selectedIndices = newSelections.filter(item => item !== null);
+    handleAnswerChange(10, selectedIndices.join(','));
+  };
 
   const handleAnswerChange = (questionId: number, value: string) => {
     setAnswers(prev => ({
@@ -232,7 +275,6 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
           
           <div className="prose prose-sm max-w-none text-gray-800 leading-relaxed">
             {passage.content.split('\n\n').map((paragraph, index) => {
-              // Handle highlighted sentence for question 7
               if (currentQuestion === 7 && paragraph.includes('Some researchers argue that the apparent suddenness')) {
                 return (
                   <p key={index} className="mb-4">
@@ -277,7 +319,62 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
                 </div>
               )}
 
-              {currentQuestionData.isMultiple ? (
+              {currentQuestionData.isDragDrop ? (
+                <div className="space-y-6">
+                  <div className="bg-gray-50 p-4 rounded">
+                    <p className="text-sm mb-4"><strong>Directions:</strong> An introductory sentence for a brief summary of the passage is provided below. Complete the summary by selecting the THREE answer choices that express the most important ideas in the passage. Some sentences do not belong in the summary because they express ideas that are not presented in the passage or are minor ideas in the passage. This question is worth 2 points.</p>
+                    <p className="text-sm text-gray-600"><strong>Drag your answer choices to the spaces where they belong. To remove an answer choice, drag it back.</strong></p>
+                    <p className="text-sm text-gray-600 mt-2">To review the passage, click <strong>VIEW TEXT</strong>.</p>
+                  </div>
+
+                  <div className="bg-white border-2 border-gray-300 p-4 rounded">
+                    <p className="text-sm font-medium mb-4">{currentQuestionData.introductory}</p>
+                    
+                    <div className="space-y-3">
+                      {proseSummarySelections.map((selection, index) => (
+                        <div
+                          key={index}
+                          className="min-h-[60px] border-2 border-dashed border-gray-300 bg-gray-50 p-3 rounded flex items-center"
+                          onDragOver={handleDragOver}
+                          onDrop={(e) => handleDrop(e, index)}
+                        >
+                          {selection !== null ? (
+                            <div 
+                              className="bg-white border border-gray-300 p-2 rounded text-sm cursor-pointer hover:bg-gray-50"
+                              onClick={() => handleRemoveFromZone(index)}
+                            >
+                              {String.fromCharCode(65 + parseInt(selection))}.{currentQuestionData.options[parseInt(selection)]}
+                            </div>
+                          ) : (
+                            <span className="text-gray-400 text-sm">Drop answer choice here</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-6">
+                    <h4 className="text-center font-bold mb-4">Answer Choices</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {currentQuestionData.options.map((option, index) => {
+                        const isSelected = proseSummarySelections.includes(index.toString());
+                        return (
+                          <div
+                            key={index}
+                            draggable={!isSelected}
+                            onDragStart={(e) => handleDragStart(e, index)}
+                            className={`p-3 border border-gray-300 rounded text-sm cursor-move ${
+                              isSelected ? 'bg-gray-200 opacity-50 cursor-not-allowed' : 'bg-white hover:bg-gray-50'
+                            }`}
+                          >
+                            <strong>{String.fromCharCode(65 + index)}.</strong>{option}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ) : currentQuestionData.isMultiple ? (
                 <div className="space-y-3">
                   <p className="text-sm text-gray-600 mb-3">Select THREE answer choices:</p>
                   {currentQuestionData.options.map((option, index) => (
