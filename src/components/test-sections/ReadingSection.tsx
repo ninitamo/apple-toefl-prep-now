@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,10 +15,13 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
   const [showInstructions, setShowInstructions] = useState(true);
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
   const [proseSummarySelections, setProseSummarySelections] = useState<(string | null)[]>([null, null, null]);
+  const [proseSummarySelections2, setProseSummarySelections2] = useState<(string | null)[]>([null, null, null]);
 
-  const passage = {
-    title: "The Cambrian Explosion",
-    content: `[1] The Cambrian Explosion refers to a relatively brief period in Earth's history, roughly 541 million years ago, during which a vast number of complex, multicellular organisms rapidly appeared in the fossil record. Prior to this event, most organisms were simple, composed mostly of individual cells or small multicellular structures. Within just a few tens of millions of years, nearly all the major groups of animals known today had appeared, including early arthropods, mollusks, and chordates. This evolutionary burst is one of the most significant biological events in Earth's history.
+  const passages = [
+    {
+      id: 1,
+      title: "The Cambrian Explosion",
+      content: `[1] The Cambrian Explosion refers to a relatively brief period in Earth's history, roughly 541 million years ago, during which a vast number of complex, multicellular organisms rapidly appeared in the fossil record. Prior to this event, most organisms were simple, composed mostly of individual cells or small multicellular structures. Within just a few tens of millions of years, nearly all the major groups of animals known today had appeared, including early arthropods, mollusks, and chordates. This evolutionary burst is one of the most significant biological events in Earth's history.
 
 [2] Scientists continue to debate the causes of the Cambrian Explosion, as the precise factors remain uncertain. Some suggest it was triggered by environmental changes, such as a rise in atmospheric oxygen, which could have supported more complex body structures and higher metabolic rates. Others point to ecological interactions, such as predator-prey relationships, as a catalyst for evolutionary innovation. These interactions may have driven the development of hard shells and complex movement as organisms adapted for survival.
 
@@ -28,9 +32,26 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
 [5] Despite its name, the Cambrian Explosion did not happen overnight. It unfolded over about 20 to 25 million years, a short time on a geological scale but still substantial in evolutionary terms. Some researchers argue that the apparent suddenness of the explosion is partly a result of improved fossil preservation during the Cambrian, rather than an actual acceleration in the rate of evolution. In this view, many animal lineages may have originated earlier but left no fossil record due to their soft bodies.
 
 [6] Regardless of the specific causes, the Cambrian Explosion marks a critical juncture in the history of life on Earth. It set the stage for the rise of complex ecosystems and paved the way for future evolutionary developments. Without it, the diversity of life forms that populate the planet today might never have emerged. The event continues to be a focal point for scientists studying the origins and evolution of animal life.`
-  };
+    },
+    {
+      id: 2,
+      title: "Trade Along the Silk Road",
+      content: `[1] The Silk Road was not a single road but a vast network of trade routes that connected China with the Mediterranean world. Spanning over 6,000 kilometers, this network enabled the exchange of goods, ideas, technologies, and cultures for more than a thousand years. These routes played a crucial role in the development of early international commerce. The term "Silk Road" was coined in the 19th century by the German geographer Ferdinand von Richthofen, referring to the lucrative trade in silk that was carried out along these routes. Although silk was a major commodity, traders also dealt in spices, glassware, paper, precious metals, and other goods. The Silk Road reached its height during the Tang and Yuan dynasties in China, facilitating interaction between East and West.
+
+[2] One of the critical features of Silk Road commerce was its relay-trade nature. Rather than having goods transported by a single trader along the entire route, merchandise often passed through the hands of many different traders and middlemen. For example, Chinese silk might be traded to Central Asian merchants, who then exchanged it with Persian or Arab traders, eventually reaching the markets of Rome or Constantinople. This system allowed local traders to specialize in certain segments of the route, making the entire operation more efficient and adaptable to political or environmental changes.
+
+[3] The Silk Road also facilitated the transmission of culture and religion. As merchants and pilgrims moved across vast distances, they carried with them not just goods but also stories, beliefs, and technologies. Buddhism, for instance, spread from India to China largely through the efforts of monks traveling along these trade routes. Similarly, artistic styles, architectural motifs, and even culinary practices were shared and adapted by the various civilizations connected by the Silk Road.
+
+[4] Political stability was crucial for the prosperity of the Silk Road. When strong empires such as the Tang dynasty in China or the Mongol Empire under Genghis Khan provided security, trade flourished. These empires maintained roads, suppressed banditry, and established relay stations, which ensured that goods and people could move with relative safety. In contrast, periods of fragmentation or warfare often disrupted trade, causing some routes to become impassable or unsafe. Traders would then divert their goods through alternate paths or switch to maritime trade.
+
+[5] While the overland Silk Road was vital for centuries, maritime trade routes eventually began to rival and, in some areas, surpass it in importance. The rise of naval technology and the exploration of sea routes by Arab, Indian, and later European merchants allowed for the transport of larger quantities of goods at a lower cost. By the 15th century, the maritime Silk Road, connecting China through the South China Sea and Indian Ocean to Africa and Europe, became the dominant channel for trade.
+
+[6] Despite its decline in the early modern period, the Silk Road had a lasting impact on world history. It was instrumental in shaping early globalization by linking distant regions and fostering intercultural exchange. Many of the ideas, inventions, and commodities that moved along the Silk Road influenced societies far from their origin. Today, the legacy of the Silk Road is remembered not only in museums and historical texts but also in modern initiatives aimed at reviving trade connectivity across Eurasia.`
+    }
+  ];
 
   const questions = [
+    // Questions 1-10 for first passage
     {
       id: 1,
       type: "Factual Information",
@@ -158,8 +179,155 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
       ],
       correct: [0, 3, 4],
       isDragDrop: true
+    },
+    // Questions 11-20 for second passage
+    {
+      id: 11,
+      type: "Factual Information",
+      text: "According to paragraph 1, what does the term \"Silk Road\" specifically refer to?",
+      options: [
+        "A single trade route between China and Europe",
+        "A collection of trade routes named by a 19th-century geographer",
+        "The paper trade between China and India",
+        "The route used exclusively for transporting Chinese silk"
+      ],
+      correct: 1
+    },
+    {
+      id: 12,
+      type: "Negative Factual Information",
+      text: "According to paragraph 2, all of the following are characteristics of Silk Road trade EXCEPT:",
+      options: [
+        "A single trader often traveled the entire route",
+        "Goods passed through multiple hands",
+        "Traders specialized in certain sections of the route",
+        "Trade routes could shift due to political changes"
+      ],
+      correct: 0
+    },
+    {
+      id: 13,
+      type: "Vocabulary",
+      text: "The word \"relay\" in paragraph 2 is closest in meaning to:",
+      options: [
+        "complete",
+        "repetitive",
+        "sequential",
+        "occasional"
+      ],
+      correct: 2
+    },
+    {
+      id: 14,
+      type: "Vocabulary",
+      text: "The word \"prosperity\" in paragraph 4 is closest in meaning to:",
+      options: [
+        "expansion",
+        "wealth",
+        "danger",
+        "tradition"
+      ],
+      correct: 1
+    },
+    {
+      id: 15,
+      type: "Inference",
+      text: "What can be inferred from paragraph 3 about cultural diffusion along the Silk Road?",
+      options: [
+        "It occurred only during times of war",
+        "It was an accidental consequence of trade",
+        "It helped unify Asian and European governments",
+        "It involved the intentional spread of religions and ideas"
+      ],
+      correct: 3
+    },
+    {
+      id: 16,
+      type: "Factual Information",
+      text: "According to paragraph 4, why did trade flourish under strong empires?",
+      options: [
+        "They lowered trade taxes across the empire",
+        "They required all merchants to travel the entire route",
+        "They offered protection and maintained infrastructure",
+        "They discouraged maritime trade"
+      ],
+      correct: 2
+    },
+    {
+      id: 17,
+      type: "Sentence Simplification",
+      text: "Which of the sentences below best expresses the essential information in the highlighted sentence from paragraph 5?",
+      highlighted: "The rise of naval technology and the exploration of sea routes by Arab, Indian, and later European merchants allowed for the transport of larger quantities of goods at a lower cost.",
+      options: [
+        "As trade over land declined, European merchants increased their wealth.",
+        "Technological advances made sea travel more dangerous but efficient.",
+        "Sea routes became preferable for moving more goods more cheaply.",
+        "Naval technology was not used by Asian traders until later periods."
+      ],
+      correct: 2
+    },
+    {
+      id: 18,
+      type: "Rhetorical Purpose",
+      text: "Why does the author mention Buddhism in paragraph 3?",
+      options: [
+        "To show how religious tolerance developed in Asia",
+        "To illustrate how trade routes spread spiritual beliefs",
+        "To explain the disappearance of ancient trade religions",
+        "To argue that the Silk Road was primarily a religious path"
+      ],
+      correct: 1
+    },
+    {
+      id: 19,
+      type: "Insert Text",
+      text: "Where would the following sentence best fit in paragraph 1?",
+      insertSentence: "These routes played a crucial role in the development of early international commerce.",
+      targetParagraph: 1,
+      paragraphText: "The Silk Road was not a single road but a vast network of trade routes that connected China with the Mediterranean world. Spanning over 6,000 kilometers, this network enabled the exchange of goods, ideas, technologies, and cultures for more than a thousand years. The term \"Silk Road\" was coined in the 19th century by the German geographer Ferdinand von Richthofen, referring to the lucrative trade in silk that was carried out along these routes. Although silk was a major commodity, traders also dealt in spices, glassware, paper, precious metals, and other goods. The Silk Road reached its height during the Tang and Yuan dynasties in China, facilitating interaction between East and West.",
+      options: [
+        "After the first sentence",
+        "After the second sentence",
+        "After the third sentence", 
+        "At the end of the paragraph"
+      ],
+      correct: 1
+    },
+    {
+      id: 20,
+      type: "Prose Summary",
+      text: "An introductory sentence for a brief summary of the passage is provided below. Complete the summary by selecting the THREE answer choices that express the most important ideas in the passage. Some sentences do not belong in the summary because they express ideas that are not presented in the passage or are minor ideas in the passage. This question is worth 2 points.",
+      introductory: "The Silk Road was a network of overland and maritime trade routes that connected many parts of the ancient world.",
+      options: [
+        "Political stability along the route encouraged economic activity and cultural exchange.",
+        "Relay trade enabled goods to reach distant markets without long-distance travel by individual merchants.",
+        "Paper and silk were the only goods transported along the Silk Road.",
+        "Religious and cultural ideas moved alongside commercial goods.",
+        "Maritime routes eventually overtook land routes in importance due to efficiency and lower costs.",
+        "The Silk Road remained the most important trade network until the 20th century."
+      ],
+      correct: [0, 1, 3, 4],
+      isDragDrop: true
     }
   ];
+
+  // Get current passage based on question number
+  const getCurrentPassage = () => {
+    return currentQuestion <= 10 ? passages[0] : passages[1];
+  };
+
+  // Get prose summary selections based on current question
+  const getCurrentProseSummarySelections = () => {
+    return currentQuestion === 10 ? proseSummarySelections : proseSummarySelections2;
+  };
+
+  const setCurrentProseSummarySelections = (selections: (string | null)[]) => {
+    if (currentQuestion === 10) {
+      setProseSummarySelections(selections);
+    } else {
+      setProseSummarySelections2(selections);
+    }
+  };
 
   const handleDragStart = (e: React.DragEvent, optionIndex: number) => {
     setDraggedItem(optionIndex.toString());
@@ -174,7 +342,8 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
   const handleDrop = (e: React.DragEvent, targetIndex: number) => {
     e.preventDefault();
     if (draggedItem !== null) {
-      const newSelections = [...proseSummarySelections];
+      const currentSelections = getCurrentProseSummarySelections();
+      const newSelections = [...currentSelections];
       
       // Check if the item is already placed somewhere, remove it
       const existingIndex = newSelections.indexOf(draggedItem);
@@ -184,22 +353,23 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
       
       // Place the item in the new position
       newSelections[targetIndex] = draggedItem;
-      setProseSummarySelections(newSelections);
+      setCurrentProseSummarySelections(newSelections);
       
       // Update answers
       const selectedIndices = newSelections.filter(item => item !== null);
-      handleAnswerChange(10, selectedIndices.join(','));
+      handleAnswerChange(currentQuestion, selectedIndices.join(','));
     }
     setDraggedItem(null);
   };
 
   const handleRemoveFromZone = (zoneIndex: number) => {
-    const newSelections = [...proseSummarySelections];
+    const currentSelections = getCurrentProseSummarySelections();
+    const newSelections = [...currentSelections];
     newSelections[zoneIndex] = null;
-    setProseSummarySelections(newSelections);
+    setCurrentProseSummarySelections(newSelections);
     
     const selectedIndices = newSelections.filter(item => item !== null);
-    handleAnswerChange(10, selectedIndices.join(','));
+    handleAnswerChange(currentQuestion, selectedIndices.join(','));
   };
 
   const handleAnswerChange = (questionId: number, value: string) => {
@@ -246,7 +416,7 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
           {sentences[2]} <span className="bg-black text-white px-1 mx-1">[D]</span>
           {sentences[3]}
         </div>
-        <p className="text-xs text-gray-600 mt-3">Paragraph {(questions.find(q => q.id === 9) as any)?.targetParagraph} is marked with an arrow. ➤</p>
+        <p className="text-xs text-gray-600 mt-3">Paragraph {(questions.find(q => q.id === currentQuestion) as any)?.targetParagraph} is marked with an arrow. ➤</p>
       </div>
     );
   };
@@ -264,7 +434,7 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
               <div className="space-y-6 text-gray-800 leading-relaxed">
                 <p>This test measures your ability to use English in an academic context. There are four sections.</p>
                 
-                <p>In the <strong>Reading</strong> section, you will read <strong>one passage</strong> and answer <strong>10 questions</strong> about it.</p>
+                <p>In the <strong>Reading</strong> section, you will read <strong>two passages</strong> and answer <strong>20 questions</strong> about them.</p>
                 
                 <p>In the <strong>Listening</strong> section, you will hear <strong>two conversations</strong> and <strong>three lectures</strong> and answer questions about them.</p>
                 
@@ -294,6 +464,7 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
   }
 
   const currentQuestionData = questions[currentQuestion - 1];
+  const currentPassage = getCurrentPassage();
 
   return (
     <div className="min-h-screen bg-white">
@@ -301,12 +472,12 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
         {/* Left side - Passage */}
         <div className="w-1/2 p-6 border-r border-gray-300">
           <div className="mb-4">
-            <h2 className="text-xl font-bold text-gray-800">{passage.title}</h2>
+            <h2 className="text-xl font-bold text-gray-800">{currentPassage.title}</h2>
           </div>
           
           <div className="prose prose-sm max-w-none text-gray-800 leading-relaxed">
-            {passage.content.split('\n\n').map((paragraph, index) => {
-              // Handle highlighted sentence for question 7
+            {currentPassage.content.split('\n\n').map((paragraph, index) => {
+              // Handle highlighted sentence for question 7 (first passage)
               if (currentQuestion === 7 && paragraph.includes('Some researchers argue that the apparent suddenness')) {
                 return (
                   <p key={index} className="mb-4">
@@ -319,8 +490,31 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
                 );
               }
               
-              // Add arrow marker for question 9 to paragraph 1
-              if (currentQuestion === 9 && index === 0) {
+              // Handle highlighted sentence for question 17 (second passage)
+              if (currentQuestion === 17 && paragraph.includes('The rise of naval technology')) {
+                return (
+                  <p key={index} className="mb-4">
+                    {paragraph.split('The rise of naval technology and the exploration of sea routes by Arab, Indian, and later European merchants allowed for the transport of larger quantities of goods at a lower cost.')[0]}
+                    <span className="bg-black text-white px-1">
+                      The rise of naval technology and the exploration of sea routes by Arab, Indian, and later European merchants allowed for the transport of larger quantities of goods at a lower cost.
+                    </span>
+                    {paragraph.split('The rise of naval technology and the exploration of sea routes by Arab, Indian, and later European merchants allowed for the transport of larger quantities of goods at a lower cost.')[1]}
+                  </p>
+                );
+              }
+              
+              // Add arrow marker for question 9 to paragraph 1 (first passage)
+              if (currentQuestion === 9 && index === 0 && currentQuestion <= 10) {
+                return (
+                  <p key={index} className="mb-4">
+                    <span className="font-bold text-lg mr-1">➤</span>
+                    {paragraph}
+                  </p>
+                );
+              }
+              
+              // Add arrow marker for question 19 to paragraph 1 (second passage)
+              if (currentQuestion === 19 && index === 0 && currentQuestion > 10) {
                 return (
                   <p key={index} className="mb-4">
                     <span className="font-bold text-lg mr-1">➤</span>
@@ -378,7 +572,7 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
                     <p className="text-sm font-medium mb-4">{(currentQuestionData as any).introductory}</p>
                     
                     <div className="space-y-3">
-                      {proseSummarySelections.map((selection, index) => (
+                      {getCurrentProseSummarySelections().map((selection, index) => (
                         <div
                           key={index}
                           className="min-h-[60px] border-2 border-dashed border-gray-300 bg-gray-50 p-3 rounded flex items-center"
@@ -404,7 +598,7 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
                     <h4 className="text-center font-bold mb-4">Answer Choices</h4>
                     <div className="grid grid-cols-2 gap-3">
                       {currentQuestionData.options.map((option, index) => {
-                        const isSelected = proseSummarySelections.includes(index.toString());
+                        const isSelected = getCurrentProseSummarySelections().includes(index.toString());
                         return (
                           <div
                             key={index}
