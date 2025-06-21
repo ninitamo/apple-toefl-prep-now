@@ -19,8 +19,8 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
     )
 
-    const url = new URL(req.url)
-    const testId = url.searchParams.get('testId')
+    // Read testId from request body instead of URL parameters
+    const { testId } = await req.json()
 
     if (!testId) {
       return new Response(
