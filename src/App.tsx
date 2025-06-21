@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import ToeflTest from "./pages/ToeflTest";
 import ReadingPracticeList from "./pages/ReadingPracticeList";
 import ReadingPractice from "./pages/ReadingPractice";
 import ListeningPracticeList from "./pages/ListeningPracticeList";
@@ -30,6 +31,11 @@ const App = () => (
           <Routes>
             <Route path="/auth" element={<Auth />} />
             <Route path="/" element={<Index />} />
+            <Route path="/test/:testId" element={
+              <ProtectedRoute>
+                <ToeflTest />
+              </ProtectedRoute>
+            } />
             <Route path="/practice/reading" element={
               <ProtectedRoute>
                 <ReadingPracticeList />
