@@ -374,33 +374,6 @@ const ReadingSection = ({ onNext }: ReadingSectionProps) => {
                     </div>
                   </div>
                 </div>
-              ) : currentQuestionData.isMultiple ? (
-                <div className="space-y-3">
-                  <p className="text-sm text-gray-600 mb-3">Select THREE answer choices:</p>
-                  {currentQuestionData.options.map((option, index) => (
-                    <div key={index} className="flex items-start space-x-3">
-                      <input 
-                        type="checkbox" 
-                        id={`q${currentQuestionData.id}-${index}`} 
-                        className="mt-1"
-                        onChange={(e) => {
-                          const currentAnswers = answers[currentQuestionData.id]?.split(',').filter(Boolean) || [];
-                          if (e.target.checked) {
-                            const newAnswers = [...currentAnswers, index.toString()];
-                            handleAnswerChange(currentQuestionData.id, newAnswers.join(','));
-                          } else {
-                            const newAnswers = currentAnswers.filter(a => a !== index.toString());
-                            handleAnswerChange(currentQuestionData.id, newAnswers.join(','));
-                          }
-                        }}
-                        checked={answers[currentQuestionData.id]?.split(',').includes(index.toString()) || false}
-                      />
-                      <Label htmlFor={`q${currentQuestionData.id}-${index}`} className="text-sm leading-relaxed cursor-pointer">
-                        {option}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
               ) : (
                 <RadioGroup 
                   value={answers[currentQuestionData.id] || ''} 
