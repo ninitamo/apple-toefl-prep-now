@@ -31,11 +31,7 @@ const App = () => (
           <Routes>
             <Route path="/auth" element={<Auth />} />
             <Route path="/" element={<Index />} />
-            <Route path="/test/:testId" element={
-              <ProtectedRoute>
-                <ToeflTest />
-              </ProtectedRoute>
-            } />
+            <Route path="/test/:testId" element={<ToeflTest />} />
             <Route path="/practice/reading" element={
               <ProtectedRoute>
                 <ReadingPracticeList />

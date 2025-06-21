@@ -1,13 +1,12 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Users, Award, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 
 const ToeflTestsList = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   const tests = [
     { id: 1, title: 'TOEFL Test 1', difficulty: 'Beginner', duration: '3 hours', students: '2,450' },
@@ -51,11 +50,7 @@ const ToeflTestsList = () => {
   };
 
   const handleStartTest = (testId: number) => {
-    if (!user) {
-      navigate('/auth');
-    } else {
-      navigate(`/test/${testId}`);
-    }
+    navigate(`/test/${testId}`);
   };
 
   return (
@@ -107,7 +102,7 @@ const ToeflTestsList = () => {
                   onClick={() => handleStartTest(test.id)}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full group"
                 >
-                  {user ? 'Start Test' : 'Sign In to Start'}
+                  Start Test
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </CardContent>

@@ -3,11 +3,9 @@ import { BookOpen, Headphones, Mic, PenTool } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 
 const TestSections = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   const sections = [
     {
@@ -53,11 +51,7 @@ const TestSections = () => {
   ];
 
   const handlePracticeClick = (practiceUrl: string) => {
-    if (!user) {
-      navigate('/auth');
-    } else {
-      navigate(practiceUrl);
-    }
+    navigate(practiceUrl);
   };
 
   return (
@@ -93,7 +87,7 @@ const TestSections = () => {
                   onClick={() => handlePracticeClick(section.practiceUrl)}
                   className={`w-full bg-gradient-to-r ${section.color} hover:opacity-90 text-white rounded-full font-medium`}
                 >
-                  {user ? 'Practice Now' : 'Sign In to Practice'}
+                  Practice Now
                 </Button>
               </CardContent>
             </Card>
