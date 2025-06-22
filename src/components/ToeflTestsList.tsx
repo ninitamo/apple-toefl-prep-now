@@ -30,8 +30,16 @@ const ToeflTestsList = () => {
     },
   });
 
-  // Add Test 18 manually for display until it's fully integrated
+  // Add static tests for display until they're fully integrated
   const staticTests = [
+    {
+      id: '00000000-0000-0000-0000-000000000019',
+      title: 'TOEFL iBT Practice Test 19',
+      difficulty: 'Expert',
+      duration: '3.5 hours',
+      description: 'An expert-level TOEFL practice test exploring classical conditioning in psychology and plate tectonics in geology.',
+      students_taken: '695'
+    },
     {
       id: '00000000-0000-0000-0000-000000000018',
       title: 'TOEFL iBT Practice Test 18',
