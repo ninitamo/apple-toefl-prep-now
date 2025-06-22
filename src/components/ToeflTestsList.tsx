@@ -1,4 +1,3 @@
-
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,6 +31,14 @@ const ToeflTestsList = () => {
 
   // Add static tests for display until they're fully integrated
   const staticTests = [
+    {
+      id: '00000000-0000-0000-0000-000000000020',
+      title: 'TOEFL iBT Practice Test 20',
+      difficulty: 'Expert',
+      duration: '3.5 hours',
+      description: 'An expert-level TOEFL practice test exploring the diffusion of innovations in sociology and the rise of Impressionism in art history.',
+      students_taken: '580'
+    },
     {
       id: '00000000-0000-0000-0000-000000000019',
       title: 'TOEFL iBT Practice Test 19',
