@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -40,6 +41,7 @@ serve(async (req) => {
       '5': '00000000-0000-0000-0000-000000000005',
       '6': '00000000-0000-0000-0000-000000000006',
       '7': '00000000-0000-0000-0000-000000000007',
+      '8': '00000000-0000-0000-0000-000000000008',
     }
 
     const actualTestId = testIdMap[testId] || testId
