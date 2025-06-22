@@ -18,6 +18,10 @@ export interface TestData {
     title: string
     content: string
     order_number: number
+    audio_url?: string
+    audio_duration?: number
+    audio_type?: string
+    transcript?: string
   }>
   questions: Array<{
     id: string

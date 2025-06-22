@@ -68,6 +68,9 @@ export type Database = {
       }
       test_passages: {
         Row: {
+          audio_duration: number | null
+          audio_type: string | null
+          audio_url: string | null
           content: string
           created_at: string
           id: string
@@ -75,8 +78,12 @@ export type Database = {
           section_type: string
           test_id: string
           title: string
+          transcript: string | null
         }
         Insert: {
+          audio_duration?: number | null
+          audio_type?: string | null
+          audio_url?: string | null
           content: string
           created_at?: string
           id?: string
@@ -84,8 +91,12 @@ export type Database = {
           section_type: string
           test_id: string
           title: string
+          transcript?: string | null
         }
         Update: {
+          audio_duration?: number | null
+          audio_type?: string | null
+          audio_url?: string | null
           content?: string
           created_at?: string
           id?: string
@@ -93,6 +104,7 @@ export type Database = {
           section_type?: string
           test_id?: string
           title?: string
+          transcript?: string | null
         }
         Relationships: [
           {

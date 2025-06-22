@@ -1,20 +1,36 @@
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import { Volume } from 'lucide-react';
+import { Volume, Play, Pause } from 'lucide-react';
+import { TestData } from '@/hooks/useTestData';
+import ListeningQuestions from './ListeningQuestions';
 
 interface ListeningSectionProps {
   onNext: () => void;
+  testData: TestData;
 }
 
-const ListeningSection = ({ onNext }: ListeningSectionProps) => {
+const ListeningSection = ({ onNext, testData }: ListeningSectionProps) => {
   const [showVolumeInstructions, setShowVolumeInstructions] = useState(true);
   const [showListeningInstructions, setShowListeningInstructions] = useState(false);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
   const [volume, setVolume] = useState([50]);
-  const [currentAudio, setCurrentAudio] = useState<'conversation' | 'lecture' | null>(null);
+  const [currentPassageIndex, setCurrentPassageIndex] = useState(0);
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const [audioComplete, setAudioComplete] = useState(false);
+  const [showQuestions, setShowQuestions] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Get listening passages from test data
+  const listeningPassages = testData.passages.filter(p => p.section_type === 'listening');
+  const currentPassage = listeningPassages[currentPassageIndex];
+
+  // Get questions for current passage
+  const currentQuestions = testData.questions.filter(
+    q => q.passage_id === currentPassage?.id && q.section_type === 'listening'
+  );
 
   const handleVolumeIconClick = () => {
     setShowVolumeControl(!showVolumeControl);
@@ -27,16 +43,48 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
 
   const handleContinueFromInstructions = () => {
     setShowListeningInstructions(false);
-    setCurrentAudio('conversation');
+    // Start with first listening passage
+    setCurrentPassageIndex(0);
   };
 
-  const handleAudioComplete = () => {
-    if (currentAudio === 'conversation') {
-      setCurrentAudio('lecture');
+  const handlePlayPause = () => {
+    if (audioRef.current) {
+      if (audioPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setAudioPlaying(!audioPlaying);
+    }
+  };
+
+  const handleAudioEnded = () => {
+    setAudioPlaying(false);
+    setAudioComplete(true);
+  };
+
+  const handleContinueToQuestions = () => {
+    setShowQuestions(true);
+  };
+
+  const handleQuestionsComplete = () => {
+    if (currentPassageIndex < listeningPassages.length - 1) {
+      // Move to next listening passage
+      setCurrentPassageIndex(currentPassageIndex + 1);
+      setAudioComplete(false);
+      setShowQuestions(false);
+      setAudioPlaying(false);
     } else {
+      // All listening passages complete, move to next section
       onNext();
     }
   };
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume[0] / 100;
+    }
+  }, [volume]);
 
   if (showVolumeInstructions) {
     return (
@@ -163,12 +211,35 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
     );
   }
 
+  if (showQuestions && currentQuestions.length > 0) {
+    return (
+      <ListeningQuestions 
+        questions={currentQuestions}
+        passageTitle={currentPassage.title}
+        onComplete={handleQuestionsComplete}
+        volume={volume}
+        onVolumeChange={setVolume}
+      />
+    );
+  }
+
+  if (!currentPassage) {
+    return (
+      <div className="min-h-screen bg-white p-6 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">No listening passages found for this test.</p>
+          <Button onClick={onNext}>Continue to Speaking</Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white p-6">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 flex justify-between items-center">
           <span className="text-sm text-gray-600">
-            Listening | {currentAudio === 'conversation' ? 'Conversation' : 'Lecture'}
+            Listening | {currentPassage.audio_type === 'conversation' ? 'Conversation' : 'Lecture'} ({currentPassageIndex + 1} of {listeningPassages.length})
           </span>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-600">00:15:30 ⏰ Hide Time</span>
@@ -199,14 +270,14 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
         <Card>
           <CardContent className="p-8">
             <div className="text-center space-y-6">
-              {currentAudio === 'conversation' ? (
+              {currentPassage.audio_type === 'conversation' ? (
                 <>
                   <img 
                     src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=400&fit=crop" 
                     alt="Students in conversation" 
                     className="mx-auto rounded-lg shadow-md w-96 h-64 object-cover"
                   />
-                  <h2 className="text-xl font-bold text-gray-800">Listen to a conversation between a student and an academic advisor.</h2>
+                  <h2 className="text-xl font-bold text-gray-800">{currentPassage.content}</h2>
                 </>
               ) : (
                 <>
@@ -215,25 +286,54 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                     alt="Lecture hall" 
                     className="mx-auto rounded-lg shadow-md w-96 h-64 object-cover"
                   />
-                  <h2 className="text-xl font-bold text-gray-800">Listen to part of a lecture in a psychology class.</h2>
+                  <h2 className="text-xl font-bold text-gray-800">{currentPassage.content}</h2>
                 </>
               )}
               
-              <div className="bg-gray-100 p-4 rounded-lg">
-                <div className="w-full bg-gray-300 h-2 rounded-full mb-4">
-                  <div className="bg-black h-2 rounded-full w-0 animate-pulse" style={{width: '0%'}}></div>
-                </div>
-                <p className="text-sm text-gray-600">Audio will play automatically</p>
+              <div className="bg-gray-100 p-6 rounded-lg">
+                {currentPassage.audio_url ? (
+                  <>
+                    <audio
+                      ref={audioRef}
+                      src={currentPassage.audio_url}
+                      onEnded={handleAudioEnded}
+                      className="hidden"
+                    />
+                    <div className="flex items-center justify-center space-x-4 mb-4">
+                      <Button
+                        onClick={handlePlayPause}
+                        variant="outline"
+                        size="lg"
+                        className="flex items-center space-x-2"
+                      >
+                        {audioPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                        <span>{audioPlaying ? 'Pause' : 'Play'} Audio</span>
+                      </Button>
+                    </div>
+                    {currentPassage.audio_duration && (
+                      <p className="text-sm text-gray-600">Duration: {Math.floor(currentPassage.audio_duration / 60)}:{(currentPassage.audio_duration % 60).toString().padStart(2, '0')}</p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className="w-full bg-gray-300 h-2 rounded-full mb-4">
+                      <div className="bg-black h-2 rounded-full w-0 animate-pulse" style={{width: '0%'}}></div>
+                    </div>
+                    <p className="text-sm text-gray-600">Audio will play automatically (Demo Mode - No audio file uploaded)</p>
+                  </>
+                )}
               </div>
 
-              <div className="pt-6">
-                <Button 
-                  onClick={handleAudioComplete}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2"
-                >
-                  {currentAudio === 'conversation' ? 'Continue to Lecture' : 'Continue to Speaking'}
-                </Button>
-              </div>
+              {(audioComplete || !currentPassage.audio_url) && (
+                <div className="pt-6">
+                  <Button 
+                    onClick={handleContinueToQuestions}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2"
+                  >
+                    Continue to Questions
+                  </Button>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
