@@ -32,6 +32,14 @@ const ToeflTestsList = () => {
   // Add static tests for display until they're fully integrated
   const staticTests = [
     {
+      id: '00000000-0000-0000-0000-000000000021',
+      title: 'TOEFL iBT Practice Test 21',
+      difficulty: 'Expert',
+      duration: '3.5 hours',
+      description: 'An expert-level TOEFL practice test exploring Mendelian genetics in biology and comparative advantage in international trade economics.',
+      students_taken: '620'
+    },
+    {
       id: '00000000-0000-0000-0000-000000000020',
       title: 'TOEFL iBT Practice Test 20',
       difficulty: 'Expert',
