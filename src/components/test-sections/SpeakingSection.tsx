@@ -34,6 +34,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   const [canSkip, setCanSkip] = useState(true);
   const [loading, setLoading] = useState(true);
   const [audioError, setAudioError] = useState(false);
+  const [audioLoadAttempted, setAudioLoadAttempted] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -140,7 +141,15 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   };
 
   const playAudio = async () => {
-    if (currentTaskData.audio_url && !audioError) {
+    // Prevent multiple audio load attempts
+    if (audioLoadAttempted || audioError) {
+      console.log('Audio load already attempted or error occurred, skipping');
+      handlePhaseComplete();
+      return;
+    }
+
+    if (currentTaskData.audio_url) {
+      setAudioLoadAttempted(true);
       try {
         console.log('Attempting to play audio:', currentTaskData.audio_url);
         
@@ -209,7 +218,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
         handlePhaseComplete();
       }
     } else {
-      console.log('No audio URL provided or audio error occurred, skipping to next phase');
+      console.log('No audio URL provided, skipping to next phase');
       handlePhaseComplete();
     }
   };
@@ -217,6 +226,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   const handleStartTask = () => {
     setHasStarted(true);
     setAudioError(false);
+    setAudioLoadAttempted(false);
     const timings = getTaskTimings(currentTaskData.question.question_type);
     
     if (currentTaskData.question.question_type === 'independent') {
@@ -262,6 +272,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
         setPhase('directions');
         setHasStarted(false);
         setAudioError(false);
+        setAudioLoadAttempted(false);
       } else {
         onNext();
       }
@@ -299,6 +310,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
     setTimeLeft(0);
     setCanSkip(true);
     setAudioError(false);
+    setAudioLoadAttempted(false);
   };
 
   const formatTime = (seconds: number) => {
