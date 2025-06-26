@@ -141,37 +141,69 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   const playAudio = async () => {
     if (currentTaskData.audio_url) {
       try {
-        // Get signed URL from Supabase storage
-        const { data } = await supabase.storage
+        console.log('Attempting to play audio:', currentTaskData.audio_url);
+        
+        // Try to get signed URL from storage
+        const { data: signedUrlData, error: signedUrlError } = await supabase.storage
           .from('audio-files')
           .createSignedUrl(currentTaskData.audio_url, 3600);
         
-        if (data?.signedUrl) {
-          audioRef.current = new Audio(data.signedUrl);
-          audioRef.current.play();
-          setAudioPlaying(true);
+        let audioUrl = '';
+        
+        if (signedUrlError || !signedUrlData?.signedUrl) {
+          console.log('Failed to get signed URL, trying public URL approach');
+          // Fallback: try public URL approach
+          const { data: publicUrlData } = supabase.storage
+            .from('audio-files')
+            .getPublicUrl(currentTaskData.audio_url);
           
+          audioUrl = publicUrlData.publicUrl;
+        } else {
+          audioUrl = signedUrlData.signedUrl;
+        }
+        
+        if (audioUrl) {
+          console.log('Using audio URL:', audioUrl);
+          audioRef.current = new Audio(audioUrl);
+          
+          audioRef.current.onloadstart = () => {
+            console.log('Audio loading started');
+            setAudioPlaying(true);
+          };
+          
+          audioRef.current.oncanplaythrough = () => {
+            console.log('Audio can play through');
+            audioRef.current?.play().catch(error => {
+              console.error('Audio play error:', error);
+              setAudioPlaying(false);
+              handlePhaseComplete();
+            });
+          };
+
           audioRef.current.onended = () => {
+            console.log('Audio ended');
             setAudioPlaying(false);
             handlePhaseComplete();
           };
 
-          audioRef.current.onerror = () => {
-            console.error('Audio playback error');
+          audioRef.current.onerror = (error) => {
+            console.error('Audio error:', error);
             setAudioPlaying(false);
             handlePhaseComplete();
           };
+
+          // Start loading the audio
+          audioRef.current.load();
         } else {
-          console.error('Failed to get signed URL for audio');
+          console.error('No valid audio URL found');
           handlePhaseComplete();
         }
       } catch (error) {
-        console.error('Error playing audio:', error);
-        // Skip to next phase if audio fails
+        console.error('Error in playAudio:', error);
         handlePhaseComplete();
       }
     } else {
-      // No audio URL, skip to next phase
+      console.log('No audio URL provided, skipping to next phase');
       handlePhaseComplete();
     }
   };
@@ -229,11 +261,17 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   };
 
   const handleSkip = () => {
+    console.log('Skip button clicked, canSkip:', canSkip, 'phase:', phase);
     if (canSkip) {
       setCanSkip(false);
       if (audioRef.current && audioPlaying) {
+        console.log('Stopping audio playback');
         audioRef.current.pause();
+        audioRef.current.currentTime = 0;
         setAudioPlaying(false);
+      }
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
       }
       handlePhaseComplete();
     }
