@@ -175,7 +175,7 @@ const ToeflTest = () => {
     <div className="min-h-screen bg-white">
       {currentSection === 'reading' && <ReadingSectionNew onNext={nextSection} testData={testData} />}
       {currentSection === 'listening' && <ListeningSection onNext={nextSection} testData={testData} />}
-      {currentSection === 'speaking' && <SpeakingSection onNext={nextSection} />}
+      {currentSection === 'speaking' && <SpeakingSection testId={testId || '1'} onNext={nextSection} />}
       {currentSection === 'writing' && <WritingSection onNext={nextSection} />}
     </div>
   );
