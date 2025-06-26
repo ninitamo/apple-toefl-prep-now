@@ -62,18 +62,18 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-blue-700 mb-4">Reading Section Instructions</h1>
           </div>
-          
+
           <div className="border border-gray-300 p-8 rounded">
             <div className="space-y-6 text-gray-800 leading-relaxed">
-              <p>In the <strong>Reading</strong> section, you will read passages and answer questions about them.</p>
-              <p>You have approximately <strong>35 minutes</strong> to read the passages and answer the questions.</p>
-              <p>Most questions are worth 1 point, but the last question in each set is worth more than 1 point.</p>
-              <p>The directions indicate how many points you may receive.</p>
+              <p>Read the passage and answer the questions.</p>
+              <p>It includes two reading passages, each approximately 700 words long, with 10 questions per passage. It should take about 35 minutes to complete the Reading section.
+              </p>
+              <p>Please note that some questions are worth more than one point. You will see specific directions before each set of questions.</p>
             </div>
-            
+
             <div className="text-center mt-8">
-              <p className="text-gray-600 mb-4">(Click on <strong>Continue</strong> to go on.)</p>
-              <Button 
+              {/* <p className="text-gray-600 mb-4">(Click on <strong>Continue</strong> to go on.)</p> */}
+              <Button
                 onClick={() => setShowInstructions(false)}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2"
               >
@@ -129,12 +129,12 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
         {/* Left side - Passage */}
         <div className="w-1/2 p-6 border-r border-gray-300">
           <div className="mb-4">
-            <h2 className="text-xl font-bold text-gray-800">{currentPassage.title}</h2>
+            <h2 className="font-bold text-gray-800">{currentPassage.title}</h2>
           </div>
-          
+
           <div className="prose prose-sm max-w-none text-gray-800 leading-relaxed">
             {currentPassage.content.split('\n\n').map((paragraph, index) => (
-              <p key={index} className="mb-4">
+              <p key={index} className="mb-4 text-sm">
                 {paragraph}
               </p>
             ))}
@@ -151,7 +151,7 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
 
           <div className="space-y-6">
             <div>
-             
+
               <h3 className="font-bold text-gray-800 mb-4">
                 ➤ [{currentQuestionData.question_number}] {currentQuestionData.question_text}
               </h3>
@@ -161,8 +161,8 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
                   <div className="bg-gray-50 p-4 rounded">
                     <p className="text-sm"><strong>Directions:</strong> Complete the summary by selecting the THREE answer choices that express the most important ideas in the passage. This question is worth 2 points.</p>
                   </div>
-                  <RadioGroup 
-                    value={answers[currentQuestionData.question_number] || ''} 
+                  <RadioGroup
+                    value={answers[currentQuestionData.question_number] || ''}
                     onValueChange={(value) => handleAnswerChange(currentQuestionData.question_number, value)}
                     className="space-y-3"
                   >
@@ -177,8 +177,8 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
                   </RadioGroup>
                 </div>
               ) : (
-                <RadioGroup 
-                  value={answers[currentQuestionData.question_number] || ''} 
+                <RadioGroup
+                  value={answers[currentQuestionData.question_number] || ''}
                   onValueChange={(value) => handleAnswerChange(currentQuestionData.question_number, value)}
                   className="space-y-3"
                 >
@@ -196,7 +196,7 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
           </div>
 
           <div className="mt-8 flex justify-between">
-            <Button 
+            <Button
               onClick={handlePrevious}
               disabled={currentQuestion === 1}
               variant="outline"
@@ -204,7 +204,7 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
             >
               Previous
             </Button>
-            <Button 
+            <Button
               onClick={handleNext}
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
             >

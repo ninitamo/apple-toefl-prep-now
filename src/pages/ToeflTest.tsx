@@ -10,6 +10,7 @@ import ListeningSection from '@/components/test-sections/ListeningSection';
 import SpeakingSection from '@/components/test-sections/SpeakingSection';
 import WritingSection from '@/components/test-sections/WritingSection';
 import { useTestData } from '@/hooks/useTestData';
+import { BookOpen } from 'lucide-react';
 
 const ToeflTest = () => {
   const { testId } = useParams();
@@ -95,20 +96,19 @@ const ToeflTest = () => {
               Back to Home
             </Button>
           </div>
-
           <div className="max-w-4xl mx-auto">
             <Card className="border-0 shadow-lg">
               <CardHeader className="text-center pb-6">
                 <CardTitle className="text-3xl font-bold text-gray-900 mb-4">
                   {testData.test.title}
                 </CardTitle>
-                 <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                 A complete 2-hour TOEFL iBT practice test in the official format.
+                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                  A complete 2-hour TOEFL iBT practice test in the official format.
                 </p>
               </CardHeader>
-              
-                <CardContent className="text-center">
-                <div className="flex items-center justify-center space-x-8 mb-8 text-sm text-gray-500">
+
+              <CardContent className="text-center">
+                {/* <div className="flex items-center justify-center space-x-8 mb-8 text-sm text-gray-500">
                   <div className="flex items-center space-x-1">
                     <Clock className="h-4 w-4" />
                     <span>≈ 2 hours</span>
@@ -121,10 +121,10 @@ const ToeflTest = () => {
                     <Award className="h-4 w-4" />
                     <span>Official Format</span>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mb-8">
-                  <Button 
+                  <Button
                     onClick={startTest}
                     className="bg-red-600 hover:bg-red-700 text-white rounded-full px-12 py-6 text-xl font-bold"
                   >
@@ -132,31 +132,9 @@ const ToeflTest = () => {
                   </Button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
-                  <Button 
-                    variant="outline" 
-                    className="bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200 rounded-lg py-4"
-                  >
-                    READING SECTION
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200 rounded-lg py-4"
-                  >
-                    LISTENING SECTION
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200 rounded-lg py-4"
-                  >
-                    SPEAKING SECTION
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200 rounded-lg py-4"
-                  >
-                    WRITING SECTION
-                  </Button>
+                <div className="flex items-center justify-center pb-2 gap-2 text-sm text-gray-600">
+                  <BookOpen className="w-4 h-4" />
+                  <span>Reading • Listening • Speaking • Writing</span>
                 </div>
               </CardContent>
             </Card>

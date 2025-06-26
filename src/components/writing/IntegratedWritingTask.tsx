@@ -42,14 +42,14 @@ const IntegratedWritingTask: React.FC<IntegratedWritingTaskProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white p-6">
+    <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Directions */}
-        <div className="bg-gray-100 p-4 rounded-lg mb-6">
+        <div className="bg-gray-100 p-4 rounded-lg mb-2">
           <p className="text-sm">
-            <strong>Directions:</strong> Read the question below. You have 20 minutes to plan and write your response. 
-            Your response will be judged on the basis of the quality of your writing and on how well your response 
-            presents the points in the lecture and their relationship to the reading passage. Typically, an effective 
+            <strong>Directions:</strong> Read the question below. You have 20 minutes to plan and write your response.
+            Your response will be judged on the basis of the quality of your writing and on how well your response
+            presents the points in the lecture and their relationship to the reading passage. Typically, an effective
             response will be 150 to 225 words.
           </p>
         </div>
@@ -114,7 +114,7 @@ const IntegratedWritingTask: React.FC<IntegratedWritingTaskProps> = ({
                   className="min-h-[400px] resize-none border-gray-300 text-sm"
                 />
                 <div className="mt-4 flex justify-end">
-                  <Button 
+                  <Button
                     onClick={onNext}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-8"
                   >

@@ -82,7 +82,7 @@ const WritingSection = ({ onNext }: WritingSectionProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-white p-6">
+    <div className="min-h-screen bg-white p-2">
       <div className="max-w-7xl mx-auto">
         {passages.length > 0 ? (
           <>

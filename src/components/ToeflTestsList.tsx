@@ -30,19 +30,23 @@ const ToeflTestsList = () => {
     },
   });
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty.toLowerCase()) {
-      case 'beginner':
-        return 'bg-green-100 text-green-800';
-      case 'intermediate':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'advanced':
-        return 'bg-orange-100 text-orange-800';
-      case 'expert':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
+  // const getDifficultyColor = (difficulty: string) => {
+  //   switch (difficulty.toLowerCase()) {
+  //     case 'beginner':
+  //       return 'bg-green-100 text-green-800';
+  //     case 'intermediate':
+  //       return 'bg-yellow-100 text-yellow-800';
+  //     case 'advanced':
+  //       return 'bg-orange-100 text-orange-800';
+  //     case 'expert':
+  //       return 'bg-red-100 text-red-800';
+  //     default:
+  //       return 'bg-gray-100 text-gray-800';
+  //   }
+  // };
+
+  const getColor = () => {
+    return 'bg-green-100 text-green-800';
   };
 
   if (isLoading) {
@@ -71,37 +75,32 @@ const ToeflTestsList = () => {
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">TOEFL Practice Tests</h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Take authentic TOEFL practice tests to improve your English skills and boost your confidence for test day.
-        </p>
+          Practice with TOEFL-like tests to improve your skills. Please note that these are unofficial materials.        </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {tests?.map((test) => (
+        {tests?.map((test, index) => (
           <Card key={test.id} className="hover:shadow-lg transition-shadow duration-300">
             <CardHeader>
-              <div className="flex justify-between items-start mb-2">
+              <div className="flex justify-between items-start">
                 <CardTitle className="text-lg font-semibold">{test.title}</CardTitle>
-                <Badge className={getDifficultyColor(test.difficulty)}>
-                  {test.difficulty}
+                <Badge className={getColor()}>
+                  {index + 1}
                 </Badge>
               </div>
               <CardDescription className="text-sm text-gray-600">
-                {test.description}
+                Questions appear in order, as in real exam.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between text-sm text-gray-500">
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>{test.duration}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Users className="w-4 h-4" />
-                  <span>{test.students_taken} taken</span>
+                  <span>≈ {test.duration}</span>
                 </div>
               </div>
-              
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+
+              <div className="flex items-center pb-2 gap-2 text-sm text-gray-600">
                 <BookOpen className="w-4 h-4" />
                 <span>Reading • Listening • Speaking • Writing</span>
               </div>
