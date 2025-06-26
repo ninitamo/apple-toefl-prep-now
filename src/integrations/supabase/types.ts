@@ -126,7 +126,7 @@ export type Database = {
           id: string
           metadata: Json | null
           options: Json | null
-          passage_id: string | null
+          passage_id: string
           question_number: number
           question_text: string
           question_type: string
@@ -139,7 +139,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           options?: Json | null
-          passage_id?: string | null
+          passage_id: string
           question_number: number
           question_text: string
           question_type: string
@@ -152,7 +152,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           options?: Json | null
-          passage_id?: string | null
+          passage_id?: string
           question_number?: number
           question_text?: string
           question_type?: string
