@@ -32,7 +32,7 @@ const ToeflTestsList = () => {
   // Add static tests for display until they're fully integrated
   const staticTests = [
     {
-      id: '00000000-0000-0000-0000-000000000030',
+      id: '7',
       title: 'TOEFL iBT Practice Test 30',
       difficulty: 'Expert',
       duration: '3.5 hours',
