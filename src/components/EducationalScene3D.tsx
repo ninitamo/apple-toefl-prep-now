@@ -27,7 +27,6 @@ const FloatingBook = ({ position, color, text }: { position: [number, number, nu
           color="white"
           anchorX="center"
           anchorY="middle"
-          font="/fonts/Arial-Bold.woff"
         >
           {text}
         </Text>
@@ -39,10 +38,18 @@ const FloatingBook = ({ position, color, text }: { position: [number, number, nu
 // Rotating Globe Component
 const EducationalGlobe = () => {
   const globeRef = useRef<THREE.Mesh>(null);
+  const ringRef1 = useRef<THREE.Mesh>(null);
+  const ringRef2 = useRef<THREE.Mesh>(null);
   
   useFrame(() => {
     if (globeRef.current) {
       globeRef.current.rotation.y += 0.005;
+    }
+    if (ringRef1.current) {
+      ringRef1.current.rotation.z += 0.003;
+    }
+    if (ringRef2.current) {
+      ringRef2.current.rotation.z -= 0.002;
     }
   });
 
@@ -56,12 +63,13 @@ const EducationalGlobe = () => {
           opacity={0.8}
         />
       </Sphere>
+      
       {/* Globe rings */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
+      <mesh ref={ringRef1} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[1.2, 0.02, 8, 32]} />
         <meshStandardMaterial color="#10B981" />
       </mesh>
-      <mesh rotation={[0, 0, Math.PI / 3]}>
+      <mesh ref={ringRef2} rotation={[0, 0, Math.PI / 3]}>
         <torusGeometry args={[1.3, 0.02, 8, 32]} />
         <meshStandardMaterial color="#F59E0B" />
       </mesh>
@@ -134,7 +142,6 @@ const Scene3D = () => {
           color="#1F2937"
           anchorX="center"
           anchorY="middle"
-          font="/fonts/Arial-Bold.woff"
         >
           TOEFL Master
         </Text>
@@ -147,7 +154,6 @@ const Scene3D = () => {
         color="#6B7280"
         anchorX="center"
         anchorY="middle"
-        font="/fonts/Arial-Bold.woff"
       >
         Interactive Learning Experience
       </Text>
