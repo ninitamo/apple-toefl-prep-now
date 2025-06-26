@@ -141,6 +141,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   const playAudio = async () => {
     if (currentTaskData.audio_url) {
       try {
+        // Get signed URL from Supabase storage
         const { data } = await supabase.storage
           .from('audio-files')
           .createSignedUrl(currentTaskData.audio_url, 3600);
@@ -154,12 +155,24 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
             setAudioPlaying(false);
             handlePhaseComplete();
           };
+
+          audioRef.current.onerror = () => {
+            console.error('Audio playback error');
+            setAudioPlaying(false);
+            handlePhaseComplete();
+          };
+        } else {
+          console.error('Failed to get signed URL for audio');
+          handlePhaseComplete();
         }
       } catch (error) {
         console.error('Error playing audio:', error);
         // Skip to next phase if audio fails
         handlePhaseComplete();
       }
+    } else {
+      // No audio URL, skip to next phase
+      handlePhaseComplete();
     }
   };
 
