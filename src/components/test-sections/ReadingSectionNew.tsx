@@ -152,9 +152,7 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
 
           <div className="space-y-6">
             <div>
-              <div className="mb-2">
-                <span className="text-xs text-blue-600 font-medium">{currentQuestionData.question_type}</span>
-              </div>
+             
               <h3 className="font-bold text-gray-800 mb-4">
                 ➤ [{currentQuestionData.question_number}] {currentQuestionData.question_text}
               </h3>
