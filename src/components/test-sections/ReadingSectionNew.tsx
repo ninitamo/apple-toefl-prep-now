@@ -66,7 +66,7 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
           <div className="border border-gray-300 p-8 rounded">
             <div className="space-y-6 text-gray-800 leading-relaxed">
               <p>In the <strong>Reading</strong> section, you will read passages and answer questions about them.</p>
-              <p>You have <strong>54 minutes</strong> to read the passages and answer the questions.</p>
+              <p>You have approximately <strong>35 minutes</strong> to read the passages and answer the questions.</p>
               <p>Most questions are worth 1 point, but the last question in each set is worth more than 1 point.</p>
               <p>The directions indicate how many points you may receive.</p>
             </div>
