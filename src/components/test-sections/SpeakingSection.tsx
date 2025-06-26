@@ -3,25 +3,29 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, Mic, Volume2, RotateCcw, SkipForward } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SpeakingSectionProps {
+  testId: string;
   onNext: () => void;
 }
 
-interface Task {
-  id: number;
-  type: 'independent' | 'integrated-campus' | 'integrated-academic' | 'integrated-lecture';
+interface SpeakingTask {
+  id: string;
   title: string;
-  directions: string;
-  readingTime?: number;
-  listeningTime?: number;
-  prepTime: number;
-  speakingTime: number;
-  readingPassage?: string;
-  question: string;
+  content: string;
+  order_number: number;
+  audio_url?: string;
+  audio_duration?: number;
+  audio_type?: string;
+  question: {
+    question_text: string;
+    question_type: string;
+  };
 }
 
-const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
+const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
+  const [tasks, setTasks] = useState<SpeakingTask[]>([]);
   const [currentTask, setCurrentTask] = useState(0);
   const [phase, setPhase] = useState<'directions' | 'reading' | 'listening' | 'prep' | 'speaking' | 'completed'>('directions');
   const [timeLeft, setTimeLeft] = useState(0);
@@ -29,63 +33,88 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [canSkip, setCanSkip] = useState(true);
+  const [loading, setLoading] = useState(true);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const tasks: Task[] = [
-    {
-      id: 1,
-      type: 'independent',
-      title: 'Speaking Task 1',
-      directions: 'You will be asked a question about a familiar topic. You will then have 15 seconds to prepare your response and 45 seconds to speak.',
-      prepTime: 15,
-      speakingTime: 45,
-      question: 'Some people prefer to work independently, while others prefer to work as part of a team. Which do you prefer and why? Use specific reasons and examples to support your answer.'
-    },
-    {
-      id: 2,
-      type: 'integrated-campus',
-      title: 'Speaking Task 2',
-      directions: 'You will read a short paragraph and then listen to a conversation between two people. You will have 50 seconds to read the paragraph. After, you will get a question about what you read and heard. You will have 30 seconds to prepare your response and then 60 seconds to give it.',
-      readingTime: 50,
-      listeningTime: 90,
-      prepTime: 30,
-      speakingTime: 60,
-      readingPassage: 'New Campus Policy: The university is implementing a new policy requiring all first-year students to live on campus for their entire first year. This policy aims to help students better integrate into campus life and improve their academic performance through increased access to campus resources and study groups.',
-      question: 'The woman expresses her opinion about the new campus housing policy. State her opinion and explain the reasons she gives for holding that opinion.'
-    },
-    {
-      id: 3,
-      type: 'integrated-academic',
-      title: 'Speaking Task 3',
-      directions: 'You will read a short paragraph about an academic topic then listen to a lecture about it. You will have 50 seconds to read the paragraph. After, you will get a question about what you read and heard. You will have 30 seconds to prepare your response and then 60 seconds to give it.',
-      readingTime: 50,
-      listeningTime: 120,
-      prepTime: 30,
-      speakingTime: 60,
-      readingPassage: 'Cognitive Dissonance: A psychological phenomenon that occurs when a person holds contradictory beliefs, ideas, or values simultaneously. This mental discomfort typically leads people to alter their beliefs or behaviors to reduce the inconsistency and restore psychological balance.',
-      question: 'Using the example from the lecture, explain how cognitive dissonance theory helps understand human behavior.'
-    },
-    {
-      id: 4,
-      type: 'integrated-lecture',
-      title: 'Speaking Task 4',
-      directions: 'You will listen to a lecture about an academic topic. After, you will get a question about what you heard. You will have 20 seconds to prepare your response and then 60 seconds to give it.',
-      listeningTime: 120,
-      prepTime: 20,
-      speakingTime: 60,
-      question: 'Using points and examples from the lecture, explain two different marketing strategies that companies use to attract customers.'
+  // Fetch speaking tasks from database
+  useEffect(() => {
+    const fetchSpeakingTasks = async () => {
+      try {
+        const { data: passages, error: passagesError } = await supabase
+          .from('test_passages')
+          .select('*')
+          .eq('test_id', testId)
+          .eq('section_type', 'speaking')
+          .order('order_number');
+
+        if (passagesError) throw passagesError;
+
+        const { data: questions, error: questionsError } = await supabase
+          .from('test_questions')
+          .select('*')
+          .eq('test_id', testId)
+          .eq('section_type', 'speaking')
+          .order('question_number');
+
+        if (questionsError) throw questionsError;
+
+        const tasksData = passages?.map(passage => {
+          const question = questions?.find(q => q.passage_id === passage.id);
+          return {
+            id: passage.id,
+            title: passage.title,
+            content: passage.content,
+            order_number: passage.order_number,
+            audio_url: passage.audio_url,
+            audio_duration: passage.audio_duration,
+            audio_type: passage.audio_type,
+            question: {
+              question_text: question?.question_text || '',
+              question_type: question?.question_type || ''
+            }
+          };
+        }) || [];
+
+        setTasks(tasksData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching speaking tasks:', error);
+        setLoading(false);
+      }
+    };
+
+    if (testId) {
+      fetchSpeakingTasks();
     }
-  ];
-
-  const currentTaskData = tasks[currentTask];
+  }, [testId]);
 
   useEffect(() => {
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
     };
   }, []);
+
+  const currentTaskData = tasks[currentTask];
+
+  const getTaskTimings = (taskType: string) => {
+    switch (taskType) {
+      case 'independent':
+        return { prepTime: 15, speakingTime: 45 };
+      case 'integrated-campus':
+      case 'integrated-academic':
+        return { readingTime: 50, listeningTime: 90, prepTime: 30, speakingTime: 60 };
+      case 'integrated-lecture':
+        return { listeningTime: 120, prepTime: 20, speakingTime: 60 };
+      default:
+        return { prepTime: 15, speakingTime: 45 };
+    }
+  };
 
   const startTimer = (duration: number, nextPhase: typeof phase) => {
     setTimeLeft(duration);
@@ -102,19 +131,46 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
     }, 1000);
   };
 
+  const playAudio = async () => {
+    if (currentTaskData.audio_url) {
+      try {
+        const { data } = await supabase.storage
+          .from('audio-files')
+          .createSignedUrl(currentTaskData.audio_url, 3600);
+        
+        if (data?.signedUrl) {
+          audioRef.current = new Audio(data.signedUrl);
+          audioRef.current.play();
+          setAudioPlaying(true);
+          
+          audioRef.current.onended = () => {
+            setAudioPlaying(false);
+            handlePhaseComplete();
+          };
+        }
+      } catch (error) {
+        console.error('Error playing audio:', error);
+        // Skip to next phase if audio fails
+        handlePhaseComplete();
+      }
+    }
+  };
+
   const handleStartTask = () => {
     setHasStarted(true);
+    const timings = getTaskTimings(currentTaskData.question.question_type);
     
-    if (currentTaskData.type === 'independent') {
+    if (currentTaskData.question.question_type === 'independent') {
       setPhase('prep');
-      startTimer(currentTaskData.prepTime, 'speaking');
-    } else if (currentTaskData.type === 'integrated-campus' || currentTaskData.type === 'integrated-academic') {
+      startTimer(timings.prepTime, 'speaking');
+    } else if (currentTaskData.question.question_type === 'integrated-campus' || 
+               currentTaskData.question.question_type === 'integrated-academic') {
       setPhase('reading');
-      startTimer(currentTaskData.readingTime!, 'listening');
-    } else if (currentTaskData.type === 'integrated-lecture') {
+      startTimer(timings.readingTime!, 'listening');
+    } else if (currentTaskData.question.question_type === 'integrated-lecture') {
       setPhase('listening');
-      setAudioPlaying(true);
-      startTimer(currentTaskData.listeningTime!, 'prep');
+      playAudio();
+      startTimer(timings.listeningTime!, 'prep');
     }
   };
 
@@ -123,18 +179,23 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
       clearInterval(timerRef.current);
     }
 
+    const timings = getTaskTimings(currentTaskData.question.question_type);
+
     if (phase === 'reading') {
       setPhase('listening');
-      setAudioPlaying(true);
-      startTimer(currentTaskData.listeningTime!, 'prep');
+      playAudio();
+      startTimer(timings.listeningTime!, 'prep');
     } else if (phase === 'listening') {
       setAudioPlaying(false);
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
       setPhase('prep');
-      startTimer(currentTaskData.prepTime, 'speaking');
+      startTimer(timings.prepTime, 'speaking');
     } else if (phase === 'prep') {
       setPhase('speaking');
       setIsRecording(true);
-      startTimer(currentTaskData.speakingTime, 'completed');
+      startTimer(timings.speakingTime, 'completed');
     } else if (phase === 'speaking') {
       setIsRecording(false);
       if (currentTask < tasks.length - 1) {
@@ -150,6 +211,10 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
   const handleSkip = () => {
     if (canSkip) {
       setCanSkip(false);
+      if (audioRef.current && audioPlaying) {
+        audioRef.current.pause();
+        setAudioPlaying(false);
+      }
       handlePhaseComplete();
     }
   };
@@ -158,6 +223,9 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
     setPhase('directions');
     setHasStarted(false);
     setIsRecording(false);
@@ -165,12 +233,6 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
     setTimeLeft(0);
     setCanSkip(true);
   };
-
-  useEffect(() => {
-    if (timeLeft === 0 && phase !== 'directions' && phase !== 'completed') {
-      handlePhaseComplete();
-    }
-  }, [timeLeft, phase]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -207,6 +269,43 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
         return 'border-gray-400 bg-gray-50';
     }
   };
+
+  const getDirections = (questionType: string) => {
+    switch (questionType) {
+      case 'independent':
+        return 'You will be asked a question about a familiar topic. You will then have 15 seconds to prepare your response and 45 seconds to speak.';
+      case 'integrated-campus':
+        return 'You will read a short paragraph and then listen to a conversation between two people. You will have 50 seconds to read the paragraph. After, you will get a question about what you read and heard. You will have 30 seconds to prepare your response and then 60 seconds to give it.';
+      case 'integrated-academic':
+        return 'You will read a short paragraph about an academic topic then listen to a lecture about it. You will have 50 seconds to read the paragraph. After, you will get a question about what you read and heard. You will have 30 seconds to prepare your response and then 60 seconds to give it.';
+      case 'integrated-lecture':
+        return 'You will listen to a lecture about an academic topic. After, you will get a question about what you heard. You will have 20 seconds to prepare your response and then 60 seconds to give it.';
+      default:
+        return '';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading speaking tasks...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentTaskData) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">No speaking tasks found.</p>
+          <Button onClick={onNext} className="mt-4">Continue</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -248,7 +347,9 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
                 <div className="space-y-6">
                   <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-400">
                     <h3 className="font-semibold text-blue-900 mb-3">Directions</h3>
-                    <p className="text-blue-800 leading-relaxed">{currentTaskData.directions}</p>
+                    <p className="text-blue-800 leading-relaxed">
+                      {getDirections(currentTaskData.question.question_type)}
+                    </p>
                   </div>
                   
                   <div className="text-center">
@@ -266,9 +367,9 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
                 <div className="space-y-4">
                   <div className="bg-gray-50 p-6 rounded-lg">
                     <h3 className="font-semibold mb-3">Reading Passage</h3>
-                    <p className="text-gray-700 leading-relaxed text-lg">
-                      {currentTaskData.readingPassage}
-                    </p>
+                    <div className="text-gray-700 leading-relaxed text-lg whitespace-pre-line">
+                      {currentTaskData.content}
+                    </div>
                   </div>
                   
                   <div className="flex justify-center">
@@ -293,11 +394,13 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
                         <Volume2 className="h-8 w-8 text-white" />
                       </div>
                     </div>
-                    <p className="text-gray-700 font-semibold mb-2">{audioPlaying ? 'Audio is playing...' : 'Get ready to listen'}</p>
+                    <p className="text-gray-700 font-semibold mb-2">
+                      {audioPlaying ? 'Audio is playing...' : 'Get ready to listen'}
+                    </p>
                     <p className="text-sm text-gray-500">
-                      {currentTaskData.type === 'integrated-campus' && 'Listen to a conversation between two students.'}
-                      {currentTaskData.type === 'integrated-academic' && 'Listen to part of a lecture on this topic.'}
-                      {currentTaskData.type === 'integrated-lecture' && 'Listen to part of a lecture.'}
+                      {currentTaskData.question.question_type === 'integrated-campus' && 'Listen to a conversation between two students.'}
+                      {currentTaskData.question.question_type === 'integrated-academic' && 'Listen to part of a lecture on this topic.'}
+                      {currentTaskData.question.question_type === 'integrated-lecture' && 'Listen to part of a lecture.'}
                     </p>
                   </div>
                   
@@ -319,7 +422,7 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
                 <div className="space-y-4">
                   <div className="bg-gray-50 p-6 rounded-lg">
                     <h3 className="font-semibold mb-3">Question</h3>
-                    <p className="text-gray-700 text-lg leading-relaxed">{currentTaskData.question}</p>
+                    <p className="text-gray-700 text-lg leading-relaxed">{currentTaskData.question.question_text}</p>
                   </div>
                   
                   <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
@@ -346,7 +449,7 @@ const SpeakingSection = ({ onNext }: SpeakingSectionProps) => {
                 <div className="space-y-4">
                   <div className="bg-gray-50 p-6 rounded-lg">
                     <h3 className="font-semibold mb-3">Question</h3>
-                    <p className="text-gray-700 text-lg leading-relaxed">{currentTaskData.question}</p>
+                    <p className="text-gray-700 text-lg leading-relaxed">{currentTaskData.question.question_text}</p>
                   </div>
                   
                   <div className="bg-red-100 p-8 rounded-lg text-center border-l-4 border-red-400">
