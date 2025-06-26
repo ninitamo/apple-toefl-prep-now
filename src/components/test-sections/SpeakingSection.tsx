@@ -153,7 +153,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
       
       // Get public URL from storage using the standardized path
       const { data: publicUrlData } = supabase.storage
-        .from('audio-files')
+        .from('listening')
         .getPublicUrl(currentTaskData.audio_url);
       
       if (publicUrlData.publicUrl && !skipRequested) {
