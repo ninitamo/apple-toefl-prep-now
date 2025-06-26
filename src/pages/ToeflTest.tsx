@@ -102,9 +102,6 @@ const ToeflTest = () => {
                 <CardTitle className="text-3xl font-bold text-gray-900 mb-4">
                   {testData.test.title}
                 </CardTitle>
-                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                  {testData.test.description}
-                </p>
               </CardHeader>
               
                 <CardContent className="text-center">
