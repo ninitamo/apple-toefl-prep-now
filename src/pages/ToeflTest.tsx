@@ -111,7 +111,7 @@ const ToeflTest = () => {
                 <div className="flex items-center justify-center space-x-8 mb-8 text-sm text-gray-500">
                   <div className="flex items-center space-x-1">
                     <Clock className="h-4 w-4" />
-                    <span>≈2 hours</span>
+                    <span>≈ 2 hours</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Users className="h-4 w-4" />
