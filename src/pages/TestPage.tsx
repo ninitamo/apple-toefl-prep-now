@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import WritingSection from '@/components/WritingSection';
+import WritingDisplay from '@/components/WritingDisplay';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -217,7 +217,7 @@ const TestPage: React.FC = () => {
 
         <TabsContent value="writing">
           {writingPassages.length > 0 ? (
-            <WritingSection passages={writingPassages} questions={writingQuestions} />
+            <WritingDisplay passages={writingPassages} questions={writingQuestions} />
           ) : (
             <Card>
               <CardContent className="p-8 text-center">

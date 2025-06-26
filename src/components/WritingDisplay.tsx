@@ -17,12 +17,12 @@ interface WritingQuestion {
   question_text: string;
 }
 
-interface WritingSectionProps {
+interface WritingDisplayProps {
   passages: WritingPassage[];
   questions: WritingQuestion[];
 }
 
-const WritingSection: React.FC<WritingSectionProps> = ({ passages, questions }) => {
+const WritingDisplay: React.FC<WritingDisplayProps> = ({ passages, questions }) => {
   // Group passages by task type
   const readingPassages = passages.filter(p => p.audio_type === 'integrated-reading');
   const lecturePassages = passages.filter(p => p.audio_type === 'integrated-lecture');
@@ -128,4 +128,4 @@ const WritingSection: React.FC<WritingSectionProps> = ({ passages, questions }) 
   );
 };
 
-export default WritingSection;
+export default WritingDisplay;
