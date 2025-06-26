@@ -103,7 +103,7 @@ const ToeflTest = () => {
                   {testData.test.title}
                 </CardTitle>
                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                 A complete 2-hour TOEFL iBT practice test in the official format. Includes academic reading passages, university-style lectures and conversations, integrated speaking tasks, and writing exercises — just like the real exam.
+                 A complete 2-hour TOEFL iBT practice test in the official format.
                 </p>
               </CardHeader>
               
