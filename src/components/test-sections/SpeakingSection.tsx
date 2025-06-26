@@ -34,7 +34,6 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   const [canSkip, setCanSkip] = useState(true);
   const [loading, setLoading] = useState(true);
   const [audioError, setAudioError] = useState(false);
-  const [audioLoadAttempted, setAudioLoadAttempted] = useState(false);
   const [skipRequested, setSkipRequested] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -142,99 +141,78 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   };
 
   const playAudio = async () => {
-    // If skip was requested or audio already failed, don't attempt to play
-    if (skipRequested || audioError || audioLoadAttempted) {
-      console.log('Skipping audio play - skip requested, error occurred, or already attempted');
+    // Skip audio playback if skip was requested or no audio URL
+    if (skipRequested || !currentTaskData.audio_url) {
+      console.log('Skipping audio - no URL or skip requested');
       handlePhaseComplete();
       return;
     }
 
-    if (currentTaskData.audio_url) {
-      setAudioLoadAttempted(true);
-      try {
-        console.log('Attempting to play audio:', currentTaskData.audio_url);
+    try {
+      console.log('Attempting to play audio:', currentTaskData.audio_url);
+      
+      // Get public URL from storage using the standardized path
+      const { data: publicUrlData } = supabase.storage
+        .from('audio-files')
+        .getPublicUrl(currentTaskData.audio_url);
+      
+      if (publicUrlData.publicUrl && !skipRequested) {
+        console.log('Using audio URL:', publicUrlData.publicUrl);
+        audioRef.current = new Audio(publicUrlData.publicUrl);
         
-        // Try to get signed URL from storage
-        const { data: signedUrlData, error: signedUrlError } = await supabase.storage
-          .from('audio-files')
-          .createSignedUrl(currentTaskData.audio_url, 3600);
-        
-        let audioUrl = '';
-        
-        if (signedUrlError || !signedUrlData?.signedUrl) {
-          console.log('Failed to get signed URL, trying public URL approach');
-          // Fallback: try public URL approach
-          const { data: publicUrlData } = supabase.storage
-            .from('audio-files')
-            .getPublicUrl(currentTaskData.audio_url);
-          
-          audioUrl = publicUrlData.publicUrl;
-        } else {
-          audioUrl = signedUrlData.signedUrl;
-        }
-        
-        if (audioUrl && !skipRequested) {
-          console.log('Using audio URL:', audioUrl);
-          audioRef.current = new Audio(audioUrl);
-          
-          audioRef.current.onloadstart = () => {
-            if (!skipRequested) {
-              console.log('Audio loading started');
-              setAudioPlaying(true);
-              setAudioError(false);
-            }
-          };
-          
-          audioRef.current.oncanplaythrough = () => {
-            if (!skipRequested) {
-              console.log('Audio can play through');
-              audioRef.current?.play().catch(error => {
-                console.error('Audio play error:', error);
-                setAudioPlaying(false);
-                setAudioError(true);
-                handlePhaseComplete();
-              });
-            }
-          };
-
-          audioRef.current.onended = () => {
-            console.log('Audio ended');
-            setAudioPlaying(false);
-            handlePhaseComplete();
-          };
-
-          audioRef.current.onerror = (error) => {
-            console.error('Audio error:', error);
-            setAudioPlaying(false);
-            setAudioError(true);
-            // Don't call handlePhaseComplete here to prevent loops
-          };
-
-          // Start loading the audio
+        audioRef.current.onloadstart = () => {
           if (!skipRequested) {
-            audioRef.current.load();
+            console.log('Audio loading started');
+            setAudioPlaying(true);
+            setAudioError(false);
           }
-        } else {
-          console.error('No valid audio URL found or skip was requested');
+        };
+        
+        audioRef.current.oncanplaythrough = () => {
+          if (!skipRequested) {
+            console.log('Audio can play through');
+            audioRef.current?.play().catch(error => {
+              console.error('Audio play error:', error);
+              setAudioPlaying(false);
+              setAudioError(true);
+              // Don't call handlePhaseComplete to avoid loops
+            });
+          }
+        };
+
+        audioRef.current.onended = () => {
+          console.log('Audio ended');
+          setAudioPlaying(false);
+          if (!skipRequested) {
+            handlePhaseComplete();
+          }
+        };
+
+        audioRef.current.onerror = (error) => {
+          console.error('Audio error:', error);
+          setAudioPlaying(false);
           setAudioError(true);
-          handlePhaseComplete();
+          // Don't auto-proceed on error to prevent loops
+        };
+
+        // Start loading the audio
+        if (!skipRequested) {
+          audioRef.current.load();
         }
-      } catch (error) {
-        console.error('Error in playAudio:', error);
+      } else {
+        console.error('No valid public URL found or skip was requested');
         setAudioError(true);
-        handlePhaseComplete();
       }
-    } else {
-      console.log('No audio URL provided, skipping to next phase');
-      handlePhaseComplete();
+    } catch (error) {
+      console.error('Error in playAudio:', error);
+      setAudioError(true);
     }
   };
 
   const handleStartTask = () => {
     setHasStarted(true);
-    // Reset all audio states for new task
+    // Reset states for new task
     setAudioError(false);
-    setAudioLoadAttempted(false);
     setAudioPlaying(false);
     setSkipRequested(false);
     
@@ -282,9 +260,8 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
         setCurrentTask(currentTask + 1);
         setPhase('directions');
         setHasStarted(false);
-        // Reset audio states for next task
+        // Reset states for next task
         setAudioError(false);
-        setAudioLoadAttempted(false);
         setAudioPlaying(false);
         setSkipRequested(false);
       } else {
@@ -332,7 +309,6 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
     setTimeLeft(0);
     setCanSkip(true);
     setAudioError(false);
-    setAudioLoadAttempted(false);
     setSkipRequested(false);
   };
 
