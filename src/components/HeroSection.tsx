@@ -1,12 +1,13 @@
 
 import { ArrowRight, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import EducationalScene3D from './EducationalScene3D';
 
 const HeroSection = () => {
   return (
     <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center">
+        <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
             Master the{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -31,24 +32,29 @@ const HeroSection = () => {
               Watch Demo
             </Button>
           </div>
+        </div>
 
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-blue-600">10K+</div>
-              <div className="text-gray-600">Students Prepared</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-blue-600">95%</div>
-              <div className="text-gray-600">Success Rate</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-blue-600">1000+</div>
-              <div className="text-gray-600">Practice Questions</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-blue-600">24/7</div>
-              <div className="text-gray-600">Support</div>
-            </div>
+        {/* 3D Interactive Scene */}
+        <div className="mb-16">
+          <EducationalScene3D />
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div className="text-3xl font-bold text-blue-600">10K+</div>
+            <div className="text-gray-600">Students Prepared</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-blue-600">95%</div>
+            <div className="text-gray-600">Success Rate</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-blue-600">1000+</div>
+            <div className="text-gray-600">Practice Questions</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-blue-600">24/7</div>
+            <div className="text-gray-600">Support</div>
           </div>
         </div>
       </div>
