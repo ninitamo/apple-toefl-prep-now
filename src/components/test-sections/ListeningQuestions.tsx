@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Volume } from 'lucide-react';
+import { Volume, SkipForward } from 'lucide-react';
 
 interface Question {
   id: string;
@@ -42,6 +42,16 @@ const ListeningQuestions = ({ questions, passageTitle, onComplete, volume, onVol
   const handleNext = () => {
     if (isLastQuestion) {
       // Log answers for scoring (you can implement scoring logic here)
+      console.log('Listening answers:', selectedAnswers);
+      onComplete();
+    } else {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  };
+
+  const handleSkipQuestion = () => {
+    // Skip to next question without selecting an answer
+    if (isLastQuestion) {
       console.log('Listening answers:', selectedAnswers);
       onComplete();
     } else {
@@ -122,8 +132,18 @@ const ListeningQuestions = ({ questions, passageTitle, onComplete, volume, onVol
             </div>
 
             <div className="flex justify-between pt-6">
-              <div className="text-sm text-gray-500">
-                Question {currentQuestionIndex + 1} of {questions.length}
+              <div className="flex items-center space-x-4">
+                <div className="text-sm text-gray-500">
+                  Question {currentQuestionIndex + 1} of {questions.length}
+                </div>
+                <Button 
+                  onClick={handleSkipQuestion}
+                  variant="outline"
+                  className="flex items-center space-x-2"
+                >
+                  <SkipForward className="h-4 w-4" />
+                  <span>Skip Question</span>
+                </Button>
               </div>
               <Button 
                 onClick={handleNext}

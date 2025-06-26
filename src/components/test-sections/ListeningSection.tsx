@@ -1,9 +1,8 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import { Volume, Play, Pause } from 'lucide-react';
+import { Volume, Play, Pause, SkipForward } from 'lucide-react';
 import { TestData } from '@/hooks/useTestData';
 import ListeningQuestions from './ListeningQuestions';
 
@@ -21,6 +20,7 @@ const ListeningSection = ({ onNext, testData }: ListeningSectionProps) => {
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioComplete, setAudioComplete] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
+  const [audioSkipped, setAudioSkipped] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Get listening passages from test data
@@ -63,6 +63,15 @@ const ListeningSection = ({ onNext, testData }: ListeningSectionProps) => {
     setAudioComplete(true);
   };
 
+  const handleSkipAudio = () => {
+    setAudioSkipped(true);
+    setAudioComplete(true);
+    setAudioPlaying(false);
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  };
+
   const handleContinueToQuestions = () => {
     setShowQuestions(true);
   };
@@ -72,6 +81,7 @@ const ListeningSection = ({ onNext, testData }: ListeningSectionProps) => {
       // Move to next listening passage
       setCurrentPassageIndex(currentPassageIndex + 1);
       setAudioComplete(false);
+      setAudioSkipped(false);
       setShowQuestions(false);
       setAudioPlaying(false);
     } else {
@@ -305,26 +315,48 @@ const ListeningSection = ({ onNext, testData }: ListeningSectionProps) => {
                         variant="outline"
                         size="lg"
                         className="flex items-center space-x-2"
+                        disabled={audioSkipped}
                       >
                         {audioPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                         <span>{audioPlaying ? 'Pause' : 'Play'} Audio</span>
                       </Button>
+                      <Button
+                        onClick={handleSkipAudio}
+                        variant="outline"
+                        size="lg"
+                        className="flex items-center space-x-2"
+                        disabled={audioSkipped}
+                      >
+                        <SkipForward className="h-5 w-5" />
+                        <span>Skip Audio</span>
+                      </Button>
                     </div>
+                    {audioSkipped && (
+                      <p className="text-sm text-orange-600 mb-2">Audio skipped - proceeding to questions</p>
+                    )}
                     {currentPassage.audio_duration && (
                       <p className="text-sm text-gray-600">Duration: {Math.floor(currentPassage.audio_duration / 60)}:{(currentPassage.audio_duration % 60).toString().padStart(2, '0')}</p>
                     )}
                   </>
                 ) : (
                   <>
-                    <div className="w-full bg-gray-300 h-2 rounded-full mb-4">
-                      <div className="bg-black h-2 rounded-full w-0 animate-pulse" style={{width: '0%'}}></div>
+                    <div className="flex items-center justify-center space-x-4 mb-4">
+                      <Button
+                        onClick={handleSkipAudio}
+                        variant="outline"
+                        size="lg"
+                        className="flex items-center space-x-2"
+                      >
+                        <SkipForward className="h-5 w-5" />
+                        <span>Skip to Questions</span>
+                      </Button>
                     </div>
-                    <p className="text-sm text-gray-600">Audio will play automatically (Demo Mode - No audio file uploaded)</p>
+                    <p className="text-sm text-gray-600">No audio file available - Click "Skip to Questions" to proceed</p>
                   </>
                 )}
               </div>
 
-              {(audioComplete || !currentPassage.audio_url) && (
+              {(audioComplete || audioSkipped || !currentPassage.audio_url) && (
                 <div className="pt-6">
                   <Button 
                     onClick={handleContinueToQuestions}
