@@ -1,7 +1,7 @@
 
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import ToeflTestsList from '@/components/ToeflTestsList';
+import PracticeSelector from '@/components/PracticeSelector';
 import StudyMaterials from '@/components/StudyMaterials';
 import Footer from '@/components/Footer';
 
@@ -10,7 +10,7 @@ const Index = () => {
     <div className="min-h-screen bg-white">
       <Navbar />
       <HeroSection />
-      <ToeflTestsList />
+      <PracticeSelector />
       <StudyMaterials />
       <Footer />
     </div>
