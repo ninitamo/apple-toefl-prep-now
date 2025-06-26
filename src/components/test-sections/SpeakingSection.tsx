@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -36,6 +35,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   const [loading, setLoading] = useState(true);
   const [audioError, setAudioError] = useState(false);
   const [audioLoadAttempted, setAudioLoadAttempted] = useState(false);
+  const [skipRequested, setSkipRequested] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -142,9 +142,9 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   };
 
   const playAudio = async () => {
-    // Prevent multiple audio load attempts for the same task
-    if (audioLoadAttempted) {
-      console.log('Audio load already attempted for this task, skipping');
+    // If skip was requested or audio already failed, don't attempt to play
+    if (skipRequested || audioError || audioLoadAttempted) {
+      console.log('Skipping audio play - skip requested, error occurred, or already attempted');
       handlePhaseComplete();
       return;
     }
@@ -173,24 +173,28 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
           audioUrl = signedUrlData.signedUrl;
         }
         
-        if (audioUrl) {
+        if (audioUrl && !skipRequested) {
           console.log('Using audio URL:', audioUrl);
           audioRef.current = new Audio(audioUrl);
           
           audioRef.current.onloadstart = () => {
-            console.log('Audio loading started');
-            setAudioPlaying(true);
-            setAudioError(false);
+            if (!skipRequested) {
+              console.log('Audio loading started');
+              setAudioPlaying(true);
+              setAudioError(false);
+            }
           };
           
           audioRef.current.oncanplaythrough = () => {
-            console.log('Audio can play through');
-            audioRef.current?.play().catch(error => {
-              console.error('Audio play error:', error);
-              setAudioPlaying(false);
-              setAudioError(true);
-              handlePhaseComplete();
-            });
+            if (!skipRequested) {
+              console.log('Audio can play through');
+              audioRef.current?.play().catch(error => {
+                console.error('Audio play error:', error);
+                setAudioPlaying(false);
+                setAudioError(true);
+                handlePhaseComplete();
+              });
+            }
           };
 
           audioRef.current.onended = () => {
@@ -203,13 +207,15 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
             console.error('Audio error:', error);
             setAudioPlaying(false);
             setAudioError(true);
-            handlePhaseComplete();
+            // Don't call handlePhaseComplete here to prevent loops
           };
 
           // Start loading the audio
-          audioRef.current.load();
+          if (!skipRequested) {
+            audioRef.current.load();
+          }
         } else {
-          console.error('No valid audio URL found');
+          console.error('No valid audio URL found or skip was requested');
           setAudioError(true);
           handlePhaseComplete();
         }
@@ -226,10 +232,11 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
 
   const handleStartTask = () => {
     setHasStarted(true);
-    // Reset audio states for new task
+    // Reset all audio states for new task
     setAudioError(false);
     setAudioLoadAttempted(false);
     setAudioPlaying(false);
+    setSkipRequested(false);
     
     const timings = getTaskTimings(currentTaskData.question.question_type);
     
@@ -279,6 +286,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
         setAudioError(false);
         setAudioLoadAttempted(false);
         setAudioPlaying(false);
+        setSkipRequested(false);
       } else {
         onNext();
       }
@@ -286,26 +294,28 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   };
 
   const handleSkip = () => {
-    console.log('Skip button clicked, canSkip:', canSkip, 'phase:', phase);
-    if (canSkip) {
-      setCanSkip(false);
-      
-      // Stop any audio playback
-      if (audioRef.current) {
-        console.log('Stopping audio playback for skip');
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
-      setAudioPlaying(false);
-      
-      // Clear timer
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-      
-      // Proceed to next phase
-      handlePhaseComplete();
+    console.log('Skip button clicked, phase:', phase);
+    setSkipRequested(true);
+    setCanSkip(false);
+    
+    // Stop any audio playback immediately
+    if (audioRef.current) {
+      console.log('Stopping audio playback for skip');
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
     }
+    setAudioPlaying(false);
+    
+    // Clear timer
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    
+    // Proceed to next phase immediately
+    setTimeout(() => {
+      handlePhaseComplete();
+    }, 100);
   };
 
   const resetTask = () => {
@@ -323,6 +333,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
     setCanSkip(true);
     setAudioError(false);
     setAudioLoadAttempted(false);
+    setSkipRequested(false);
   };
 
   const formatTime = (seconds: number) => {
@@ -467,7 +478,6 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
                     <Button 
                       onClick={handleSkip}
                       variant="outline"
-                      disabled={!canSkip}
                       className="flex items-center space-x-2"
                     >
                       <SkipForward className="h-4 w-4" />
@@ -531,7 +541,6 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
                     <Button 
                       onClick={handleSkip}
                       variant="outline"
-                      disabled={!canSkip}
                       className="flex items-center space-x-2"
                     >
                       <SkipForward className="h-4 w-4" />
@@ -562,7 +571,6 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
                     <Button 
                       onClick={handleSkip}
                       variant="outline"
-                      disabled={!canSkip}
                       className="flex items-center space-x-2"
                     >
                       <SkipForward className="h-4 w-4" />
