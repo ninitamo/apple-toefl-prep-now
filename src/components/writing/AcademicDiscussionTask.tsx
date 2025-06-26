@@ -42,20 +42,9 @@ const AcademicDiscussionTask: React.FC<AcademicDiscussionTaskProps> = ({
 
   return (
     <div className="min-h-screen bg-white p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="bg-teal-600 text-white p-4 rounded-t-lg">
-          <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold">Writing Test</h1>
-            <div className="text-sm">Question 2 of 2</div>
-          </div>
-          <div className="w-full bg-teal-700 rounded-full h-2 mt-2">
-            <div className="bg-white h-2 rounded-full w-full"></div>
-          </div>
-        </div>
-
+      <div className="max-w-7xl mx-auto">
         {/* Directions */}
-        <div className="bg-gray-50 p-4 rounded-b-lg mb-6">
+        <div className="bg-gray-50 p-4 rounded-lg mb-6">
           <p className="text-sm mb-3">
             <strong>Directions:</strong> Your professor is teaching a class on economics. Write a post responding 
             to the professor's question. In your response you should:

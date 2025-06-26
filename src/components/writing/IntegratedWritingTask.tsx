@@ -44,19 +44,8 @@ const IntegratedWritingTask: React.FC<IntegratedWritingTaskProps> = ({
   return (
     <div className="min-h-screen bg-white p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="bg-blue-600 text-white p-4 rounded-t-lg flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <div className="bg-white text-blue-600 px-3 py-1 rounded font-bold">ETS</div>
-            <h1 className="text-xl font-bold">TOEFL Writing Question 1</h1>
-          </div>
-          <div className="text-right">
-            <div className="font-bold">QUESTION STRUCTURE</div>
-          </div>
-        </div>
-
         {/* Directions */}
-        <div className="bg-gray-100 p-4 border-x border-gray-300">
+        <div className="bg-gray-100 p-4 rounded-lg mb-6">
           <p className="text-sm">
             <strong>Directions:</strong> Read the question below. You have 20 minutes to plan and write your response. 
             Your response will be judged on the basis of the quality of your writing and on how well your response 
@@ -66,11 +55,11 @@ const IntegratedWritingTask: React.FC<IntegratedWritingTaskProps> = ({
         </div>
 
         {/* Question */}
-        <div className="bg-white p-4 border-x border-gray-300">
+        <div className="bg-white p-4 border border-gray-300 rounded-lg mb-6">
           <p className="font-semibold">Question: {question.question_text}</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 mt-4">
+        <div className="grid grid-cols-2 gap-6">
           {/* Left side - Reading Passage */}
           <div className="space-y-4">
             {readingPassages.map((passage) => (
