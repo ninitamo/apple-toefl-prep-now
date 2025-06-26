@@ -2,9 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import ReadingSection from '@/components/ReadingSection';
-import ListeningSection from '@/components/ListeningSection';
-import SpeakingSection from '@/components/SpeakingSection';
 import WritingSection from '@/components/WritingSection';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -85,7 +82,15 @@ const TestPage: React.FC = () => {
           .order('section_type, question_number');
 
         if (questionsError) throw questionsError;
-        setQuestions(questionsData || []);
+        
+        // Transform the data to match our Question interface
+        const transformedQuestions = questionsData?.map(q => ({
+          ...q,
+          options: Array.isArray(q.options) ? q.options : 
+                   typeof q.options === 'string' ? JSON.parse(q.options) : []
+        })) || [];
+        
+        setQuestions(transformedQuestions);
 
       } catch (error) {
         console.error('Error fetching test data:', error);
@@ -187,39 +192,27 @@ const TestPage: React.FC = () => {
         </TabsList>
 
         <TabsContent value="reading">
-          {readingPassages.length > 0 ? (
-            <ReadingSection passages={readingPassages} questions={readingQuestions} />
-          ) : (
-            <Card>
-              <CardContent className="p-8 text-center">
-                <p className="text-gray-500">No reading questions available for this test.</p>
-              </CardContent>
-            </Card>
-          )}
+          <Card>
+            <CardContent className="p-8 text-center">
+              <p className="text-gray-500">Reading section will be available soon.</p>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="listening">
-          {listeningPassages.length > 0 ? (
-            <ListeningSection passages={listeningPassages} questions={listeningQuestions} />
-          ) : (
-            <Card>
-              <CardContent className="p-8 text-center">
-                <p className="text-gray-500">No listening questions available for this test.</p>
-              </CardContent>
-            </Card>
-          )}
+          <Card>
+            <CardContent className="p-8 text-center">
+              <p className="text-gray-500">Listening section will be available soon.</p>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="speaking">
-          {speakingPassages.length > 0 ? (
-            <SpeakingSection passages={speakingPassages} questions={speakingQuestions} />
-          ) : (
-            <Card>
-              <CardContent className="p-8 text-center">
-                <p className="text-gray-500">No speaking questions available for this test.</p>
-              </CardContent>
-            </Card>
-          )}
+          <Card>
+            <CardContent className="p-8 text-center">
+              <p className="text-gray-500">Speaking section will be available soon.</p>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="writing">
