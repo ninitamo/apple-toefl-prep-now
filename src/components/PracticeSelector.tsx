@@ -1,47 +1,11 @@
 
-import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Clock, Users, Award, Headphones, Mic, PenTool } from 'lucide-react';
-import ToeflTestsList from './ToeflTestsList';
-import IndividualSections from './IndividualSections';
+import { useNavigate } from 'react-router-dom';
 
 const PracticeSelector = () => {
-  const [selectedMode, setSelectedMode] = useState<'full' | 'individual' | null>(null);
-
-  if (selectedMode === 'full') {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center mb-8">
-          <Button
-            variant="outline"
-            onClick={() => setSelectedMode(null)}
-            className="mr-4"
-          >
-            ← Back to Practice Options
-          </Button>
-        </div>
-        <ToeflTestsList />
-      </div>
-    );
-  }
-
-  if (selectedMode === 'individual') {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center mb-8">
-          <Button
-            variant="outline"
-            onClick={() => setSelectedMode(null)}
-            className="mr-4"
-          >
-            ← Back to Practice Options
-          </Button>
-        </div>
-        <IndividualSections />
-      </div>
-    );
-  }
+  const navigate = useNavigate();
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -85,7 +49,7 @@ const PracticeSelector = () => {
                 </div>
               </div>
               <Button 
-                onClick={() => setSelectedMode('full')}
+                onClick={() => navigate('/practice/full-tests')}
                 className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white rounded-full font-medium py-6 text-lg"
               >
                 Practice Full Test
@@ -126,7 +90,7 @@ const PracticeSelector = () => {
                 </div>
               </div>
               <Button 
-                onClick={() => setSelectedMode('individual')}
+                onClick={() => navigate('/practice/sections')}
                 className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:opacity-90 text-white rounded-full font-medium py-6 text-lg"
               >
                 Practice Individual Sections
