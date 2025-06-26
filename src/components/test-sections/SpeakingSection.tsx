@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -41,10 +40,18 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   useEffect(() => {
     const fetchSpeakingTasks = async () => {
       try {
+        const testIdNumber = parseInt(testId);
+        
+        if (isNaN(testIdNumber)) {
+          console.error('Invalid testId:', testId);
+          setLoading(false);
+          return;
+        }
+
         const { data: passages, error: passagesError } = await supabase
           .from('test_passages')
           .select('*')
-          .eq('test_id', testId)
+          .eq('test_id', testIdNumber)
           .eq('section_type', 'speaking')
           .order('order_number');
 
@@ -53,7 +60,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
         const { data: questions, error: questionsError } = await supabase
           .from('test_questions')
           .select('*')
-          .eq('test_id', testId)
+          .eq('test_id', testIdNumber)
           .eq('section_type', 'speaking')
           .order('question_number');
 
