@@ -33,6 +33,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   const [hasStarted, setHasStarted] = useState(false);
   const [canSkip, setCanSkip] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [audioError, setAudioError] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -139,7 +140,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   };
 
   const playAudio = async () => {
-    if (currentTaskData.audio_url) {
+    if (currentTaskData.audio_url && !audioError) {
       try {
         console.log('Attempting to play audio:', currentTaskData.audio_url);
         
@@ -169,6 +170,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
           audioRef.current.onloadstart = () => {
             console.log('Audio loading started');
             setAudioPlaying(true);
+            setAudioError(false);
           };
           
           audioRef.current.oncanplaythrough = () => {
@@ -176,6 +178,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
             audioRef.current?.play().catch(error => {
               console.error('Audio play error:', error);
               setAudioPlaying(false);
+              setAudioError(true);
               handlePhaseComplete();
             });
           };
@@ -189,6 +192,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
           audioRef.current.onerror = (error) => {
             console.error('Audio error:', error);
             setAudioPlaying(false);
+            setAudioError(true);
             handlePhaseComplete();
           };
 
@@ -196,20 +200,23 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
           audioRef.current.load();
         } else {
           console.error('No valid audio URL found');
+          setAudioError(true);
           handlePhaseComplete();
         }
       } catch (error) {
         console.error('Error in playAudio:', error);
+        setAudioError(true);
         handlePhaseComplete();
       }
     } else {
-      console.log('No audio URL provided, skipping to next phase');
+      console.log('No audio URL provided or audio error occurred, skipping to next phase');
       handlePhaseComplete();
     }
   };
 
   const handleStartTask = () => {
     setHasStarted(true);
+    setAudioError(false);
     const timings = getTaskTimings(currentTaskData.question.question_type);
     
     if (currentTaskData.question.question_type === 'independent') {
@@ -254,6 +261,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
         setCurrentTask(currentTask + 1);
         setPhase('directions');
         setHasStarted(false);
+        setAudioError(false);
       } else {
         onNext();
       }
@@ -290,6 +298,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
     setAudioPlaying(false);
     setTimeLeft(0);
     setCanSkip(true);
+    setAudioError(false);
   };
 
   const formatTime = (seconds: number) => {
@@ -453,13 +462,19 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
                       </div>
                     </div>
                     <p className="text-gray-700 font-semibold mb-2">
-                      {audioPlaying ? 'Audio is playing...' : 'Get ready to listen'}
+                      {audioError ? 'Audio could not be loaded' : 
+                       audioPlaying ? 'Audio is playing...' : 'Get ready to listen'}
                     </p>
                     <p className="text-sm text-gray-500">
                       {currentTaskData.question.question_type === 'integrated-campus' && 'Listen to a conversation between two students.'}
                       {currentTaskData.question.question_type === 'integrated-academic' && 'Listen to part of a lecture on this topic.'}
                       {currentTaskData.question.question_type === 'integrated-lecture' && 'Listen to part of a lecture.'}
                     </p>
+                    {audioError && (
+                      <p className="text-red-600 text-sm mt-2">
+                        The audio file could not be loaded. Click skip to continue.
+                      </p>
+                    )}
                   </div>
                   
                   <div className="flex justify-center">
