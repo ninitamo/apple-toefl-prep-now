@@ -1,146 +1,97 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Text, OrbitControls, Sphere, Box, Float, Environment } from '@react-three/drei';
+import { Text, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Floating Book Component
-const FloatingBook = ({ position, color, text }: { position: [number, number, number]; color: string; text: string }) => {
+// Simple rotating cube with text
+const EducationalCube = ({ position, color, text }: { position: [number, number, number]; color: string; text: string }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   
-  useFrame((state) => {
+  useFrame(() => {
     if (meshRef.current) {
+      meshRef.current.rotation.x += 0.01;
       meshRef.current.rotation.y += 0.01;
-      meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime + position[0]) * 0.2;
     }
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.1} floatIntensity={0.2}>
-      <group position={position}>
-        <Box ref={meshRef} args={[0.8, 1.2, 0.1]}>
-          <meshStandardMaterial color={color} />
-        </Box>
-        <Text
-          position={[0, 0, 0.06]}
-          fontSize={0.15}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-        >
-          {text}
-        </Text>
-      </group>
-    </Float>
+    <group position={position}>
+      <mesh ref={meshRef}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+      <Text
+        position={[0, 1.5, 0]}
+        fontSize={0.3}
+        color="#1F2937"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {text}
+      </Text>
+    </group>
   );
 };
 
-// Rotating Globe Component
-const EducationalGlobe = () => {
-  const globeRef = useRef<THREE.Mesh>(null);
+// Central rotating sphere
+const CentralSphere = () => {
+  const sphereRef = useRef<THREE.Mesh>(null);
   
   useFrame(() => {
-    if (globeRef.current) {
-      globeRef.current.rotation.y += 0.005;
+    if (sphereRef.current) {
+      sphereRef.current.rotation.y += 0.005;
     }
   });
 
   return (
-    <Float speed={1} rotationIntensity={0.1} floatIntensity={0.3}>
-      <Sphere ref={globeRef} args={[1, 32, 32]} position={[0, 0, 0]}>
-        <meshStandardMaterial
-          color="#4F46E5"
-          wireframe={false}
-          transparent={true}
-          opacity={0.8}
-        />
-      </Sphere>
-    </Float>
+    <mesh ref={sphereRef}>
+      <sphereGeometry args={[1.2, 32, 32]} />
+      <meshStandardMaterial color="#4F46E5" wireframe={false} transparent opacity={0.8} />
+    </mesh>
   );
 };
 
-// Knowledge Particles
-const KnowledgeParticles = () => {
-  const particlesRef = useRef<THREE.Points>(null);
-  
-  useFrame((state) => {
-    if (particlesRef.current) {
-      particlesRef.current.rotation.y += 0.002;
-      particlesRef.current.rotation.x += 0.001;
-    }
-  });
-
-  const particleCount = 50;
-  const positions = new Float32Array(particleCount * 3);
-  
-  for (let i = 0; i < particleCount * 3; i++) {
-    positions[i] = (Math.random() - 0.5) * 8;
-  }
-
-  return (
-    <points ref={particlesRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={particleCount}
-          array={positions}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial color="#8B5CF6" size={0.05} />
-    </points>
-  );
-};
-
-// Main 3D Scene
+// Simple 3D Scene
 const Scene3D = () => {
   return (
     <>
-      <OrbitControls enablePan={false} enableZoom={true} maxDistance={10} minDistance={3} />
+      <OrbitControls enablePan={false} enableZoom={true} maxDistance={8} minDistance={4} />
       
-      {/* Lighting */}
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-      <pointLight position={[-10, -10, -10]} intensity={0.3} color="#8B5CF6" />
+      {/* Basic lighting */}
+      <ambientLight intensity={0.6} />
+      <pointLight position={[10, 10, 10]} intensity={0.8} />
       
-      {/* Central Globe */}
-      <EducationalGlobe />
+      {/* Central sphere */}
+      <CentralSphere />
       
-      {/* Floating Books around the globe */}
-      <FloatingBook position={[-3, 2, 0]} color="#EF4444" text="READING" />
-      <FloatingBook position={[3, 2, 0]} color="#10B981" text="LISTENING" />
-      <FloatingBook position={[-3, -2, 0]} color="#8B5CF6" text="SPEAKING" />
-      <FloatingBook position={[3, -2, 0]} color="#F59E0B" text="WRITING" />
+      {/* Four educational cubes */}
+      <EducationalCube position={[-3, 0, 0]} color="#EF4444" text="READING" />
+      <EducationalCube position={[3, 0, 0]} color="#10B981" text="LISTENING" />
+      <EducationalCube position={[0, 0, -3]} color="#8B5CF6" text="SPEAKING" />
+      <EducationalCube position={[0, 0, 3]} color="#F59E0B" text="WRITING" />
       
-      {/* Knowledge Particles */}
-      <KnowledgeParticles />
-      
-      {/* Main Title */}
-      <Float speed={1} rotationIntensity={0.1} floatIntensity={0.1}>
-        <Text
-          position={[0, 3.5, 0]}
-          fontSize={0.8}
-          color="#1F2937"
-          anchorX="center"
-          anchorY="middle"
-        >
-          TOEFL Master
-        </Text>
-      </Float>
+      {/* Main title */}
+      <Text
+        position={[0, 3, 0]}
+        fontSize={0.6}
+        color="#1F2937"
+        anchorX="center"
+        anchorY="middle"
+      >
+        TOEFL Master
+      </Text>
       
       {/* Subtitle */}
       <Text
-        position={[0, -3.5, 0]}
-        fontSize={0.3}
+        position={[0, -3, 0]}
+        fontSize={0.25}
         color="#6B7280"
         anchorX="center"
         anchorY="middle"
       >
         Interactive Learning Experience
       </Text>
-      
-      {/* Environment for better lighting */}
-      <Environment preset="sunset" />
     </>
   );
 };
@@ -148,11 +99,49 @@ const Scene3D = () => {
 // Main Component
 const EducationalScene3D = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    // Reset error state when component mounts
+    setHasError(false);
+  }, []);
+
+  const handleError = () => {
+    console.log('3D scene error occurred');
+    setHasError(true);
+  };
+
+  if (hasError) {
+    return (
+      <div className="relative w-full h-96 bg-gradient-to-b from-blue-50 to-purple-50 rounded-2xl overflow-hidden shadow-lg flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🎓</div>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">TOEFL Master</h3>
+          <p className="text-gray-600">Interactive Learning Experience</p>
+          <div className="grid grid-cols-2 gap-4 mt-6">
+            <div className="bg-red-100 p-3 rounded-lg">
+              <div className="text-red-600 font-semibold">📚 READING</div>
+            </div>
+            <div className="bg-green-100 p-3 rounded-lg">
+              <div className="text-green-600 font-semibold">🎧 LISTENING</div>
+            </div>
+            <div className="bg-purple-100 p-3 rounded-lg">
+              <div className="text-purple-600 font-semibold">🎤 SPEAKING</div>
+            </div>
+            <div className="bg-orange-100 p-3 rounded-lg">
+              <div className="text-orange-600 font-semibold">✍️ WRITING</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-96 bg-gradient-to-b from-blue-50 to-purple-50 rounded-2xl overflow-hidden shadow-lg">
       <Canvas
         onCreated={() => setIsLoaded(true)}
+        onError={handleError}
         className="w-full h-full"
         camera={{ position: [0, 0, 6], fov: 75 }}
         gl={{ antialias: true, alpha: true }}
@@ -160,7 +149,7 @@ const EducationalScene3D = () => {
         <Scene3D />
       </Canvas>
       
-      {!isLoaded && (
+      {!isLoaded && !hasError && (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-blue-50 to-purple-50">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
