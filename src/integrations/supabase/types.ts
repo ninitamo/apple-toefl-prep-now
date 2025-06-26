@@ -76,6 +76,7 @@ export type Database = {
           id: string
           order_number: number
           section_type: string
+          "sub-type": string | null
           test_id: number
           title: string
           transcript: string | null
@@ -89,6 +90,7 @@ export type Database = {
           id?: string
           order_number: number
           section_type: string
+          "sub-type"?: string | null
           test_id: number
           title: string
           transcript?: string | null
@@ -102,6 +104,7 @@ export type Database = {
           id?: string
           order_number?: number
           section_type?: string
+          "sub-type"?: string | null
           test_id?: number
           title?: string
           transcript?: string | null
