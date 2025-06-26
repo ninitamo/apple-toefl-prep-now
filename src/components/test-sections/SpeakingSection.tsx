@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -141,9 +142,9 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   };
 
   const playAudio = async () => {
-    // Prevent multiple audio load attempts
-    if (audioLoadAttempted || audioError) {
-      console.log('Audio load already attempted or error occurred, skipping');
+    // Prevent multiple audio load attempts for the same task
+    if (audioLoadAttempted) {
+      console.log('Audio load already attempted for this task, skipping');
       handlePhaseComplete();
       return;
     }
@@ -225,8 +226,11 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
 
   const handleStartTask = () => {
     setHasStarted(true);
+    // Reset audio states for new task
     setAudioError(false);
     setAudioLoadAttempted(false);
+    setAudioPlaying(false);
+    
     const timings = getTaskTimings(currentTaskData.question.question_type);
     
     if (currentTaskData.question.question_type === 'independent') {
@@ -271,8 +275,10 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
         setCurrentTask(currentTask + 1);
         setPhase('directions');
         setHasStarted(false);
+        // Reset audio states for next task
         setAudioError(false);
         setAudioLoadAttempted(false);
+        setAudioPlaying(false);
       } else {
         onNext();
       }
@@ -283,15 +289,21 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
     console.log('Skip button clicked, canSkip:', canSkip, 'phase:', phase);
     if (canSkip) {
       setCanSkip(false);
-      if (audioRef.current && audioPlaying) {
-        console.log('Stopping audio playback');
+      
+      // Stop any audio playback
+      if (audioRef.current) {
+        console.log('Stopping audio playback for skip');
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
-        setAudioPlaying(false);
       }
+      setAudioPlaying(false);
+      
+      // Clear timer
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
+      
+      // Proceed to next phase
       handlePhaseComplete();
     }
   };
@@ -493,7 +505,6 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
                     <Button 
                       onClick={handleSkip}
                       variant="outline"
-                      disabled={!canSkip}
                       className="flex items-center space-x-2"
                     >
                       <SkipForward className="h-4 w-4" />
