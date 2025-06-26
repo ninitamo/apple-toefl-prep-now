@@ -107,13 +107,55 @@ const ToeflTest = () => {
                 </p>
               </CardHeader>
               
-              <CardContent className="text-center">
+                <CardContent className="text-center">
+                <div className="flex items-center justify-center space-x-8 mb-8 text-sm text-gray-500">
+                  <div className="flex items-center space-x-1">
+                    <Clock className="h-4 w-4" />
+                    <span>≈2 hours</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Users className="h-4 w-4" />
+                    <span>{testData.test.students_taken} taken</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Award className="h-4 w-4" />
+                    <span>Official Format</span>
+                  </div>
+                </div>
+
                 <div className="mb-8">
                   <Button 
                     onClick={startTest}
                     className="bg-red-600 hover:bg-red-700 text-white rounded-full px-12 py-6 text-xl font-bold"
                   >
                     START TEST
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
+                  <Button 
+                    variant="outline" 
+                    className="bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200 rounded-lg py-4"
+                  >
+                    READING SECTION
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200 rounded-lg py-4"
+                  >
+                    LISTENING SECTION
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200 rounded-lg py-4"
+                  >
+                    SPEAKING SECTION
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200 rounded-lg py-4"
+                  >
+                    WRITING SECTION
                   </Button>
                 </div>
               </CardContent>
