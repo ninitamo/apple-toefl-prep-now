@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client'
 
 export interface TestData {
   test: {
-    id: string
+    id: number
     title: string
     difficulty: string
     duration: string
@@ -13,7 +13,7 @@ export interface TestData {
   }
   passages: Array<{
     id: string
-    test_id: string
+    test_id: number
     section_type: string
     title: string
     content: string
@@ -25,7 +25,7 @@ export interface TestData {
   }>
   questions: Array<{
     id: string
-    test_id: string
+    test_id: number
     passage_id: string
     section_type: string
     question_number: number

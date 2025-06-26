@@ -76,7 +76,7 @@ export type Database = {
           id: string
           order_number: number
           section_type: string
-          test_id: string
+          test_id: number
           title: string
           transcript: string | null
         }
@@ -89,7 +89,7 @@ export type Database = {
           id?: string
           order_number: number
           section_type: string
-          test_id: string
+          test_id: number
           title: string
           transcript?: string | null
         }
@@ -102,7 +102,7 @@ export type Database = {
           id?: string
           order_number?: number
           section_type?: string
-          test_id?: string
+          test_id?: number
           title?: string
           transcript?: string | null
         }
@@ -128,7 +128,7 @@ export type Database = {
           question_text: string
           question_type: string
           section_type: string
-          test_id: string
+          test_id: number
         }
         Insert: {
           correct_answer?: Json | null
@@ -141,7 +141,7 @@ export type Database = {
           question_text: string
           question_type: string
           section_type: string
-          test_id: string
+          test_id: number
         }
         Update: {
           correct_answer?: Json | null
@@ -154,7 +154,7 @@ export type Database = {
           question_text?: string
           question_type?: string
           section_type?: string
-          test_id?: string
+          test_id?: number
         }
         Relationships: [
           {
@@ -179,7 +179,7 @@ export type Database = {
           description: string | null
           difficulty: string
           duration: string
-          id: string
+          id: number
           students_taken: string | null
           title: string
           updated_at: string
@@ -189,7 +189,7 @@ export type Database = {
           description?: string | null
           difficulty: string
           duration: string
-          id?: string
+          id: number
           students_taken?: string | null
           title: string
           updated_at?: string
@@ -199,7 +199,7 @@ export type Database = {
           description?: string | null
           difficulty?: string
           duration?: string
-          id?: string
+          id?: number
           students_taken?: string | null
           title?: string
           updated_at?: string

@@ -1,3 +1,4 @@
+
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,7 +8,7 @@ import { Clock, Users, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ToeflTest {
-  id: string;
+  id: number;
   title: string;
   difficulty: string;
   duration: string;
@@ -22,170 +23,12 @@ const ToeflTestsList = () => {
       const { data, error } = await supabase
         .from('toefl_tests')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('id');
 
       if (error) throw error;
       return data as ToeflTest[];
     },
   });
-
-  // Add static tests for display until they're fully integrated
-  const staticTests = [
-    {
-      id: '7',
-      title: 'TOEFL iBT Practice Test 30',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring existentialism in philosophy and the Montessori Method in modern education.',
-      students_taken: '267'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000029',
-      title: 'TOEFL iBT Practice Test 29',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring megalithic monuments and urban heat island effects in climate adaptation.',
-      students_taken: '298'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000028',
-      title: 'TOEFL iBT Practice Test 28',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring the birth of abstract art and the development of jazz in early 20th century America.',
-      students_taken: '412'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000027',
-      title: 'TOEFL iBT Practice Test 27',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring the evolution of Impressionism in art history and the role of patronage in Renaissance art.',
-      students_taken: '385'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000026',
-      title: 'TOEFL iBT Practice Test 26',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring the photoelectric effect and quantum theory in physics, along with superconductors and zero resistance.',
-      students_taken: '472'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000025',
-      title: 'TOEFL iBT Practice Test 25',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring the evolution of human language in linguistics and plate tectonics theory in geology.',
-      students_taken: '485'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000024',
-      title: 'TOEFL iBT Practice Test 24',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring the printing revolution in European history and the fall of the Roman Republic.',
-      students_taken: '520'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000023',
-      title: 'TOEFL iBT Practice Test 23',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring the bystander effect in psychology and ocean acidification in environmental science.',
-      students_taken: '495'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000022',
-      title: 'TOEFL iBT Practice Test 22',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring plate tectonics in geology and cultural diffusion in anthropology.',
-      students_taken: '580'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000021',
-      title: 'TOEFL iBT Practice Test 21',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring Mendelian genetics in biology and comparative advantage in international trade economics.',
-      students_taken: '620'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000020',
-      title: 'TOEFL iBT Practice Test 20',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring the diffusion of innovations in sociology and the rise of Impressionism in art history.',
-      students_taken: '580'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000019',
-      title: 'TOEFL iBT Practice Test 19',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring classical conditioning in psychology and plate tectonics in geology.',
-      students_taken: '695'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000018',
-      title: 'TOEFL iBT Practice Test 18',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring the origins of human language and the rise of the English novel.',
-      students_taken: '720'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000017',
-      title: 'TOEFL iBT Practice Test 17',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring the development of the periodic table and chemical catalysis.',
-      students_taken: '640'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000016',
-      title: 'TOEFL iBT Practice Test 16',
-      difficulty: 'Expert',
-      duration: '3.5 hours',
-      description: 'An expert-level TOEFL practice test exploring architectural innovation from ancient Rome to modern times.',
-      students_taken: '580'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000007',
-      title: 'TOEFL iBT Practice Test 7',
-      difficulty: 'Advanced',
-      duration: '3 hours',
-      description: 'A comprehensive TOEFL practice test featuring sociology and art history reading passages with authentic question types.',
-      students_taken: '1,420'
-    },
-    {
-      id: '00000000-0000-0000-0000-000000000003',
-      title: 'TOEFL iBT Practice Test 3',
-      difficulty: 'Intermediate',
-      duration: '3 hours',
-      description: 'Complete TOEFL iBT practice test with reading, listening, speaking, and writing sections',
-      students_taken: '2,850'
-    },
-    {
-      id: '1',
-      title: 'TOEFL iBT Practice Test 1',
-      difficulty: 'Beginner',
-      duration: '3 hours',
-      description: 'Complete TOEFL iBT practice test with reading, listening, speaking, and writing sections',
-      students_taken: '3,245'
-    },
-    {
-      id: '2',
-      title: 'TOEFL iBT Practice Test 2',
-      difficulty: 'Intermediate',
-      duration: '3 hours',
-      description: 'Intermediate level TOEFL practice test focusing on academic English skills',
-      students_taken: '2,890'
-    }
-  ];
-
-  const allTests = tests ? [...staticTests, ...tests.filter(test => !staticTests.some(st => st.id === test.id))] : staticTests;
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty.toLowerCase()) {
@@ -233,7 +76,7 @@ const ToeflTestsList = () => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {allTests.map((test) => (
+        {tests?.map((test) => (
           <Card key={test.id} className="hover:shadow-lg transition-shadow duration-300">
             <CardHeader>
               <div className="flex justify-between items-start mb-2">

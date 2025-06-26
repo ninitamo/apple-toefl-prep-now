@@ -19,7 +19,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
     )
 
-    // Read testId from request body instead of URL parameters
+    // Read testId from request body
     const { testId } = await req.json()
 
     if (!testId) {
@@ -32,23 +32,18 @@ serve(async (req) => {
       )
     }
 
-    // Map numeric test IDs to actual UUIDs
-    const testIdMap: Record<string, string> = {
-      '1': '00000000-0000-0000-0000-000000000001',
-      '2': '00000000-0000-0000-0000-000000000002',
-      '3': '00000000-0000-0000-0000-000000000003',
-      '4': '00000000-0000-0000-0000-000000000004',
-      '5': '00000000-0000-0000-0000-000000000005',
-      '6': '00000000-0000-0000-0000-000000000006',
-      '7': '00000000-0000-0000-0000-000000000007',
-      '8': '00000000-0000-0000-0000-000000000008',
-      '9': '00000000-0000-0000-0000-000000000009',
-      '10': '00000000-0000-0000-0000-000000000010',
-      '11': '00000000-0000-0000-0000-000000000011',
-      '12': '00000000-0000-0000-0000-000000000012',
+    // Convert testId to integer (no more UUID mapping needed)
+    const actualTestId = parseInt(testId)
+    
+    if (isNaN(actualTestId)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid test ID format' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
     }
-
-    const actualTestId = testIdMap[testId] || testId
 
     console.log(`Looking for test with ID: ${actualTestId}`)
 
