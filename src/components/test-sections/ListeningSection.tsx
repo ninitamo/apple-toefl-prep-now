@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -42,6 +43,10 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
   const [loading, setLoading] = useState(true);
   const [showQuestions, setShowQuestions] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(false);
+  const [audioLoaded, setAudioLoaded] = useState(false);
+  const [audioCurrentTime, setAudioCurrentTime] = useState(0);
+  const [audioDuration, setAudioDuration] = useState(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     const fetchListeningData = async () => {
@@ -94,6 +99,51 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
     fetchListeningData();
   }, [testId]);
 
+  // Reset audio state when passage changes
+  useEffect(() => {
+    setAudioLoaded(false);
+    setAudioPlaying(false);
+    setShowQuestions(false);
+    setAudioCurrentTime(0);
+    setAudioDuration(0);
+  }, [currentPassageIndex]);
+
+  const handleAudioLoad = () => {
+    if (audioRef.current) {
+      setAudioLoaded(true);
+      setAudioDuration(audioRef.current.duration);
+    }
+  };
+
+  const handleAudioTimeUpdate = () => {
+    if (audioRef.current) {
+      setAudioCurrentTime(audioRef.current.currentTime);
+    }
+  };
+
+  const handleAudioEnded = () => {
+    setAudioPlaying(false);
+    setShowQuestions(true);
+    toast.success('Audio completed. You can now answer the questions.');
+  };
+
+  const handleAudioError = () => {
+    toast.error('Failed to load audio. Please try again.');
+    setAudioLoaded(false);
+  };
+
+  const toggleAudioPlayback = () => {
+    if (!audioRef.current) return;
+
+    if (audioPlaying) {
+      audioRef.current.pause();
+      setAudioPlaying(false);
+    } else {
+      audioRef.current.play();
+      setAudioPlaying(true);
+    }
+  };
+
   const handleAnswerSelect = (questionId: string, answer: string) => {
     setAnswers(prev => ({
       ...prev,
@@ -133,14 +183,10 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
     }
   };
 
-  const simulateAudioPlay = () => {
-    setAudioPlaying(true);
-    // Simulate audio duration
-    const duration = passages[currentPassageIndex].audio_duration || 180;
-    setTimeout(() => {
-      setAudioPlaying(false);
-      setShowQuestions(true);
-    }, 3000); // Show for 3 seconds in demo, would be actual audio duration
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   if (loading) {
@@ -220,35 +266,65 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                   </div>
                 )}
 
-                {!audioPlaying ? (
+                {/* Audio Element */}
+                {currentPassage.audio_url && (
+                  <audio
+                    ref={audioRef}
+                    src={currentPassage.audio_url}
+                    onLoadedData={handleAudioLoad}
+                    onTimeUpdate={handleAudioTimeUpdate}
+                    onEnded={handleAudioEnded}
+                    onError={handleAudioError}
+                    preload="metadata"
+                  />
+                )}
+
+                {/* Audio Controls */}
+                <div className="flex flex-col items-center gap-4">
                   <Button 
-                    onClick={simulateAudioPlay}
+                    onClick={toggleAudioPlayback}
+                    disabled={!audioLoaded || !currentPassage.audio_url}
                     className="bg-blue-600 hover:bg-blue-700 text-white"
                     size="lg"
                   >
-                    <Play className="w-5 h-5 mr-2" />
-                    Play Audio
+                    {audioPlaying ? (
+                      <>
+                        <Pause className="w-5 h-5 mr-2" />
+                        Pause Audio
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-5 h-5 mr-2" />
+                        {audioCurrentTime > 0 ? 'Resume Audio' : 'Play Audio'}
+                      </>
+                    )}
                   </Button>
-                ) : (
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Pause className="w-5 h-5" />
-                      <span>Playing audio...</span>
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      Duration: {Math.floor((currentPassage.audio_duration || 180) / 60)} minutes
-                    </div>
-                  </div>
-                )}
 
-                {/* Show lecture content for demo purposes */}
-                {audioPlaying && currentPassage.audio_type === 'lecture' && (
-                  <div className="mt-6 p-4 bg-gray-50 rounded-lg text-left text-sm">
-                    <p className="font-semibold mb-2">Lecture Content (for demo):</p>
-                    <div className="text-gray-700 whitespace-pre-line">
-                      {currentPassage.content.substring(0, 300)}...
+                  {/* Audio Progress */}
+                  {audioLoaded && audioDuration > 0 && (
+                    <div className="w-full max-w-md">
+                      <div className="flex justify-between text-sm text-gray-600 mb-2">
+                        <span>{formatTime(audioCurrentTime)}</span>
+                        <span>{formatTime(audioDuration)}</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-blue-600 h-2 rounded-full transition-all"
+                          style={{ width: `${(audioCurrentTime / audioDuration) * 100}%` }}
+                        />
+                      </div>
                     </div>
-                  </div>
+                  )}
+
+                  {audioPlaying && (
+                    <p className="text-sm text-gray-600">
+                      Audio is playing. Take notes as you listen.
+                    </p>
+                  )}
+                </div>
+
+                {!currentPassage.audio_url && (
+                  <p className="text-red-600">Audio file not available for this passage.</p>
                 )}
               </div>
             </CardContent>
@@ -307,7 +383,10 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
             </Button>
           ) : (
             <div className="text-sm text-gray-500">
-              {audioPlaying ? 'Listen to the audio...' : 'Click Play Audio to begin'}
+              {audioLoaded 
+                ? (audioPlaying ? 'Listening to audio...' : 'Click Play Audio to begin')
+                : 'Loading audio...'
+              }
             </div>
           )}
         </div>
