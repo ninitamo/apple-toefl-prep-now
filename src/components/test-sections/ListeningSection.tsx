@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -72,7 +71,15 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
         if (questionsError) throw questionsError;
 
         setPassages(passagesData || []);
-        setQuestions(questionsData || []);
+        
+        // Transform the questions data to match our interface
+        const transformedQuestions = (questionsData || []).map(q => ({
+          ...q,
+          options: Array.isArray(q.options) ? q.options : JSON.parse(q.options as string),
+          correct_answer: typeof q.correct_answer === 'string' ? q.correct_answer : JSON.parse(q.correct_answer as string)
+        }));
+        
+        setQuestions(transformedQuestions);
 
       } catch (error) {
         console.error('Error fetching listening data:', error);
