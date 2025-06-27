@@ -76,7 +76,9 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
         const transformedQuestions = (questionsData || []).map(q => ({
           ...q,
           options: Array.isArray(q.options) ? q.options : JSON.parse(q.options as string),
-          correct_answer: typeof q.correct_answer === 'string' ? q.correct_answer : JSON.parse(q.correct_answer as string)
+          correct_answer: typeof q.correct_answer === 'string' 
+            ? q.correct_answer 
+            : JSON.parse((q.correct_answer as unknown) as string)
         }));
         
         setQuestions(transformedQuestions);
