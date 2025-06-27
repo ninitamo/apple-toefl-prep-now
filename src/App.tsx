@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import ExamInfo from "./pages/ExamInfo";
 import ToeflTest from "./pages/ToeflTest";
 import FullTestsList from "./pages/FullTestsList";
 import IndividualSectionsPage from "./pages/IndividualSectionsPage";
@@ -33,6 +34,7 @@ const App = () => (
           <Routes>
             <Route path="/auth" element={<Auth />} />
             <Route path="/" element={<Index />} />
+            <Route path="/exam-info" element={<ExamInfo />} />
             <Route path="/practice/full-tests" element={<FullTestsList />} />
             <Route path="/practice/sections" element={<IndividualSectionsPage />} />
             <Route path="/test/:testId" element={<ToeflTest />} />

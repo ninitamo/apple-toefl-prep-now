@@ -1,9 +1,11 @@
 
 import { ArrowRight, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import EducationalScene3D from './EducationalScene3D';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto">
@@ -22,8 +24,11 @@ const HeroSection = () => {
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-3 text-lg font-medium group">
-              Start Free Practice
+            <Button 
+              onClick={() => navigate('/exam-info')}
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-3 text-lg font-medium group"
+            >
+              Learn more about the exam
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
             
@@ -32,11 +37,6 @@ const HeroSection = () => {
               Watch Demo
             </Button>
           </div>
-        </div>
-
-        {/* 3D Interactive Scene */}
-        <div className="mb-16">
-          <EducationalScene3D />
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
