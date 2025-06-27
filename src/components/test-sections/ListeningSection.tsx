@@ -48,6 +48,15 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
   const [audioError, setAudioError] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  // Helper function to get full Supabase Storage URL
+  const getFullAudioUrl = (relativePath: string) => {
+    if (!relativePath) return null;
+    // If it's already a full URL, return as is
+    if (relativePath.startsWith('http')) return relativePath;
+    // Otherwise, construct the full Supabase Storage URL
+    return `https://tdirwxqcamngvsubjbdd.supabase.co/storage/v1/object/public/${relativePath}`;
+  };
+
   useEffect(() => {
     const fetchListeningData = async () => {
       if (!testId) return;
@@ -135,7 +144,9 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
 
   const handleAudioError = (e: any) => {
     console.error('Audio error:', e);
-    console.error('Current audio URL:', passages[currentPassageIndex]?.audio_url);
+    const fullUrl = getFullAudioUrl(passages[currentPassageIndex]?.audio_url || '');
+    console.error('Full audio URL:', fullUrl);
+    console.error('Original audio URL:', passages[currentPassageIndex]?.audio_url);
     setAudioError(true);
     setAudioLoaded(false);
     toast.error('Failed to load audio. Please check the audio file.');
@@ -234,6 +245,7 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
   const currentPassage = passages[currentPassageIndex];
   const currentPassageQuestions = getCurrentPassageQuestions();
   const currentQuestion = currentPassageQuestions[currentQuestionIndex];
+  const fullAudioUrl = getFullAudioUrl(currentPassage.audio_url || '');
 
   return (
     <div className="min-h-screen bg-white p-6">
@@ -281,10 +293,10 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                 )}
 
                 {/* Audio Element */}
-                {currentPassage.audio_url && (
+                {fullAudioUrl && (
                   <audio
                     ref={audioRef}
-                    src={currentPassage.audio_url}
+                    src={fullAudioUrl}
                     onLoadedData={handleAudioLoad}
                     onLoadedMetadata={handleAudioLoad}
                     onCanPlayThrough={handleAudioLoad}
@@ -297,17 +309,16 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                 )}
 
                 {/* Debug Info */}
-                {currentPassage.audio_url && (
-                  <div className="mb-4 text-xs text-gray-500">
-                    Audio URL: {currentPassage.audio_url}
-                  </div>
-                )}
+                <div className="mb-4 text-xs text-gray-500">
+                  <div>Original URL: {currentPassage.audio_url}</div>
+                  <div>Full URL: {fullAudioUrl}</div>
+                </div>
 
                 {/* Audio Controls */}
                 <div className="flex flex-col items-center gap-4">
                   <Button 
                     onClick={toggleAudioPlayback}
-                    disabled={!audioLoaded || !currentPassage.audio_url || audioError}
+                    disabled={!audioLoaded || !fullAudioUrl || audioError}
                     className="bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-400"
                     size="lg"
                   >
@@ -352,14 +363,14 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                     </p>
                   )}
 
-                  {!audioLoaded && !audioError && currentPassage.audio_url && (
+                  {!audioLoaded && !audioError && fullAudioUrl && (
                     <p className="text-sm text-gray-600">
                       Loading audio...
                     </p>
                   )}
                 </div>
 
-                {!currentPassage.audio_url && (
+                {!fullAudioUrl && (
                   <p className="text-red-600">Audio file not available for this passage.</p>
                 )}
               </div>
