@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Volume2, Play, Pause } from 'lucide-react';
+import { Volume2, Play, Pause, SkipForward } from 'lucide-react';
 
 interface ListeningSectionProps {
   onNext: () => void;
@@ -169,6 +169,15 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
     }
   };
 
+  const handleSkipAudio = () => {
+    if (audioRef.current && audioPlaying) {
+      audioRef.current.pause();
+      setAudioPlaying(false);
+    }
+    setShowQuestions(true);
+    toast.info('Audio skipped. You can now answer the questions.');
+  };
+
   const handleAnswerSelect = (questionId: string, answer: string) => {
     setAnswers(prev => ({
       ...prev,
@@ -316,24 +325,36 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
 
                 {/* Audio Controls */}
                 <div className="flex flex-col items-center gap-4">
-                  <Button 
-                    onClick={toggleAudioPlayback}
-                    disabled={!audioLoaded || !fullAudioUrl || audioError}
-                    className="bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-400"
-                    size="lg"
-                  >
-                    {audioPlaying ? (
-                      <>
-                        <Pause className="w-5 h-5 mr-2" />
-                        Pause Audio
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-5 h-5 mr-2" />
-                        {audioCurrentTime > 0 ? 'Resume Audio' : 'Play Audio'}
-                      </>
-                    )}
-                  </Button>
+                  <div className="flex gap-3">
+                    <Button 
+                      onClick={toggleAudioPlayback}
+                      disabled={!audioLoaded || !fullAudioUrl || audioError}
+                      className="bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-400"
+                      size="lg"
+                    >
+                      {audioPlaying ? (
+                        <>
+                          <Pause className="w-5 h-5 mr-2" />
+                          Pause Audio
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-5 h-5 mr-2" />
+                          {audioCurrentTime > 0 ? 'Resume Audio' : 'Play Audio'}
+                        </>
+                      )}
+                    </Button>
+
+                    <Button 
+                      onClick={handleSkipAudio}
+                      variant="outline"
+                      size="lg"
+                      className="border-blue-600 text-blue-600 hover:bg-blue-50"
+                    >
+                      <SkipForward className="w-5 h-5 mr-2" />
+                      Skip Audio
+                    </Button>
+                  </div>
 
                   {/* Audio Progress */}
                   {audioLoaded && audioDuration > 0 && (
