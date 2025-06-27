@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -46,6 +45,7 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
   const [audioLoaded, setAudioLoaded] = useState(false);
   const [audioCurrentTime, setAudioCurrentTime] = useState(0);
   const [audioDuration, setAudioDuration] = useState(0);
+  const [audioError, setAudioError] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -83,10 +83,13 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
           options: Array.isArray(q.options) ? q.options : JSON.parse(q.options as string),
           correct_answer: typeof q.correct_answer === 'string' 
             ? q.correct_answer 
-            : JSON.parse((q.correct_answer as unknown) as string)
+            : String(q.correct_answer as unknown)
         }));
         
         setQuestions(transformedQuestions);
+
+        console.log('Passages loaded:', passagesData);
+        console.log('Questions loaded:', transformedQuestions);
 
       } catch (error) {
         console.error('Error fetching listening data:', error);
@@ -106,12 +109,15 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
     setShowQuestions(false);
     setAudioCurrentTime(0);
     setAudioDuration(0);
+    setAudioError(false);
   }, [currentPassageIndex]);
 
   const handleAudioLoad = () => {
     if (audioRef.current) {
       setAudioLoaded(true);
+      setAudioError(false);
       setAudioDuration(audioRef.current.duration);
+      console.log('Audio loaded successfully, duration:', audioRef.current.duration);
     }
   };
 
@@ -127,20 +133,28 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
     toast.success('Audio completed. You can now answer the questions.');
   };
 
-  const handleAudioError = () => {
-    toast.error('Failed to load audio. Please try again.');
+  const handleAudioError = (e: any) => {
+    console.error('Audio error:', e);
+    console.error('Current audio URL:', passages[currentPassageIndex]?.audio_url);
+    setAudioError(true);
     setAudioLoaded(false);
+    toast.error('Failed to load audio. Please check the audio file.');
   };
 
-  const toggleAudioPlayback = () => {
+  const toggleAudioPlayback = async () => {
     if (!audioRef.current) return;
 
-    if (audioPlaying) {
-      audioRef.current.pause();
-      setAudioPlaying(false);
-    } else {
-      audioRef.current.play();
-      setAudioPlaying(true);
+    try {
+      if (audioPlaying) {
+        audioRef.current.pause();
+        setAudioPlaying(false);
+      } else {
+        await audioRef.current.play();
+        setAudioPlaying(true);
+      }
+    } catch (error) {
+      console.error('Error playing audio:', error);
+      toast.error('Failed to play audio. Please try again.');
     }
   };
 
@@ -272,19 +286,29 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                     ref={audioRef}
                     src={currentPassage.audio_url}
                     onLoadedData={handleAudioLoad}
+                    onLoadedMetadata={handleAudioLoad}
+                    onCanPlayThrough={handleAudioLoad}
                     onTimeUpdate={handleAudioTimeUpdate}
                     onEnded={handleAudioEnded}
                     onError={handleAudioError}
                     preload="metadata"
+                    crossOrigin="anonymous"
                   />
+                )}
+
+                {/* Debug Info */}
+                {currentPassage.audio_url && (
+                  <div className="mb-4 text-xs text-gray-500">
+                    Audio URL: {currentPassage.audio_url}
+                  </div>
                 )}
 
                 {/* Audio Controls */}
                 <div className="flex flex-col items-center gap-4">
                   <Button 
                     onClick={toggleAudioPlayback}
-                    disabled={!audioLoaded || !currentPassage.audio_url}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    disabled={!audioLoaded || !currentPassage.audio_url || audioError}
+                    className="bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-400"
                     size="lg"
                   >
                     {audioPlaying ? (
@@ -319,6 +343,18 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                   {audioPlaying && (
                     <p className="text-sm text-gray-600">
                       Audio is playing. Take notes as you listen.
+                    </p>
+                  )}
+
+                  {audioError && (
+                    <p className="text-red-600 text-sm">
+                      Error loading audio file. Please check the file URL and try again.
+                    </p>
+                  )}
+
+                  {!audioLoaded && !audioError && currentPassage.audio_url && (
+                    <p className="text-sm text-gray-600">
+                      Loading audio...
                     </p>
                   )}
                 </div>
@@ -383,9 +419,11 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
             </Button>
           ) : (
             <div className="text-sm text-gray-500">
-              {audioLoaded 
-                ? (audioPlaying ? 'Listening to audio...' : 'Click Play Audio to begin')
-                : 'Loading audio...'
+              {audioError 
+                ? 'Audio failed to load'
+                : audioLoaded 
+                  ? (audioPlaying ? 'Listening to audio...' : 'Click Play Audio to begin')
+                  : 'Loading audio...'
               }
             </div>
           )}
