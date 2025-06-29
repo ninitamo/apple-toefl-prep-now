@@ -1,5 +1,5 @@
 
-import { Mail, MessageSquare, Clock, MapPin } from 'lucide-react';
+import { Mail, MessageSquare, Clock, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const ContactSection = () => {
@@ -8,105 +8,131 @@ const ContactSection = () => {
   };
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Get in Touch
+        <div className="text-center mb-20">
+          <h2 className="text-4xl sm:text-5xl font-light text-slate-800 mb-8">
+            Connect With Our Team
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Have questions about TOEFL preparation? Need technical support? We're here to help you succeed.
+          <p className="text-xl text-slate-600 max-w-4xl mx-auto font-light leading-relaxed">
+            We're dedicated to supporting your TOEFL preparation journey. Whether you need guidance, technical assistance, or have questions about our platform, our expert team is here to help you succeed.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div className="space-y-8">
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="flex items-start space-x-4">
+            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-slate-200/50 hover:shadow-xl transition-all duration-300">
+              <div className="flex items-start space-x-6">
                 <div className="flex-shrink-0">
-                  <Mail className="h-8 w-8 text-blue-600" />
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+                    <Mail className="h-8 w-8 text-white" />
+                  </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    Email Support
+                  <h3 className="text-xl font-medium text-slate-800 mb-4">
+                    Direct Communication
                   </h3>
-                  <p className="text-gray-600 mb-4">
-                    Get help with technical issues, account questions, or TOEFL preparation guidance.
+                  <p className="text-slate-600 mb-6 font-light leading-relaxed">
+                    Reach our support specialists for personalized assistance with technical issues, account inquiries, or comprehensive TOEFL preparation guidance.
                   </p>
                   <Button
                     onClick={handleEmailClick}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-full px-8 py-3 font-light shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    Contact Us: toeflprep@gmail.com
+                    Contact: toeflprep@gmail.com
                   </Button>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="flex items-start space-x-4">
+            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-slate-200/50 hover:shadow-xl transition-all duration-300">
+              <div className="flex items-start space-x-6">
                 <div className="flex-shrink-0">
-                  <Clock className="h-8 w-8 text-green-600" />
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg">
+                    <Clock className="h-8 w-8 text-white" />
+                  </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    Response Time
+                  <h3 className="text-xl font-medium text-slate-800 mb-4">
+                    Response Commitment
                   </h3>
-                  <p className="text-gray-600">
-                    We typically respond to all inquiries within 24 hours during business days.
+                  <p className="text-slate-600 font-light leading-relaxed">
+                    Our dedicated support team ensures comprehensive responses to all inquiries within 24 hours during standard business operations, prioritizing your preparation needs.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="flex items-start space-x-4">
+            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-slate-200/50 hover:shadow-xl transition-all duration-300">
+              <div className="flex items-start space-x-6">
                 <div className="flex-shrink-0">
-                  <MessageSquare className="h-8 w-8 text-purple-600" />
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-lg">
+                    <MessageSquare className="h-8 w-8 text-white" />
+                  </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    Common Topics
+                  <h3 className="text-xl font-medium text-slate-800 mb-4">
+                    Areas of Expertise
                   </h3>
-                  <ul className="text-gray-600 space-y-1">
-                    <li>• TOEFL test preparation strategies</li>
-                    <li>• Technical support and troubleshooting</li>
-                    <li>• Account and progress questions</li>
-                    <li>• Feedback and suggestions</li>
+                  <ul className="text-slate-600 space-y-3 font-light">
+                    <li className="flex items-start">
+                      <span className="text-purple-500 mr-3 text-lg">•</span>
+                      Strategic TOEFL preparation methodologies
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-500 mr-3 text-lg">•</span>
+                      Platform navigation and technical support
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-500 mr-3 text-lg">•</span>
+                      Account management and progress analysis
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-500 mr-3 text-lg">•</span>
+                      Platform improvements and user feedback
+                    </li>
                   </ul>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-blue-50 rounded-xl p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              We're Here to Help
-            </h3>
-            <div className="space-y-4 text-gray-700">
+          <div className="bg-gradient-to-br from-slate-100/50 to-blue-100/30 backdrop-blur-sm rounded-2xl p-12 border border-slate-200/50 shadow-lg">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center shadow-lg">
+                <Heart className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-light text-slate-800">
+                Dedicated to Your Success
+              </h3>
+            </div>
+            
+            <div className="space-y-6 text-slate-700 font-light leading-relaxed">
               <p>
-                Our team of TOEFL experts and technical specialists is dedicated to supporting your test preparation journey. Whether you need help with:
+                Our team of TOEFL specialists and technical experts is committed to providing exceptional support throughout your preparation journey. We understand the importance of achieving your target score and are here to assist with:
               </p>
-              <ul className="space-y-2">
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">✓</span>
-                  Understanding TOEFL test formats and scoring
-                </li>
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">✓</span>
-                  Navigating our practice platform
-                </li>
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">✓</span>
-                  Interpreting your practice test results
-                </li>
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">✓</span>
-                  Creating an effective study plan
-                </li>
-              </ul>
-              <p className="pt-4">
-                Don't hesitate to reach out. Your success is our priority, and we're committed to providing the support you need to achieve your TOEFL goals.
+              
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <span className="text-blue-600 mr-3 text-xl">✓</span>
+                  <span>Comprehensive understanding of TOEFL formats and scoring methodologies</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-blue-600 mr-3 text-xl">✓</span>
+                  <span>Expert guidance on effective platform utilization and feature navigation</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-blue-600 mr-3 text-xl">✓</span>
+                  <span>Professional interpretation of practice test results and performance analytics</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-blue-600 mr-3 text-xl">✓</span>
+                  <span>Strategic development of personalized study plans and preparation schedules</span>
+                </div>
+              </div>
+              
+              <p className="pt-6 border-t border-slate-200/50">
+                Your academic aspirations drive our commitment to excellence. We believe in fostering success through personalized support, and we're always available to provide the guidance you need to achieve your TOEFL objectives.
               </p>
             </div>
           </div>

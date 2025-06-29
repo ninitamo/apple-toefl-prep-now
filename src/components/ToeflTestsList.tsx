@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Clock, Users, BookOpen } from 'lucide-react';
+import { Clock, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ToeflTest {
@@ -30,89 +30,106 @@ const ToeflTestsList = () => {
     },
   });
 
-  // const getDifficultyColor = (difficulty: string) => {
-  //   switch (difficulty.toLowerCase()) {
-  //     case 'beginner':
-  //       return 'bg-green-100 text-green-800';
-  //     case 'intermediate':
-  //       return 'bg-yellow-100 text-yellow-800';
-  //     case 'advanced':
-  //       return 'bg-orange-100 text-orange-800';
-  //     case 'expert':
-  //       return 'bg-red-100 text-red-800';
-  //     default:
-  //       return 'bg-gray-100 text-gray-800';
-  //   }
-  // };
-
-  const getColor = () => {
-    return 'bg-green-100 text-green-800';
+  const getTestNumber = (index: number) => {
+    return `Practice Test ${index + 1}`;
   };
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading practice tests...</p>
-        </div>
+      <div className="text-center py-16">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-slate-600 mx-auto mb-6"></div>
+        <p className="text-slate-600 font-light">Loading practice tests...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center text-red-600">
-          <p>Error loading tests. Please try again later.</p>
+      <div className="text-center py-16">
+        <div className="text-slate-600 font-light">
+          <p>Unable to load practice tests. Please try again later.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">TOEFL Practice Tests</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Practice with TOEFL-like tests to improve your skills. Please note that these are unofficial materials.        </p>
+    <div>
+      <div className="text-center mb-16">
+        <p className="text-lg text-slate-600 max-w-4xl mx-auto font-light leading-relaxed">
+          Experience authentic TOEFL preparation with meticulously crafted practice examinations. These comprehensive assessments mirror the official test format while providing valuable preparation insights.
+        </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {tests?.map((test, index) => (
-          <Card key={test.id} className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-lg font-semibold">{test.title}</CardTitle>
-                <Badge className={getColor()}>
-                  {index + 1}
+          <Card key={test.id} className="border-0 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 group bg-white/70 backdrop-blur-sm">
+            <CardHeader className="pb-4">
+              <div className="flex justify-between items-start mb-4">
+                <CardTitle className="text-xl font-light text-slate-800 group-hover:text-slate-700 transition-colors">
+                  {getTestNumber(index)}
+                </CardTitle>
+                <Badge className="bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 border-slate-300 font-light">
+                  #{index + 1}
                 </Badge>
               </div>
-              <CardDescription className="text-sm text-gray-600">
-                Questions appear in order, as in real exam.
+              <CardDescription className="text-slate-600 font-light leading-relaxed">
+                Comprehensive assessment following official TOEFL iBT structure and timing protocols.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between text-sm text-gray-500">
-                <div className="flex items-center gap-1">
+            <CardContent className="space-y-6">
+              <div className="flex items-center justify-between text-sm text-slate-500">
+                <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
-                  <span>≈ {test.duration}</span>
+                  <span className="font-light">≈ {test.duration}</span>
                 </div>
               </div>
 
-              <div className="flex items-center pb-2 gap-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2 text-sm text-slate-600 pb-2">
                 <BookOpen className="w-4 h-4" />
-                <span>Reading • Listening • Speaking • Writing</span>
+                <span className="font-light">Reading • Listening • Speaking • Writing</span>
               </div>
 
               <Link to={`/test/${test.id}`}>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                  Start Practice Test
+                <Button className="w-full bg-gradient-to-r from-slate-700 to-slate-900 hover:from-slate-800 hover:to-slate-950 text-white rounded-full font-light py-3 shadow-lg hover:shadow-xl transition-all duration-300">
+                  Begin Practice Test
                 </Button>
               </Link>
             </CardContent>
           </Card>
         ))}
+      </div>
+
+      <div className="mt-20 text-center">
+        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 max-w-4xl mx-auto border border-slate-200/50 shadow-lg">
+          <h3 className="text-2xl font-light text-slate-800 mb-6">Practice Test Benefits</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+            <div className="space-y-3">
+              <h4 className="font-medium text-slate-700">Authentic Experience</h4>
+              <p className="text-sm text-slate-600 font-light leading-relaxed">
+                Mirror the official TOEFL iBT format with precise timing and question structures for realistic preparation.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h4 className="font-medium text-slate-700">Comprehensive Assessment</h4>
+              <p className="text-sm text-slate-600 font-light leading-relaxed">
+                Evaluate all four language skills simultaneously to identify strengths and areas for improvement.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h4 className="font-medium text-slate-700">Strategic Preparation</h4>
+              <p className="text-sm text-slate-600 font-light leading-relaxed">
+                Build test-taking stamina and develop time management strategies for optimal performance.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h4 className="font-medium text-slate-700">Progress Tracking</h4>
+              <p className="text-sm text-slate-600 font-light leading-relaxed">
+                Monitor improvement across multiple practice sessions and refine your preparation approach.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
