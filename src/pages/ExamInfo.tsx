@@ -21,39 +21,51 @@ const ExamInfo = () => {
     },
     {
       id: 2,
-      question: "How is the TOEFL scored?",
-      answer: "TOEFL iBT scores range from 0-120 points total. Each section (Reading, Listening, Speaking, Writing) is scored 0-30 points. Most universities require scores between 80-100 for admission.",
+      question: "Who needs to take TOEFL? [2025 Global Guide for Students]",
+      answer: "Click to read the complete guide about who should take the TOEFL exam.",
+      isBlogLink: true,
+      blogPath: "/blog/who-needs-toefl",
       position: { top: '25%', right: '15%' }
     },
     {
       id: 3,
-      question: "What are the test sections?",
-      answer: "The TOEFL iBT has four sections: Reading (54-72 minutes), Listening (41-57 minutes), Speaking (17 minutes), and Writing (50 minutes). Total test time is approximately 3 hours.",
-      position: { bottom: '25%', right: '15%' }
+      question: "Which TOEFL test should I take? [2025 Comparison Guide]",
+      answer: "Click to read the complete comparison guide for TOEFL test options.",
+      isBlogLink: true,
+      blogPath: "/blog/which-toefl-test",
+      position: { top: '50%', right: '10%' }
     },
     {
       id: 4,
-      question: "How long are TOEFL scores valid?",
-      answer: "TOEFL scores are valid for 2 years from the test date. After this period, scores are no longer reported and cannot be sent to institutions.",
-      position: { bottom: '10%', left: '50%', transform: 'translateX(-50%)' }
+      question: "Where is TOEFL accepted? [2025 Global Acceptance Guide]",
+      answer: "Click to read about TOEFL acceptance worldwide.",
+      isBlogLink: true,
+      blogPath: "/blog/where-toefl-accepted",
+      position: { bottom: '25%', right: '15%' }
     },
     {
       id: 5,
-      question: "How often can I take the TOEFL?",
-      answer: "You can take the TOEFL iBT as many times as you want, but you must wait at least 3 days between test dates. There's no limit to the number of times you can take the test.",
-      position: { bottom: '25%', left: '15%' }
+      question: "When is TOEFL exam conducted? [2025 Test Date Guide]",
+      answer: "Click to read about TOEFL test dates and scheduling.",
+      isBlogLink: true,
+      blogPath: "/blog/when-toefl-conducted",
+      position: { bottom: '10%', left: '50%', transform: 'translateX(-50%)' }
     },
     {
       id: 6,
-      question: "What is a good TOEFL score?",
-      answer: "A 'good' TOEFL score depends on your target institution. Generally, 80+ is competitive for most universities, 90+ for top-tier schools, and 100+ for highly competitive programs.",
-      position: { top: '25%', left: '15%' }
+      question: "What does TOEFL stand for? [2025 Beginner's Guide]",
+      answer: "Click to read the complete beginner's guide to TOEFL.",
+      isBlogLink: true,
+      blogPath: "/blog/what-toefl-stands-for",
+      position: { bottom: '25%', left: '15%' }
     },
     {
       id: 7,
-      question: "How much does the TOEFL cost?",
-      answer: "The TOEFL iBT registration fee varies by location, typically ranging from $180-$300 USD. Additional fees may apply for late registration, rescheduling, or additional score reports.",
-      position: { top: '50%', left: '5%' }
+      question: "How is TOEFL iBT score calculated? [2025 Scoring Guide]",
+      answer: "Click to read the complete guide to TOEFL scoring.",
+      isBlogLink: true,
+      blogPath: "/blog/how-toefl-scored",
+      position: { top: '25%', left: '15%' }
     }
   ];
 
@@ -112,26 +124,14 @@ const ExamInfo = () => {
                   <div className="relative">
                     <Button
                       onClick={() => toggleQuestion(faq.id)}
-                      className={`bg-white/90 backdrop-blur-sm hover:bg-white text-slate-800 border-2 ${
-                        faq.isBlogLink 
-                          ? 'border-purple-300 hover:border-purple-400 shadow-lg hover:shadow-purple-100' 
-                          : 'border-blue-200 hover:border-blue-300'
-                      } rounded-2xl px-4 py-2 text-sm font-medium shadow-lg transition-all duration-200 max-w-[200px] whitespace-normal h-auto min-h-[60px] flex items-center justify-center group`}
+                      className="bg-white/90 backdrop-blur-sm hover:bg-white text-slate-800 border-2 border-purple-300 hover:border-purple-400 shadow-lg hover:shadow-purple-100 rounded-2xl px-4 py-2 text-sm font-medium transition-all duration-200 max-w-[220px] whitespace-normal h-auto min-h-[60px] flex items-center justify-center group"
                     >
                       <span className="text-center leading-tight">{faq.question}</span>
-                      {faq.isBlogLink ? (
-                        <ExternalLink className="ml-2 h-4 w-4 flex-shrink-0 text-purple-600" />
-                      ) : (
-                        activeQuestion === faq.id ? 
-                          <ChevronUp className="ml-2 h-4 w-4 flex-shrink-0" /> : 
-                          <ChevronDown className="ml-2 h-4 w-4 flex-shrink-0" />
-                      )}
+                      <ExternalLink className="ml-2 h-4 w-4 flex-shrink-0 text-purple-600" />
                     </Button>
                     
                     {/* Connecting line to center */}
-                    <div className={`absolute top-1/2 left-1/2 w-0.5 h-8 ${
-                      faq.isBlogLink ? 'bg-purple-300' : 'bg-blue-300'
-                    } transform -translate-x-1/2 origin-top rotate-45 opacity-30`}></div>
+                    <div className="absolute top-1/2 left-1/2 w-0.5 h-8 bg-purple-300 transform -translate-x-1/2 origin-top rotate-45 opacity-30"></div>
                   </div>
                 </div>
               ))}
