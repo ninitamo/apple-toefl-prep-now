@@ -38,6 +38,16 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  const handleSkipSection = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    onNext();
+  };
+
   // Fetch speaking tasks from database
   useEffect(() => {
     const fetchSpeakingTasks = async () => {
@@ -395,6 +405,14 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
           </span>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-600">00:15:30 ⏰ Hide Time</span>
+            <Button
+              onClick={handleSkipSection}
+              variant="outline"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
+            >
+              <SkipForward className="h-4 w-4" />
+              Skip Speaking Section
+            </Button>
             {hasStarted && (
               <Button onClick={resetTask} variant="outline" size="sm">
                 <RotateCcw className="h-4 w-4 mr-2" />

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import WritingDisplay from '@/components/WritingDisplay';
 import { toast } from 'sonner';
+import { SkipForward } from 'lucide-react';
 
 interface WritingSectionProps {
   onNext: () => void;
@@ -31,6 +32,10 @@ const WritingSection = ({ onNext }: WritingSectionProps) => {
   const [passages, setPassages] = useState<WritingPassage[]>([]);
   const [questions, setQuestions] = useState<WritingQuestion[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const handleSkipSection = () => {
+    onNext();
+  };
 
   useEffect(() => {
     const fetchWritingData = async () => {
@@ -84,6 +89,17 @@ const WritingSection = ({ onNext }: WritingSectionProps) => {
   return (
     <div className="min-h-screen bg-white p-2">
       <div className="max-w-7xl mx-auto">
+        <div className="mb-4 flex justify-end">
+          <Button
+            onClick={handleSkipSection}
+            variant="outline"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
+          >
+            <SkipForward className="h-4 w-4" />
+            Skip Writing Section
+          </Button>
+        </div>
+
         {passages.length > 0 ? (
           <>
             <WritingDisplay passages={passages} questions={questions} />

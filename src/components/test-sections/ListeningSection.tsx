@@ -57,6 +57,14 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
     return `https://tdirwxqcamngvsubjbdd.supabase.co/storage/v1/object/public/${relativePath}`;
   };
 
+  const handleSkipSection = () => {
+    if (audioRef.current && audioPlaying) {
+      audioRef.current.pause();
+      setAudioPlaying(false);
+    }
+    onNext();
+  };
+
   useEffect(() => {
     const fetchListeningData = async () => {
       if (!testId) return;
@@ -260,18 +268,28 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
     <div className="min-h-screen bg-white p-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold mb-2">Listening Section</h1>
-          <div className="flex items-center gap-4">
-            <Badge variant="outline">
-              {currentPassage.audio_type === 'lecture' ? 'Lecture' : 'Conversation'} {currentPassageIndex + 1} of {passages.length}
-            </Badge>
-            {showQuestions && (
+        <div className="mb-6 flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold mb-2">Listening Section</h1>
+            <div className="flex items-center gap-4">
               <Badge variant="outline">
-                Question {currentQuestionIndex + 1} of {currentPassageQuestions.length}
+                {currentPassage.audio_type === 'lecture' ? 'Lecture' : 'Conversation'} {currentPassageIndex + 1} of {passages.length}
               </Badge>
-            )}
+              {showQuestions && (
+                <Badge variant="outline">
+                  Question {currentQuestionIndex + 1} of {currentPassageQuestions.length}
+                </Badge>
+              )}
+            </div>
           </div>
+          <Button
+            onClick={handleSkipSection}
+            variant="outline"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
+          >
+            <SkipForward className="h-4 w-4" />
+            Skip Listening Section
+          </Button>
         </div>
 
         {!showQuestions ? (
