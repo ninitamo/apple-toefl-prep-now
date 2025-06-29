@@ -6,6 +6,7 @@ import PracticeSelector from '@/components/PracticeSelector';
 import StudyMaterials from '@/components/StudyMaterials';
 import FAQSection from '@/components/FAQSection';
 import TeamSection from '@/components/TeamSection';
+import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -18,6 +19,7 @@ const Index = () => {
       <StudyMaterials />
       <FAQSection />
       <TeamSection />
+      <ContactSection />
       <Footer />
     </div>
   );
