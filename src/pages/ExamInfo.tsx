@@ -10,50 +10,50 @@ const ExamInfo = () => {
   const navigate = useNavigate();
   const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
 
-  const faqData = [
-    {
-      id: 1,
-      question: "What is the TOEFL iBT exam?",
-      answer: "The TOEFL iBT (Internet-based Test) is a standardized test that measures English language proficiency for non-native speakers. It evaluates your ability to use and understand English in academic settings.",
-      position: { top: '10%', left: '50%', transform: 'translateX(-50%)' }
-    },
-    {
-      id: 2,
-      question: "How is the TOEFL scored?",
-      answer: "TOEFL iBT scores range from 0-120 points total. Each section (Reading, Listening, Speaking, Writing) is scored 0-30 points. Most universities require scores between 80-100 for admission.",
-      position: { top: '25%', right: '15%' }
-    },
-    {
-      id: 3,
-      question: "What are the test sections?",
-      answer: "The TOEFL iBT has four sections: Reading (54-72 minutes), Listening (41-57 minutes), Speaking (17 minutes), and Writing (50 minutes). Total test time is approximately 3 hours.",
-      position: { bottom: '25%', right: '15%' }
-    },
-    {
-      id: 4,
-      question: "How long are TOEFL scores valid?",
-      answer: "TOEFL scores are valid for 2 years from the test date. After this period, scores are no longer reported and cannot be sent to institutions.",
-      position: { bottom: '10%', left: '50%', transform: 'translateX(-50%)' }
-    },
-    {
-      id: 5,
-      question: "How often can I take the TOEFL?",
-      answer: "You can take the TOEFL iBT as many times as you want, but you must wait at least 3 days between test dates. There's no limit to the number of times you can take the test.",
-      position: { bottom: '25%', left: '15%' }
-    },
-    {
-      id: 6,
-      question: "What is a good TOEFL score?",
-      answer: "A 'good' TOEFL score depends on your target institution. Generally, 80+ is competitive for most universities, 90+ for top-tier schools, and 100+ for highly competitive programs.",
-      position: { top: '25%', left: '15%' }
-    },
-    {
-      id: 7,
-      question: "How much does the TOEFL cost?",
-      answer: "The TOEFL iBT registration fee varies by location, typically ranging from $180-$300 USD. Additional fees may apply for late registration, rescheduling, or additional score reports.",
-      position: { top: '50%', left: '5%' }
-    }
-  ];
+  // const faqData = [
+  //   {
+  //     id: 1,
+  //     question: "What is the TOEFL iBT exam?",
+  //     answer: "The TOEFL iBT (Internet-based Test) is a standardized test that measures English language proficiency for non-native speakers. It evaluates your ability to use and understand English in academic settings.",
+  //     position: { top: '10%', left: '50%', transform: 'translateX(-50%)' }
+  //   },
+  //   {
+  //     id: 2,
+  //     question: "How is the TOEFL scored?",
+  //     answer: "TOEFL iBT scores range from 0-120 points total. Each section (Reading, Listening, Speaking, Writing) is scored 0-30 points. Most universities require scores between 80-100 for admission.",
+  //     position: { top: '25%', right: '15%' }
+  //   },
+  //   {
+  //     id: 3,
+  //     question: "What are the test sections?",
+  //     answer: "The TOEFL iBT has four sections: Reading (54-72 minutes), Listening (41-57 minutes), Speaking (17 minutes), and Writing (50 minutes). Total test time is approximately 3 hours.",
+  //     position: { bottom: '25%', right: '15%' }
+  //   },
+  //   {
+  //     id: 4,
+  //     question: "How long are TOEFL scores valid?",
+  //     answer: "TOEFL scores are valid for 2 years from the test date. After this period, scores are no longer reported and cannot be sent to institutions.",
+  //     position: { bottom: '10%', left: '50%', transform: 'translateX(-50%)' }
+  //   },
+  //   {
+  //     id: 5,
+  //     question: "How often can I take the TOEFL?",
+  //     answer: "You can take the TOEFL iBT as many times as you want, but you must wait at least 3 days between test dates. There's no limit to the number of times you can take the test.",
+  //     position: { bottom: '25%', left: '15%' }
+  //   },
+  //   {
+  //     id: 6,
+  //     question: "What is a good TOEFL score?",
+  //     answer: "A 'good' TOEFL score depends on your target institution. Generally, 80+ is competitive for most universities, 90+ for top-tier schools, and 100+ for highly competitive programs.",
+  //     position: { top: '25%', left: '15%' }
+  //   },
+  //   {
+  //     id: 7,
+  //     question: "How much does the TOEFL cost?",
+  //     answer: "The TOEFL iBT registration fee varies by location, typically ranging from $180-$300 USD. Additional fees may apply for late registration, rescheduling, or additional score reports.",
+  //     position: { top: '50%', left: '5%' }
+  //   }
+  // ];
 
   const toggleQuestion = (id: number) => {
     setActiveQuestion(activeQuestion === id ? null : id);
@@ -89,9 +89,9 @@ const ExamInfo = () => {
           </div>
 
           {/* Circular FAQ Layout */}
-          <div className="relative w-full max-w-4xl mx-auto mb-16">
+          {/* <div className="relative w-full max-w-4xl mx-auto mb-16">
             <div className="relative h-[600px] mx-auto">
-              {/* Central Circle */}
+       
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
                 <div className="text-center">
                   <div className="text-white font-bold text-xl">TOEFL</div>
@@ -99,7 +99,7 @@ const ExamInfo = () => {
                 </div>
               </div>
 
-              {/* FAQ Questions positioned around the circle */}
+       
               {faqData.map((faq) => (
                 <div
                   key={faq.id}
@@ -118,7 +118,7 @@ const ExamInfo = () => {
                       }
                     </Button>
                     
-                    {/* Connecting line to center */}
+      
                     <div className="absolute top-1/2 left-1/2 w-0.5 h-8 bg-orange-300 transform -translate-x-1/2 origin-top rotate-45 opacity-30"></div>
                   </div>
                 </div>
@@ -126,7 +126,7 @@ const ExamInfo = () => {
             </div>
           </div>
 
-          {/* FAQ Answers Section */}
+     
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Frequently Asked Questions</h2>
             
@@ -157,7 +157,7 @@ const ExamInfo = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Call to Action */}
           <div className="text-center mt-16">
