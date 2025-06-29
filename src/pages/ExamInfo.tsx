@@ -89,9 +89,9 @@ const ExamInfo = () => {
           </div>
 
           {/* Circular FAQ Layout */}
-          {/* <div className="relative w-full max-w-4xl mx-auto mb-16">
+          <div className="relative w-full max-w-4xl mx-auto mb-16">
             <div className="relative h-[600px] mx-auto">
-       
+              {/* Central Circle */}
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
                 <div className="text-center">
                   <div className="text-white font-bold text-xl">TOEFL</div>
@@ -99,7 +99,7 @@ const ExamInfo = () => {
                 </div>
               </div>
 
-       
+              {/* FAQ Questions positioned around the circle */}
               {faqData.map((faq) => (
                 <div
                   key={faq.id}
@@ -118,7 +118,7 @@ const ExamInfo = () => {
                       }
                     </Button>
                     
-      
+                    {/* Connecting line to center */}
                     <div className="absolute top-1/2 left-1/2 w-0.5 h-8 bg-orange-300 transform -translate-x-1/2 origin-top rotate-45 opacity-30"></div>
                   </div>
                 </div>
@@ -126,8 +126,8 @@ const ExamInfo = () => {
             </div>
           </div>
 
-     
-          <div className="max-w-4xl mx-auto">
+          {/* FAQ Answers Section */}
+          {/* <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Frequently Asked Questions</h2>
             
             <div className="space-y-4">
