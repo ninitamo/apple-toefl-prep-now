@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Search, ExternalLink, Globe, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -18,6 +17,7 @@ interface Institution {
 
 const InstitutionSearch = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [filteredInstitutions, setFilteredInstitutions] = useState<Institution[]>([]);
@@ -25,8 +25,15 @@ const InstitutionSearch = () => {
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
+    // Get search query from URL params
+    const params = new URLSearchParams(location.search);
+    const query = params.get('q');
+    if (query) {
+      setSearchTerm(query);
+    }
+    
     fetchInstitutions();
-  }, []);
+  }, [location.search]);
 
   useEffect(() => {
     if (searchTerm.trim() === '') {

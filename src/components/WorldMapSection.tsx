@@ -1,7 +1,14 @@
-import React from "react";
-import { Globe } from "lucide-react";
+
+import React, { useState } from "react";
+import { Globe, Search, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 
 function WorldMapSection() {
+    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState('');
+
     const continentData = [
         { name: "North America", institutions: "7400+", color: "bg-orange-500" },
         { name: "Europe", institutions: "2100+", color: "bg-orange-500" },
@@ -10,6 +17,15 @@ function WorldMapSection() {
         { name: "South America", institutions: "450+", color: "bg-orange-500" },
         { name: "Africa", institutions: "125+", color: "bg-orange-500" },
     ];
+
+    const handleSearchSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchTerm.trim()) {
+            navigate(`/institution-search?q=${encodeURIComponent(searchTerm.trim())}`);
+        } else {
+            navigate('/institution-search');
+        }
+    };
 
     return (
         <div className="mb-16">
@@ -62,6 +78,38 @@ function WorldMapSection() {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                {/* Search Section */}
+                <div className="text-center bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8">
+                    <h3 className="text-2xl font-bold text-slate-800 mb-4">
+                        Find Your Institution
+                    </h3>
+                    <p className="text-slate-600 mb-6">
+                        Search our database to check if your university accepts TOEFL iBT
+                    </p>
+                    
+                    <form onSubmit={handleSearchSubmit} className="max-w-md mx-auto">
+                        <div className="flex gap-3">
+                            <div className="relative flex-1">
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                                <Input
+                                    type="text"
+                                    placeholder="Search university or country..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="pl-10 pr-4 py-3 text-lg border-2 border-gray-200 focus:border-blue-500 rounded-xl"
+                                />
+                            </div>
+                            <Button
+                                type="submit"
+                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-6 py-3 group"
+                            >
+                                Search
+                                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                            </Button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
