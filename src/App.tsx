@@ -12,6 +12,11 @@ import Contact from "./pages/Contact";
 import ExamInfo from "./pages/ExamInfo";
 import WhyToeflBlog from "./pages/WhyToeflBlog";
 import WhoNeedsToeflBlog from "./pages/WhoNeedsToeflBlog";
+import WhichToeflTestBlog from "./pages/WhichToeflTestBlog";
+import WhereToeflAcceptedBlog from "./pages/WhereToeflAcceptedBlog";
+import WhenToeflConductedBlog from "./pages/WhenToeflConductedBlog";
+import WhatToeflStandsForBlog from "./pages/WhatToeflStandsForBlog";
+import HowToeflScoredBlog from "./pages/HowToeflScoredBlog";
 import ToeflTest from "./pages/ToeflTest";
 import FullTestsList from "./pages/FullTestsList";
 import IndividualSectionsPage from "./pages/IndividualSectionsPage";
@@ -24,13 +29,6 @@ import SpeakingPractice from "./pages/SpeakingPractice";
 import WritingPracticeList from "./pages/WritingPracticeList";
 import WritingPractice from "./pages/WritingPractice";
 import NotFound from "./pages/NotFound";
-
-// Placeholder components for the remaining blog pages
-const WhichToeflTestBlog = () => <div>Which TOEFL Test Blog - Coming Soon</div>;
-const WhereToeflAcceptedBlog = () => <div>Where TOEFL Accepted Blog - Coming Soon</div>;
-const WhenToeflConductedBlog = () => <div>When TOEFL Conducted Blog - Coming Soon</div>;
-const WhatToeflStandsForBlog = () => <div>What TOEFL Stands For Blog - Coming Soon</div>;
-const HowToeflScoredBlog = () => <div>How TOEFL Scored Blog - Coming Soon</div>;
 
 const queryClient = new QueryClient();
 
