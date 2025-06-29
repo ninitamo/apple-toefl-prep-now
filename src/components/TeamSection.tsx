@@ -4,29 +4,17 @@ import { Card, CardContent } from '@/components/ui/card';
 const TeamSection = () => {
   const teamMembers = [
     {
-      name: "Dr. Sarah Johnson",
-      role: "Lead TOEFL Specialist",
-      description: "Former ETS researcher with 15+ years of experience in standardized testing. PhD in Applied Linguistics from Columbia University.",
+      name: "Nino Kezherashvili",
+      role: "Developer/Content Researcher",
+      // description: "Experience in working for IT sectore for almost 5 years. Passionate about giving education.",
       image: "/placeholder.svg"
     },
     {
-      name: "Michael Chen",
-      role: "Content Development Manager",
-      description: "Certified TOEFL instructor and materials developer. Master's in TESOL with expertise in digital learning platforms.",
+      name: "Salome Kereselidze",
+      role: "Graphic Designer/Content Researcher",
+      // description: "Garap",
       image: "/placeholder.svg"
     },
-    {
-      name: "Dr. Maria Rodriguez",
-      role: "Assessment Psychology Expert",
-      description: "Specialist in language assessment and test anxiety management. PhD in Educational Psychology, published researcher.",
-      image: "/placeholder.svg"
-    },
-    {
-      name: "David Kim",
-      role: "Technology Director",
-      description: "Former education technology executive focused on creating intuitive learning experiences for language learners worldwide.",
-      image: "/placeholder.svg"
-    }
   ];
 
   return (
@@ -37,11 +25,11 @@ const TeamSection = () => {
             About Our Team
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Meet the experts behind ToeflPrep — dedicated professionals committed to your TOEFL success
+            Meet the founders behind ToeflPrep.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           {teamMembers.map((member, index) => (
             <Card key={index} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
@@ -57,9 +45,9 @@ const TeamSection = () => {
                   <p className="text-blue-600 font-medium mb-3">
                     {member.role}
                   </p>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  {/* <p className="text-gray-600 text-sm leading-relaxed">
                     {member.description}
-                  </p>
+                  </p> */}
                 </div>
               </CardContent>
             </Card>
@@ -72,8 +60,8 @@ const TeamSection = () => {
               Our Mission
             </h3>
             <p className="text-lg text-gray-700 max-w-4xl mx-auto leading-relaxed">
-              We believe everyone deserves access to high-quality TOEFL preparation materials. 
-              Our team combines decades of testing expertise with cutting-edge technology to create 
+              We believe everyone deserves access to high-quality TOEFL preparation materials.
+              Our team combines decades of testing expertise with cutting-edge technology to create
               the most effective and accessible TOEFL practice platform available today.
             </p>
           </div>
