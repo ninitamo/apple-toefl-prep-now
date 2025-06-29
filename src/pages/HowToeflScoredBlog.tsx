@@ -49,7 +49,7 @@ const HowToeflScoredBlog = () => {
                   {[
                     'How scoring works in each TOEFL section',
                     'How raw scores are converted into scaled scores',
-                    'What MyBest® scores mean and how they're used'
+                    'What MyBest® scores mean and how they\'re used'
                   ].map((item, index) => (
                     <li key={index} className="flex items-center text-slate-600">
                       <CheckCircle className="h-5 w-5 text-blue-600 mr-3 flex-shrink-0" />
