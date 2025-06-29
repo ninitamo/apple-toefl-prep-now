@@ -1,8 +1,11 @@
 
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
+import WhyChooseSection from '@/components/WhyChooseSection';
 import PracticeSelector from '@/components/PracticeSelector';
 import StudyMaterials from '@/components/StudyMaterials';
+import FAQSection from '@/components/FAQSection';
+import TeamSection from '@/components/TeamSection';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -10,8 +13,11 @@ const Index = () => {
     <div className="min-h-screen bg-white">
       <Navbar />
       <HeroSection />
+      <WhyChooseSection />
       <PracticeSelector />
       <StudyMaterials />
+      <FAQSection />
+      <TeamSection />
       <Footer />
     </div>
   );
