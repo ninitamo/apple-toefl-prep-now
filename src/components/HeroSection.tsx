@@ -43,8 +43,8 @@ const HeroSection = () => {
             <div className="text-gray-600">Section-based Practice</div>
           </div>
           <div className="flex flex-col items-center text-center">
-            <div className="text-3xl font-bold text-blue-600">24/7</div>
-            <div className="text-gray-600">Support</div>
+            <div className="text-3xl font-bold text-blue-600">30+</div>
+            <div className="text-gray-600">Hours of Test Content</div>
           </div>
         </div>
 
