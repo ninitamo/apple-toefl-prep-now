@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 
 const Contact = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <div className="pt-16">
         <ContactSection />

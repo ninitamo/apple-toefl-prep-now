@@ -38,12 +38,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-lg border-b border-slate-200/50 z-50">
+    <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-200/50 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-            <BookOpen className="h-8 w-8 text-slate-700" />
-            <span className="text-xl font-light text-slate-800">TOEFL Prep</span>
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
+            <BookOpen className="h-8 w-8 text-blue-600" />
+            <span className="text-xl font-semibold text-gray-900">TOEFL Prep</span>
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
@@ -51,10 +51,9 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className="text-slate-600 hover:text-slate-900 transition-colors duration-200 text-sm font-light relative group"
+                className="text-gray-600 hover:text-gray-900 transition-colors duration-200 text-sm font-medium"
               >
                 {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-slate-700 transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
           </div>
@@ -62,7 +61,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-slate-600 hover:text-slate-900"
+              className="text-gray-600 hover:text-gray-900"
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -70,13 +69,13 @@ const Navbar = () => {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-slate-200/50">
-            <div className="px-4 py-6 space-y-6">
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-gray-200/50">
+            <div className="px-4 py-4 space-y-4">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="block text-slate-600 hover:text-slate-900 transition-colors duration-200 font-light"
+                  className="block text-gray-600 hover:text-gray-900 transition-colors duration-200"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
@@ -84,20 +83,20 @@ const Navbar = () => {
               ))}
 
               {user ? (
-                <div className="space-y-3 pt-4 border-t border-slate-200">
-                  <div className="text-sm text-slate-600 font-light px-2">
+                <div className="space-y-2">
+                  <div className="text-sm text-gray-600 px-2">
                     Signed in as: {user.email}
                   </div>
                   <Button
                     onClick={() => { navigate('/exam-info'); setIsMenuOpen(false); }}
-                    className="w-full bg-slate-700 hover:bg-slate-800 text-white rounded-full font-light"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
                   >
                     Practice Tests
                   </Button>
                   <Button
                     onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
                     variant="outline"
-                    className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 font-light"
+                    className="w-full"
                   >
                     Sign Out
                   </Button>
@@ -105,7 +104,7 @@ const Navbar = () => {
               ) : (
                 <Button
                   onClick={() => { handleAuthClick(); setIsMenuOpen(false); }}
-                  className="w-full bg-slate-700 hover:bg-slate-800 text-white rounded-full font-light"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
                 >
                   Sign In
                 </Button>
