@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Search, ExternalLink, Globe, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 interface Institution {
   id: number;
@@ -76,11 +85,11 @@ const InstitutionSearch = () => {
     return 'text-green-600';
   };
 
-  const getScoreLabel = (score: number | null) => {
-    if (!score) return 'Not specified';
-    if (score >= 90) return 'High requirement';
-    if (score >= 80) return 'Medium requirement';
-    return 'Lower requirement';
+  const getScoreBadge = (score: number | null) => {
+    if (!score) return null;
+    if (score >= 90) return 'bg-red-100 text-red-800';
+    if (score >= 80) return 'bg-orange-100 text-orange-800';
+    return 'bg-green-100 text-green-800';
   };
 
   return (
@@ -88,22 +97,22 @@ const InstitutionSearch = () => {
       <Navbar />
       
       <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
             <Button
               onClick={() => navigate('/')}
               variant="ghost"
-              className="mb-6 group text-slate-600 hover:text-slate-900"
+              className="mb-4 group text-slate-600 hover:text-slate-900"
             >
               <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
               Back to Home
             </Button>
             
-            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
+            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
               Check if Your University Accepts TOEFL iBT
             </h1>
             
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-6">
               Search our database of universities to find TOEFL iBT acceptance information and minimum score requirements.
             </p>
 
@@ -146,67 +155,71 @@ const InstitutionSearch = () => {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <div className="mb-6">
+                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                  <div className="p-4 border-b">
                     <p className="text-gray-600">
                       Found {filteredInstitutions.length} result{filteredInstitutions.length !== 1 ? 's' : ''} for "{searchTerm}"
                     </p>
                   </div>
                   
-                  {filteredInstitutions.map((institution) => (
-                    <div
-                      key={institution.id}
-                      className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-200"
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                        <div className="flex-1">
-                          <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>University</TableHead>
+                        <TableHead>Country</TableHead>
+                        <TableHead>Min TOEFL Score</TableHead>
+                        <TableHead>Website</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredInstitutions.map((institution) => (
+                        <TableRow key={institution.id}>
+                          <TableCell className="font-medium">
                             {institution.name}
-                          </h3>
-                          <div className="flex items-center text-gray-600 mb-3">
-                            <Globe className="h-4 w-4 mr-2" />
-                            {institution.country}
-                          </div>
-                          <div className="flex items-center">
-                            <span className="text-sm text-gray-600 mr-2">Minimum TOEFL iBT Score:</span>
-                            <span className={`font-semibold ${getScoreColor(institution.min_score)}`}>
-                              {institution.min_score || 'Not specified'}
-                            </span>
-                            {institution.min_score && (
-                              <span className={`ml-2 text-xs px-2 py-1 rounded-full ${
-                                institution.min_score >= 90 
-                                  ? 'bg-red-100 text-red-800' 
-                                  : institution.min_score >= 80 
-                                  ? 'bg-orange-100 text-orange-800' 
-                                  : 'bg-green-100 text-green-800'
-                              }`}>
-                                {getScoreLabel(institution.min_score)}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center">
+                              <Globe className="h-4 w-4 mr-2 text-gray-400" />
+                              {institution.country}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <span className={`font-semibold ${getScoreColor(institution.min_score)}`}>
+                                {institution.min_score || 'Not specified'}
                               </span>
+                              {institution.min_score && (
+                                <span className={`text-xs px-2 py-1 rounded-full ${getScoreBadge(institution.min_score)}`}>
+                                  {institution.min_score >= 90 ? 'High' : institution.min_score >= 80 ? 'Medium' : 'Lower'}
+                                </span>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {institution.website ? (
+                              <Button
+                                onClick={() => window.open(institution.website!, '_blank')}
+                                variant="ghost"
+                                size="sm"
+                                className="group"
+                              >
+                                Visit
+                                <ExternalLink className="ml-1 h-3 w-3 transition-transform group-hover:scale-110" />
+                              </Button>
+                            ) : (
+                              <span className="text-gray-400">N/A</span>
                             )}
-                          </div>
-                        </div>
-                        
-                        {institution.website && (
-                          <div className="mt-4 sm:mt-0 sm:ml-6">
-                            <Button
-                              onClick={() => window.open(institution.website!, '_blank')}
-                              variant="outline"
-                              className="group"
-                            >
-                              Visit Website
-                              <ExternalLink className="ml-2 h-4 w-4 transition-transform group-hover:scale-110" />
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
               )}
             </>
           )}
 
-          <div className="mt-16 text-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-slate-200/50">
+          <div className="mt-12 text-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-slate-200/50">
             <h3 className="text-xl font-bold text-slate-800 mb-4">Don't See Your Institution?</h3>
             <p className="text-slate-600 mb-6">
               Our database is constantly growing. If you don't find your institution, it doesn't mean they don't accept TOEFL iBT. 
