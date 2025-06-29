@@ -15,13 +15,11 @@ const HeroSection = () => {
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               TOEFL iBT
             </span>{' '}
-            AI based learning
+            with AI-Powered Practice
           </h1>
 
           <p className="mt-6 text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            ToeflPrep offers carefully designed, official-format practice tests that simulate the real exam experience — so you’ll be fully prepared for test day.
-            Whether you prefer to take complete, timed tests or focus on one section at a time, we have everything you need to practice efficiently and improve your skills.
-          </p>
+            ToeflPrep provides free, official-format practice tests that closely simulate the real TOEFL iBT. Take full, timed tests or focus on individual sections — practice smarter, improve faster, and build test-day confidence.          </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -35,24 +33,21 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="flex flex-col items-center text-center">
             <div className="text-3xl font-bold text-blue-600">15</div>
-            <div className="text-gray-600"> Full-length TOEFL iBT Practice Tests</div>
+            <div className="text-gray-600">Full-length TOEFL iBT Practice Tests</div>
           </div>
-          <div>
+          <div className="flex flex-col items-center text-center">
             <div className="text-3xl font-bold text-blue-600">100+</div>
             <div className="text-gray-600">Section-based Practice</div>
           </div>
-          <div>
-            <div className="text-3xl font-bold text-blue-600">Coming soon...</div>
-            <div className="text-gray-600">Instant Performance Feedback</div>
-          </div>
-          <div>
+          <div className="flex flex-col items-center text-center">
             <div className="text-3xl font-bold text-blue-600">24/7</div>
             <div className="text-gray-600">Support</div>
           </div>
         </div>
+
       </div>
     </section>
   );

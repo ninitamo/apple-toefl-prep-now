@@ -18,10 +18,13 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { name: 'Practice Tests', href: '#practice' },
-    { name: 'Study Materials', href: '#materials' },
-    { name: 'Progress', href: '#progress' },
-    { name: 'About', href: '#about' },
+    { name: 'Practice Individual Section', href: '/practice/full-tests' },
+    { name: 'Practice Full Test', href: '/practice/sections' },
+    { name: 'About Test', href: '/exam-info' },
+    { name: 'Contact', href: '/contact' },
+
+    // { name: 'Progress', href: '#progress' },
+    // { name: 'About', href: '#about' },
   ];
 
   const handleSignOut = async () => {
@@ -45,7 +48,7 @@ const Navbar = () => {
             <BookOpen className="h-8 w-8 text-blue-600" />
             <span className="text-xl font-semibold text-gray-900">TOEFL Prep</span>
           </div>
-          
+
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <a
@@ -56,8 +59,8 @@ const Navbar = () => {
                 {item.name}
               </a>
             ))}
-            
-            {user ? (
+
+            {/* {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center space-x-2">
@@ -83,7 +86,7 @@ const Navbar = () => {
               >
                 Sign In
               </Button>
-            )}
+            )} */}
           </div>
 
           <div className="md:hidden">
@@ -109,19 +112,19 @@ const Navbar = () => {
                   {item.name}
                 </a>
               ))}
-              
+
               {user ? (
                 <div className="space-y-2">
                   <div className="text-sm text-gray-600 px-2">
                     Signed in as: {user.email}
                   </div>
-                  <Button 
-                    onClick={() => { navigate('/practice/reading'); setIsMenuOpen(false); }}
+                  <Button
+                    onClick={() => { navigate('/exam-info'); setIsMenuOpen(false); }}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
                   >
                     Practice Tests
                   </Button>
-                  <Button 
+                  <Button
                     onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
                     variant="outline"
                     className="w-full"
@@ -130,7 +133,7 @@ const Navbar = () => {
                   </Button>
                 </div>
               ) : (
-                <Button 
+                <Button
                   onClick={() => { handleAuthClick(); setIsMenuOpen(false); }}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
                 >

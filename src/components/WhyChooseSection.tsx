@@ -6,28 +6,28 @@ const WhyChooseSection = () => {
     {
       icon: CheckCircle,
       title: "Official-like format",
-      description: "closely modeled on the real TOEFL iBT"
+      description: "Closely modeled on the real TOEFL iBT"
     },
     {
       icon: Clock,
       title: "Flexible practice",
-      description: "take full tests or focus on individual sections"
+      description: "Take full tests or focus on individual sections"
     },
     {
       icon: Globe,
       title: "Accessible anywhere",
-      description: "online platform, no downloads required"
+      description: "Online platform, no downloads required"
     },
-    {
-      icon: TrendingUp,
-      title: "Continuous content updates",
-      description: "new tests and materials added regularly"
-    },
-    {
-      icon: GraduationCap,
-      title: "Designed by language experts",
-      description: "based on official standards"
-    }
+    // {
+    //   icon: TrendingUp,
+    //   title: "Continuous content updates",
+    //   description: "new tests and materials added regularly"
+    // },
+    // {
+    //   icon: GraduationCap,
+    //   title: "Designed by language experts",
+    //   description: "based on official standards"
+    // }
   ];
 
   return (
