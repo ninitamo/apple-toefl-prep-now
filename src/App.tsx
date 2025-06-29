@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Contact from "./pages/Contact";
 import ExamInfo from "./pages/ExamInfo";
+import InstitutionSearch from "./pages/InstitutionSearch";
 import WhyToeflBlog from "./pages/WhyToeflBlog";
 import WhoNeedsToeflBlog from "./pages/WhoNeedsToeflBlog";
 import WhichToeflTestBlog from "./pages/WhichToeflTestBlog";
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/exam-info" element={<ExamInfo />} />
+            <Route path="/institution-search" element={<InstitutionSearch />} />
             <Route path="/blog/why-toefl-exam" element={<WhyToeflBlog />} />
             <Route path="/blog/who-needs-toefl" element={<WhoNeedsToeflBlog />} />
             <Route path="/blog/which-toefl-test" element={<WhichToeflTestBlog />} />

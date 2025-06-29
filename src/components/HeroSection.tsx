@@ -1,5 +1,5 @@
 
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,7 +19,8 @@ const HeroSection = () => {
           </h1>
 
           <p className="mt-6 text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            ToeflPrep provides free, official-format practice tests that closely simulate the real TOEFL iBT. Take full, timed tests or focus on individual sections — practice smarter, improve faster, and build test-day confidence.          </p>
+            ToeflPrep provides free, official-format practice tests that closely simulate the real TOEFL iBT. Take full, timed tests or focus on individual sections — practice smarter, improve faster, and build test-day confidence.
+          </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -30,6 +31,14 @@ const HeroSection = () => {
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
 
+            <Button
+              onClick={() => navigate('/institution-search')}
+              variant="outline"
+              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white rounded-full px-8 py-3 text-lg font-medium group"
+            >
+              Check if your university accepts TOEFL iBT
+              <Search className="ml-2 h-5 w-5 transition-transform group-hover:scale-110" />
+            </Button>
           </div>
         </div>
 
