@@ -1,71 +1,88 @@
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const FAQSection = () => {
+  const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
+
   const faqs = [
     {
-      question: "How similar are your practice tests to the real TOEFL iBT?",
-      answer: "Our practice tests are carefully designed to mirror the official TOEFL iBT format, question types, difficulty levels, and timing. We follow the same structure and scoring guidelines used in the actual exam."
+      id: 1,
+      question: 'What is the TOEFL iBT examination?',
+      answer: 'The TOEFL iBT (Internet-based Test) is a standardized assessment measuring English language proficiency for non-native speakers. It evaluates your ability to use and understand English in academic environments through four comprehensive sections.'
     },
     {
-      question: "Can I take individual sections or do I need to complete full tests?",
-      answer: "You have complete flexibility! You can take full-length practice tests for the complete exam experience, or focus on individual sections (Reading, Listening, Speaking, Writing) based on your study needs."
+      id: 2,
+      question: 'How does the TOEFL scoring system work?',
+      answer: 'TOEFL iBT scores range from 0-120 points total, with each section (Reading, Listening, Speaking, Writing) scored from 0-30 points. Most universities require scores between 80-100 for admission, with top-tier institutions often requiring 100+.'
     },
     {
-      question: "How many practice tests are available?",
-      answer: "We currently offer 15+ full-length TOEFL iBT practice tests, with over 100 section-based practice exercises. We regularly add new content to keep your preparation fresh and comprehensive."
+      id: 3,
+      question: 'What are the test sections and duration?',
+      answer: 'The TOEFL iBT comprises four sections: Reading (54-72 minutes), Listening (41-57 minutes), Speaking (17 minutes), and Writing (50 minutes). The complete test duration is approximately 3 hours including breaks.'
     },
     {
-      question: "Do I need to download any software?",
-      answer: "No downloads required! Our platform is entirely web-based and accessible from any device with an internet connection. You can practice anywhere, anytime."
+      id: 4,
+      question: 'How long are TOEFL scores valid?',
+      answer: 'TOEFL scores remain valid for 2 years from the test date. After this period, scores are no longer available for reporting to institutions and cannot be sent to universities or organizations.'
     },
     {
-      question: "How do you ensure the quality of your practice materials?",
-      answer: "All our content is developed by language experts and TOEFL specialists who follow official testing standards. We regularly update our materials based on the latest exam patterns and user feedback."
+      id: 5,
+      question: 'What frequency is allowed for taking the TOEFL?',
+      answer: 'You may take the TOEFL iBT as frequently as desired, with a mandatory 3-day waiting period between test dates. There is no annual or lifetime limit on the number of attempts.'
     },
     {
-      question: "What kind of feedback do I get after completing a test?",
-      answer: "You receive detailed performance analysis including section-by-section scores, question-by-question explanations, and personalized recommendations for improvement areas."
-    },
-    {
-      question: "Is there a time limit for practice tests?",
-      answer: "Yes, our practice tests follow the official TOEFL iBT timing: Reading (54-72 minutes), Listening (41-57 minutes), Speaking (17 minutes), and Writing (50 minutes). You can also practice without time limits if preferred."
-    },
-    {
-      question: "Can I retake the same practice test?",
-      answer: "Absolutely! You can retake any practice test as many times as you want to track your improvement and build confidence before the actual exam."
+      id: 6,
+      question: 'What constitutes a competitive TOEFL score?',
+      answer: 'A competitive TOEFL score varies by institution. Generally, 80+ is acceptable for most universities, 90+ for prestigious schools, and 100+ for highly competitive programs. Research your target institutions specific requirements.'
     }
   ];
 
+  const toggleQuestion = (id: number) => {
+    setActiveQuestion(activeQuestion === id ? null : id);
+  };
+
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl sm:text-5xl font-light text-slate-800 mb-6">
             Frequently Asked Questions
           </h2>
-          <p className="text-xl text-gray-600">
-            Find answers to common questions about our TOEFL preparation platform
+          <p className="text-xl text-slate-600 font-light">
+            Everything you need to know about the TOEFL iBT
           </p>
         </div>
 
-        <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger className="text-left text-lg font-medium">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600 text-base leading-relaxed">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
+        <div className="space-y-4">
+          {faqs.map((faq) => (
+            <div
+              key={faq.id}
+              className="border border-slate-200 rounded-2xl transition-all duration-300 hover:shadow-lg bg-white/70 backdrop-blur-sm"
+            >
+              <button
+                onClick={() => toggleQuestion(faq.id)}
+                className="w-full px-8 py-6 text-left flex justify-between items-center hover:bg-slate-50/50 rounded-2xl transition-all duration-300"
+              >
+                <span className="font-medium text-slate-800 text-lg pr-4">{faq.question}</span>
+                <div className="flex-shrink-0">
+                  {activeQuestion === faq.id ? 
+                    <ChevronUp className="h-5 w-5 text-slate-500" /> : 
+                    <ChevronDown className="h-5 w-5 text-slate-500" />
+                  }
+                </div>
+              </button>
+              
+              {activeQuestion === faq.id && (
+                <div className="px-8 pb-6">
+                  <div className="pt-4 border-t border-slate-100">
+                    <p className="text-slate-600 leading-relaxed font-light">{faq.answer}</p>
+                  </div>
+                </div>
+              )}
+            </div>
           ))}
-        </Accordion>
+        </div>
       </div>
     </section>
   );
