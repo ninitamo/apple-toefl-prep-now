@@ -7,6 +7,7 @@ import StudyMaterials from '@/components/StudyMaterials';
 import FAQSection from '@/components/FAQSection';
 import TeamSection from '@/components/TeamSection';
 import Footer from '@/components/Footer';
+import WorldMapSection from '@/components/WorldMapSection';
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       <PracticeSelector />
       <WhyChooseSection />
       {/* <StudyMaterials /> */}
+      <WorldMapSection />
       <FAQSection />
       <TeamSection />
       <Footer />
