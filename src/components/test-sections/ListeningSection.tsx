@@ -50,7 +50,9 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
 
   // Helper function to get full Supabase Storage URL
   const getFullAudioUrl = (relativePath: string) => {
+    console.log('r', relativePath)
     if (!relativePath) return null;
+
     // If it's already a full URL, return as is
     if (relativePath.startsWith('http')) return relativePath;
     // Otherwise, construct the full Supabase Storage URL
@@ -93,16 +95,16 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
         if (questionsError) throw questionsError;
 
         setPassages(passagesData || []);
-        
+
         // Transform the questions data to match our interface
         const transformedQuestions = (questionsData || []).map(q => ({
           ...q,
           options: Array.isArray(q.options) ? q.options : JSON.parse(q.options as string),
-          correct_answer: typeof q.correct_answer === 'string' 
-            ? q.correct_answer 
+          correct_answer: typeof q.correct_answer === 'string'
+            ? q.correct_answer
             : String(q.correct_answer as unknown)
         }));
-        
+
         setQuestions(transformedQuestions);
 
         console.log('Passages loaded:', passagesData);
@@ -152,6 +154,7 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
 
   const handleAudioError = (e: any) => {
     console.error('Audio error:', e);
+    console.log('passages[currentPassageIndex]?.audio_url', passages[currentPassageIndex]?.audio_url)
     const fullUrl = getFullAudioUrl(passages[currentPassageIndex]?.audio_url || '');
     console.error('Full audio URL:', fullUrl);
     console.error('Original audio URL:', passages[currentPassageIndex]?.audio_url);
@@ -344,7 +347,7 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                 {/* Audio Controls */}
                 <div className="flex flex-col items-center gap-4">
                   <div className="flex gap-3">
-                    <Button 
+                    <Button
                       onClick={toggleAudioPlayback}
                       disabled={!audioLoaded || !fullAudioUrl || audioError}
                       className="bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-400"
@@ -363,7 +366,7 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                       )}
                     </Button>
 
-                    <Button 
+                    <Button
                       onClick={handleSkipAudio}
                       variant="outline"
                       size="lg"
@@ -382,7 +385,7 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                         <span>{formatTime(audioDuration)}</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
+                        <div
                           className="bg-blue-600 h-2 rounded-full transition-all"
                           style={{ width: `${(audioCurrentTime / audioDuration) * 100}%` }}
                         />
@@ -425,7 +428,7 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
               </CardHeader>
               <CardContent>
                 <p className="text-lg mb-6">{currentQuestion.question_text}</p>
-                
+
                 <div className="space-y-3">
                   {currentQuestion.options.map((option, index) => (
                     <label key={index} className="flex items-center space-x-3 cursor-pointer">
@@ -455,23 +458,23 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
           >
             Previous
           </Button>
-          
+
           {showQuestions ? (
             <Button
               onClick={handleNextQuestion}
               className="bg-blue-600 hover:bg-blue-700 text-white"
               disabled={!answers[currentQuestion?.id]}
             >
-              {currentPassageIndex === passages.length - 1 && 
-               currentQuestionIndex === currentPassageQuestions.length - 1 
-                ? 'Continue to Speaking' 
+              {currentPassageIndex === passages.length - 1 &&
+                currentQuestionIndex === currentPassageQuestions.length - 1
+                ? 'Continue to Speaking'
                 : 'Next'}
             </Button>
           ) : (
             <div className="text-sm text-gray-500">
-              {audioError 
+              {audioError
                 ? 'Audio failed to load'
-                : audioLoaded 
+                : audioLoaded
                   ? (audioPlaying ? 'Listening to audio...' : 'Click Play Audio to begin')
                   : 'Loading audio...'
               }
