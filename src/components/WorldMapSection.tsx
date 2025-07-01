@@ -28,82 +28,82 @@ function WorldMapSection() {
     };
 
     return (
-        <div className="mb-16">
+        <div className="mb-16 px-4 sm:px-6 lg:px-8">
             {/* World Map Section */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-slate-200/50">
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-slate-200/50 dark:border-gray-700/50 transition-colors duration-200">
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-slate-800 mb-4 flex items-center justify-center">
-                        <Globe className="mr-3 h-8 w-8 text-blue-600" />
+                    <h2 className="text-3xl font-bold text-slate-800 dark:text-gray-100 mb-4 flex items-center justify-center">
+                        <Globe className="mr-3 h-8 w-8 text-blue-600 dark:text-blue-400" />
                         A Whole World of Opportunity
                     </h2>
-                    <p className="text-xl text-slate-600">
+                    <p className="text-xl text-slate-600 dark:text-gray-300">
                         See where TOEFL iBT is accepted!
                     </p>
                 </div>
 
                 {/* World Map Visualization */}
-                <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 mb-8">
+                <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-8 mb-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {continentData.map((continent, index) => (
                             <div key={index} className="relative">
-                                <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200 hover:shadow-xl transition-shadow duration-200">
+                                <div className="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-gray-600 hover:shadow-xl transition-shadow duration-200">
                                     <div
                                         className={`w-full h-3 ${continent.color} rounded-full mb-4`}
                                     ></div>
-                                    <h3 className="text-xl font-bold text-slate-800 mb-2">
+                                    <h3 className="text-xl font-bold text-slate-800 dark:text-gray-100 mb-2">
                                         {continent.name}
                                     </h3>
-                                    <p className="text-2xl font-bold text-orange-600 mb-1">
+                                    <p className="text-2xl font-bold text-orange-600 dark:text-orange-400 mb-1">
                                         {continent.institutions}
                                     </p>
-                                    <p className="text-slate-600 text-sm">Institutions</p>
+                                    <p className="text-slate-600 dark:text-gray-300 text-sm">Institutions</p>
                                 </div>
                             </div>
                         ))}
                     </div>
 
                     {/* Total Statistics */}
-                    <div className="text-center mt-8 p-6 bg-white rounded-xl shadow-lg border border-slate-200">
-                        <h3 className="text-2xl font-bold text-slate-800 mb-2">
+                    <div className="text-center mt-8 p-6 bg-white dark:bg-gray-700 rounded-xl shadow-lg border border-slate-200 dark:border-gray-600">
+                        <h3 className="text-2xl font-bold text-slate-800 dark:text-gray-100 mb-2">
                             Total Global Acceptance
                         </h3>
                         <div className="flex flex-col sm:flex-row justify-center items-center gap-8">
                             <div className="text-center">
-                                <div className="text-4xl font-bold text-blue-600">12,000+</div>
-                                <div className="text-slate-600">Institutions</div>
+                                <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">12,000+</div>
+                                <div className="text-slate-600 dark:text-gray-300">Institutions</div>
                             </div>
                             <div className="text-center">
-                                <div className="text-4xl font-bold text-purple-600">160+</div>
-                                <div className="text-slate-600">Countries</div>
+                                <div className="text-4xl font-bold text-purple-600 dark:text-purple-400">160+</div>
+                                <div className="text-slate-600 dark:text-gray-300">Countries</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Search Section */}
-                <div className="text-center bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8">
-                    <h3 className="text-2xl font-bold text-slate-800 mb-4">
+                <div className="text-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-8">
+                    <h3 className="text-2xl font-bold text-slate-800 dark:text-gray-100 mb-4">
                         Find Your Institution
                     </h3>
-                    <p className="text-slate-600 mb-6">
+                    <p className="text-slate-600 dark:text-gray-300 mb-6">
                         Search to check if your university accepts TOEFL iBT. This answer is generated by an AI model (OpenAI GPT) based on publicly available information.
                     </p>
 
                     <form onSubmit={handleSearchSubmit} className="max-w-md mx-auto">
                         <div className="flex gap-3">
                             <div className="relative flex-1">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-5 w-5" />
                                 <Input
                                     type="text"
                                     placeholder="Search university..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="pl-10 pr-4 py-3 text-lg border-2 border-gray-200 focus:border-blue-500 rounded-xl"
+                                    className="pl-10 pr-4 py-3 text-lg border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                                 />
                             </div>
                             <Button
                                 type="submit"
-                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-6 py-3 group"
+                                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl px-6 py-3 group"
                             >
                                 Search
                                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
