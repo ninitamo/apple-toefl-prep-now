@@ -47,19 +47,19 @@ const WritingPracticeList = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-100">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center mb-8">
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
-            className="mr-4 p-2 hover:bg-white/50 rounded-full"
+            className="mr-4 p-2 hover:bg-white/50 dark:hover:bg-gray-700/50 rounded-full dark:text-gray-200"
           >
             <ArrowLeft className="h-6 w-6" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Writing Practice</h1>
-            <p className="text-gray-600 mt-2">Master academic writing with integrated and discussion tasks</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Writing Practice</h1>
+            <p className="text-gray-600 dark:text-gray-300 mt-2">Master academic writing with integrated and discussion tasks</p>
           </div>
         </div>
 
@@ -107,20 +107,20 @@ const WritingPracticeList = () => {
 
           {/* Divider */}
           <div className="flex items-center my-8">
-            <div className="flex-1 border-t border-gray-300"></div>
-            <span className="px-4 text-gray-500 font-medium">or practice individual questions</span>
-            <div className="flex-1 border-t border-gray-300"></div>
+            <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
+            <span className="px-4 text-gray-500 dark:text-gray-400 font-medium">or practice individual questions</span>
+            <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
           </div>
 
           {/* About Writing Practice */}
-          <div className="mb-8 bg-white rounded-lg p-6 shadow-md">
+          <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <PenTool className="h-5 w-5 text-orange-500" />
-              About Writing Practice
+              <span className="text-gray-900 dark:text-gray-100">About Writing Practice</span>
             </h2>
-            <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
+            <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600 dark:text-gray-300">
               <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Task 1: Integrated Writing</h3>
+                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Task 1: Integrated Writing</h3>
                 <ul className="space-y-1">
                   <li>• Read a passage (3 minutes)</li>
                   <li>• Listen to a lecture</li>
@@ -129,7 +129,7 @@ const WritingPracticeList = () => {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Task 2: Academic Discussion</h3>
+                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Task 2: Academic Discussion</h3>
                 <ul className="space-y-1">
                   <li>• Read professor's question</li>
                   <li>• Review student responses</li>
@@ -143,12 +143,12 @@ const WritingPracticeList = () => {
           {/* Individual Practice Exercises */}
           <div className="grid gap-6">
             {practiceExercises.map((exercise) => (
-              <Card key={exercise.id} className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <Card key={exercise.id} className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 dark:border-gray-700">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-xl text-gray-900">{exercise.title}</CardTitle>
-                      <CardDescription className="text-gray-600 mt-1">
+                      <CardTitle className="text-xl text-gray-900 dark:text-gray-100">{exercise.title}</CardTitle>
+                      <CardDescription className="text-gray-600 dark:text-gray-400 mt-1">
                         {exercise.description}
                       </CardDescription>
                     </div>
@@ -159,19 +159,19 @@ const WritingPracticeList = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="grid md:grid-cols-3 gap-4 mb-6">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <Clock className="h-4 w-4" />
                       {exercise.duration}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <FileText className="h-4 w-4" />
                       {exercise.tasks}
                     </div>
                     <div className="text-sm">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         exercise.difficulty === 'Intermediate' 
-                          ? 'bg-yellow-100 text-yellow-800' 
-                          : 'bg-red-100 text-red-800'
+                          ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' 
+                          : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
                       }`}>
                         {exercise.difficulty}
                       </span>
@@ -179,10 +179,10 @@ const WritingPracticeList = () => {
                   </div>
                   
                   <div className="mb-4">
-                    <h4 className="font-semibold text-gray-800 mb-2">Topics:</h4>
+                    <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Topics:</h4>
                     <div className="flex flex-wrap gap-2">
                       {exercise.topics.map((topic, index) => (
-                        <span key={index} className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-sm">
+                        <span key={index} className="bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-sm">
                           {topic}
                         </span>
                       ))}
