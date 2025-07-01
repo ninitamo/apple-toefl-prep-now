@@ -31,7 +31,8 @@ interface Institution {
 }
 
 const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+  // apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+   apiKey: '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',
   dangerouslyAllowBrowser: true, // Only for development!
 });
 
