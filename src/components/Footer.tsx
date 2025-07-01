@@ -30,13 +30,6 @@ const Footer = () => {
     ],
   };
 
-  const getLinkProps = (link: string) => {
-    if (link === 'Cookie Policy') {
-      return { to: '/cookie-policy', as: Link };
-    }
-    return { href: '#' };
-  };
-
   return (
     <footer className="bg-gray-900 dark:bg-gray-950 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -69,20 +62,25 @@ const Footer = () => {
             <div key={category}>
               <h3 className="text-white dark:text-gray-100 font-semibold mb-4">{category}</h3>
               <ul className="space-y-2">
-                {links.map((link) => {
-                  const linkProps = getLinkProps(link);
-                  const Component = linkProps.as || 'a';
-                  return (
-                    <li key={link}>
-                      <Component 
-                        {...(linkProps.as ? { to: linkProps.to } : { href: linkProps.href })}
+                {links.map((link) => (
+                  <li key={link}>
+                    {link === 'Cookie Policy' ? (
+                      <Link 
+                        to="/cookie-policy"
                         className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors duration-200"
                       >
                         {link}
-                      </Component>
-                    </li>
-                  );
-                })}
+                      </Link>
+                    ) : (
+                      <a 
+                        href="#"
+                        className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors duration-200"
+                      >
+                        {link}
+                      </a>
+                    )}
+                  </li>
+                ))}
               </ul>
             </div>
           ))}
