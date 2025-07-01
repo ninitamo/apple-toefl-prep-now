@@ -189,21 +189,21 @@ Answer:
   };
 
   const getScoreColor = (score: number | null) => {
-    if (!score) return "text-gray-500";
-    if (score >= 90) return "text-red-600";
-    if (score >= 80) return "text-orange-600";
-    return "text-green-600";
+    if (!score) return "text-gray-500 dark:text-gray-400";
+    if (score >= 90) return "text-red-600 dark:text-red-400";
+    if (score >= 80) return "text-orange-600 dark:text-orange-400";
+    return "text-green-600 dark:text-green-400";
   };
 
   const getScoreBadge = (score: number | null) => {
     if (!score) return null;
-    if (score >= 90) return "bg-red-100 text-red-800";
-    if (score >= 80) return "bg-orange-100 text-orange-800";
-    return "bg-green-100 text-green-800";
+    if (score >= 90) return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300";
+    if (score >= 80) return "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300";
+    return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-200">
       <Navbar />
       <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
@@ -211,34 +211,34 @@ Answer:
             <Button
               onClick={() => navigate("/")}
               variant="ghost"
-              className="mb-4 group text-slate-600 hover:text-slate-900"
+              className="mb-4 group text-slate-600 hover:text-slate-900 dark:text-gray-300 dark:hover:text-gray-100"
             >
               <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
               Back to Home
             </Button>
 
-            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-gray-100 dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-4">
               Check if Your University Accepts TOEFL iBT
             </h1>
 
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-6">
+            <p className="text-lg text-slate-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
               Search our database of universities to find TOEFL iBT acceptance information and minimum score requirements.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-lg mx-auto">
               <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-5 w-5" />
                 <Input
                   type="text"
                   placeholder="Search by university name..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-3 text-lg border-2 border-gray-200 focus:border-blue-500 rounded-xl w-full"
+                  className="pl-10 pr-4 py-3 text-lg border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 />
               </div>
               <Button
                 onClick={handleSearch}
-                className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-6 py-3"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl px-6 py-3"
               >
                 Search
               </Button>
@@ -247,31 +247,30 @@ Answer:
 
           {loading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="text-gray-600 mt-4">Loading institutions...</p>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
+              <p className="text-gray-600 dark:text-gray-300 mt-4">Loading institutions...</p>
             </div>
           ) : (
             <>
               {searchTerm.trim() === "" ? (
                 <div className="text-center py-12">
-                  <GraduationCap className="h-24 w-24 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                  <GraduationCap className="h-24 w-24 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Start Your Search
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-400">
                     Search to check if your university accepts TOEFL iBT. This answer is generated by an AI model (OpenAI GPT) based on publicly available information.
-
                   </p>
                 </div>
               ) : searching ? (
                 <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                  <p className="text-gray-600 mt-4">Searching...</p>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
+                  <p className="text-gray-600 dark:text-gray-300 mt-4">Searching...</p>
                 </div>
               ) : filteredInstitutions.length > 0 ? (
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                  <div className="p-4 border-b">
-                    <p className="text-gray-600">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                  <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                    <p className="text-gray-600 dark:text-gray-300">
                       Found {filteredInstitutions.length} result
                       {filteredInstitutions.length !== 1 ? "s" : ""} for "
                       {searchTerm}"
@@ -279,23 +278,23 @@ Answer:
                   </div>
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>University</TableHead>
-                        <TableHead>Country</TableHead>
-                        <TableHead>Min TOEFL Score</TableHead>
-                        <TableHead>Website</TableHead>
+                      <TableRow className="border-gray-200 dark:border-gray-700">
+                        <TableHead className="text-gray-900 dark:text-gray-100">University</TableHead>
+                        <TableHead className="text-gray-900 dark:text-gray-100">Country</TableHead>
+                        <TableHead className="text-gray-900 dark:text-gray-100">Min TOEFL Score</TableHead>
+                        <TableHead className="text-gray-900 dark:text-gray-100">Website</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredInstitutions.map((institution) => (
-                        <TableRow key={institution.id}>
-                          <TableCell className="font-medium">
+                        <TableRow key={institution.id} className="border-gray-200 dark:border-gray-700">
+                          <TableCell className="font-medium text-gray-900 dark:text-gray-100">
                             {institution.name}
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center">
-                              <Globe className="h-4 w-4 mr-2 text-gray-400" />
-                              {institution.country}
+                              <Globe className="h-4 w-4 mr-2 text-gray-400 dark:text-gray-500" />
+                              <span className="text-gray-700 dark:text-gray-300">{institution.country}</span>
                             </div>
                           </TableCell>
                           <TableCell>
@@ -330,13 +329,13 @@ Answer:
                                 }
                                 variant="ghost"
                                 size="sm"
-                                className="group"
+                                className="group text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
                               >
                                 Visit
                                 <ExternalLink className="ml-1 h-3 w-3 transition-transform group-hover:scale-110" />
                               </Button>
                             ) : (
-                              <span className="text-gray-400">N/A</span>
+                              <span className="text-gray-400 dark:text-gray-500">N/A</span>
                             )}
                           </TableCell>
                         </TableRow>
@@ -346,23 +345,23 @@ Answer:
                 </div>
               ) : gptLoading ? (
                 <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                  <p className="text-gray-600 mt-4">Asking AI...</p>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
+                  <p className="text-gray-600 dark:text-gray-300 mt-4">Asking AI...</p>
                 </div>
               ) : gptResults.length > 0 ? (
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden mt-6">
-                  <div className="p-4 border-b">
-                    <p className="text-gray-600">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mt-6 border border-gray-200 dark:border-gray-700">
+                  <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                    <p className="text-gray-600 dark:text-gray-300">
                       AI results for "{searchTerm}"
                     </p>
                   </div>
-                  <ul className="divide-y divide-gray-200">
+                  <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                     {gptResults.map((result, index) => (
                       <li key={index} className="p-4">
-                        <p className="text-slate-800 font-semibold">
+                        <p className="text-slate-800 dark:text-gray-100 font-semibold">
                           {result.title}
                         </p>
-                        <p className="text-sm text-gray-600 mt-1">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                           {result.snippet}
                         </p>
                       </li>
@@ -371,11 +370,11 @@ Answer:
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <Search className="h-24 w-24 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                  <Search className="h-24 w-24 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     No Results Found
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-400">
                     No institutions or AI results found for "{searchTerm}".
                     Try a different search term.
                   </p>
@@ -384,18 +383,18 @@ Answer:
             </>
           )}
 
-          <div className="mt-12 text-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-slate-200/50">
-            <h3 className="text-xl font-bold text-slate-800 mb-4">
+          <div className="mt-12 text-center bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-slate-200/50 dark:border-gray-700/50">
+            <h3 className="text-xl font-bold text-slate-800 dark:text-gray-100 mb-4">
               Don't See Your Institution?
             </h3>
-            <p className="text-slate-600 mb-6">
+            <p className="text-slate-600 dark:text-gray-300 mb-6">
               Our database is constantly growing. If you don't find your
               institution, it doesn't mean they don't accept TOEFL iBT. Contact
               the institution directly for the most up-to-date information.
             </p>
             <Button
               onClick={() => navigate("/practice/full-tests")}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full px-8 py-3"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-500 dark:to-purple-500 dark:hover:from-blue-600 dark:hover:to-purple-600 text-white rounded-full px-8 py-3"
             >
               Start Preparing with Practice Tests
             </Button>
