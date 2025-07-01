@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -61,7 +62,7 @@ const AppContent = () => {
   }, [isAnalyticsEnabled]);
 
   return (
-    <>
+    <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
       <AnalyticsListener />
       <CookieConsentBanner />
       <Routes>
@@ -128,7 +129,7 @@ const AppContent = () => {
         } />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
+    </div>
   );
 };
 

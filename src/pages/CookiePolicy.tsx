@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 
 const CookiePolicy = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
       <Navbar />
       <div className="container mx-auto px-4 py-8 sm:py-12 max-w-4xl">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8">Cookie Policy</h1>
