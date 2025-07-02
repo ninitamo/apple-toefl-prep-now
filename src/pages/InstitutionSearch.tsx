@@ -5,6 +5,7 @@ import {
   ExternalLink,
   Globe,
   GraduationCap,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import OpenAI from "openai";
 
 interface Institution {
@@ -209,7 +216,6 @@ const InstitutionSearch = () => {
     }
   };
 
-
   const getScoreColor = (score: number | null) => {
     if (!score) return "text-gray-500 dark:text-gray-400";
     if (score >= 90) return "text-red-600 dark:text-red-400";
@@ -225,188 +231,206 @@ const InstitutionSearch = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-200">
-      <Navbar />
-      <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <Button
-              onClick={() => navigate("/")}
-              variant="ghost"
-              className="mb-4 group text-slate-600 hover:text-slate-900 dark:text-gray-300 dark:hover:text-gray-100"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-              Back to Home
-            </Button>
-
-            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-gray-100 dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-4">
-              Check if Your University Accepts TOEFL iBT
-            </h1>
-
-            <p className="text-lg text-slate-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
-              Search our database of universities to find TOEFL iBT acceptance information and minimum score requirements.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-lg mx-auto">
-              <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-5 w-5" />
-                <Input
-                  // maxLength={20}
-                  type="text"
-                  placeholder="Search by university name..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-3 text-lg border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                />
-              </div>
+    <TooltipProvider>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-200">
+        <Navbar />
+        <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8">
               <Button
-                onClick={handleSearch}
-                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl px-6 py-3"
+                onClick={() => navigate("/")}
+                variant="ghost"
+                className="mb-4 group text-slate-600 hover:text-slate-900 dark:text-gray-300 dark:hover:text-gray-100"
               >
-                Search
+                <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                Back to Home
               </Button>
-            </div>
-          </div>
 
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
-              <p className="text-gray-600 dark:text-gray-300 mt-4">Loading institutions...</p>
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-gray-100 dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-4">
+                Check if Your University Accepts TOEFL iBT
+              </h1>
+
+              <p className="text-lg text-slate-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
+                Search our database of universities to find TOEFL iBT acceptance information and minimum score requirements.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-lg mx-auto">
+                <div className="relative w-full">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-5 w-5" />
+                  <Input
+                    type="text"
+                    placeholder="Search by university name..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 pr-4 py-3 text-lg border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  />
+                </div>
+                <Button
+                  onClick={handleSearch}
+                  className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl px-6 py-3"
+                >
+                  Search
+                </Button>
+              </div>
+
+              {/* Disclaimer */}
+              <div className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-4 w-4 cursor-pointer" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-md p-3">
+                    <p className="text-sm">
+                      <strong>Disclaimer:</strong> The information provided by this tool is generated by artificial intelligence and web search. 
+                      It may not be accurate, complete, or up to date. Always verify details directly with the official university website 
+                      or admissions office before making decisions.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+                <span>This site uses AI-powered search.</span>
+              </div>
             </div>
-          ) : (
-            <>
-              {searchTerm.trim() === "" ? (
-                <div className="text-center py-12">
-                  <GraduationCap className="h-24 w-24 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    Start Your Search
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Search to check if your university accepts TOEFL iBT. This answer is generated by an AI model (OpenAI GPT) based on publicly available information.
-                  </p>
-                </div>
-              ) : searching ? (
-                <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
-                  <p className="text-gray-600 dark:text-gray-300 mt-4">Searching...</p>
-                </div>
-              ) : filteredInstitutions.length > 0 ? (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                  <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                    <p className="text-gray-600 dark:text-gray-300">
-                      Found {filteredInstitutions.length} result
-                      {filteredInstitutions.length !== 1 ? "s" : ""} for "
-                      {searchTerm}"
+
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
+                <p className="text-gray-600 dark:text-gray-300 mt-4">Loading institutions...</p>
+              </div>
+            ) : (
+              <>
+                {searchTerm.trim() === "" ? (
+                  <div className="text-center py-12">
+                    <GraduationCap className="h-24 w-24 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      Start Your Search
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Search to check if your university accepts TOEFL iBT. This answer is generated by an AI model (OpenAI GPT) based on publicly available information.
                     </p>
                   </div>
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-gray-200 dark:border-gray-700">
-                        <TableHead className="text-gray-900 dark:text-gray-100">University</TableHead>
-                        <TableHead className="text-gray-900 dark:text-gray-100">Country</TableHead>
-                        <TableHead className="text-gray-900 dark:text-gray-100">Min TOEFL Score</TableHead>
-                        <TableHead className="text-gray-900 dark:text-gray-100">Website</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredInstitutions.map((institution) => (
-                        <TableRow key={institution.id} className="border-gray-200 dark:border-gray-700">
-                          <TableCell className="font-medium text-gray-900 dark:text-gray-100">
-                            {institution.name}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center">
-                              <Globe className="h-4 w-4 mr-2 text-gray-400 dark:text-gray-500" />
-                              <span className="text-gray-700 dark:text-gray-300">{institution.country}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <span
-                                className={`font-semibold ${getScoreColor(
-                                  institution.min_score
-                                )}`}
-                              >
-                                {institution.min_score || "Not specified"}
-                              </span>
-                              {institution.min_score && (
+                ) : searching ? (
+                  <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
+                    <p className="text-gray-600 dark:text-gray-300 mt-4">Searching...</p>
+                  </div>
+                ) : filteredInstitutions.length > 0 ? (
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                    <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                      <p className="text-gray-600 dark:text-gray-300">
+                        Found {filteredInstitutions.length} result
+                        {filteredInstitutions.length !== 1 ? "s" : ""} for "
+                        {searchTerm}"
+                      </p>
+                    </div>
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-gray-200 dark:border-gray-700">
+                          <TableHead className="text-gray-900 dark:text-gray-100">University</TableHead>
+                          <TableHead className="text-gray-900 dark:text-gray-100">Country</TableHead>
+                          <TableHead className="text-gray-900 dark:text-gray-100">Min TOEFL Score</TableHead>
+                          <TableHead className="text-gray-900 dark:text-gray-100">Website</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredInstitutions.map((institution) => (
+                          <TableRow key={institution.id} className="border-gray-200 dark:border-gray-700">
+                            <TableCell className="font-medium text-gray-900 dark:text-gray-100">
+                              {institution.name}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center">
+                                <Globe className="h-4 w-4 mr-2 text-gray-400 dark:text-gray-500" />
+                                <span className="text-gray-700 dark:text-gray-300">{institution.country}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
                                 <span
-                                  className={`text-xs px-2 py-1 rounded-full ${getScoreBadge(
+                                  className={`font-semibold ${getScoreColor(
                                     institution.min_score
                                   )}`}
                                 >
-                                  {institution.min_score >= 90
-                                    ? "High"
-                                    : institution.min_score >= 80
-                                      ? "Medium"
-                                      : "Lower"}
+                                  {institution.min_score || "Not specified"}
                                 </span>
+                                {institution.min_score && (
+                                  <span
+                                    className={`text-xs px-2 py-1 rounded-full ${getScoreBadge(
+                                      institution.min_score
+                                    )}`}
+                                  >
+                                    {institution.min_score >= 90
+                                      ? "High"
+                                      : institution.min_score >= 80
+                                        ? "Medium"
+                                        : "Lower"}
+                                  </span>
+                                )}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              {institution.website ? (
+                                <Button
+                                  onClick={() =>
+                                    window.open(institution.website!, "_blank")
+                                  }
+                                  variant="ghost"
+                                  size="sm"
+                                  className="group text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                                >
+                                  Visit
+                                  <ExternalLink className="ml-1 h-3 w-3 transition-transform group-hover:scale-110" />
+                                </Button>
+                              ) : (
+                                <span className="text-gray-400 dark:text-gray-500">N/A</span>
                               )}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            {institution.website ? (
-                              <Button
-                                onClick={() =>
-                                  window.open(institution.website!, "_blank")
-                                }
-                                variant="ghost"
-                                size="sm"
-                                className="group text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
-                              >
-                                Visit
-                                <ExternalLink className="ml-1 h-3 w-3 transition-transform group-hover:scale-110" />
-                              </Button>
-                            ) : (
-                              <span className="text-gray-400 dark:text-gray-500">N/A</span>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : gptLoading ? (
+                  <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
+                    <p className="text-gray-600 dark:text-gray-300 mt-4">Asking AI...</p>
+                  </div>
+                ) : gptResults.length > 0 && (
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden mt-6">
+                    <ul className="divide-y divide-gray-200">
+                      {gptResults.map((result, index) => (
+                        <li key={index} className="p-4">
+                          <p className="text-slate-800 dark:text-gray-100 font-semibold">
+                            {result.title}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                            {result.snippet}
+                            {result.link && (
+                              <p className="text-sm mt-2">
+                                <a
+                                  href={result.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 underline font-medium"
+                                >
+                                  View Source
+                                </a>
+                              </p>
                             )}
-                          </TableCell>
-                        </TableRow>
+                          </p>
+
+                        </li>
                       ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              ) : gptLoading ? (
-                <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
-                  <p className="text-gray-600 dark:text-gray-300 mt-4">Asking AI...</p>
-                </div>
-              ) : gptResults.length > 0 && (
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden mt-6">
-                  <ul className="divide-y divide-gray-200">
-                    {gptResults.map((result, index) => (
-                      <li key={index} className="p-4">
-                        <p className="text-slate-800 dark:text-gray-100 font-semibold">
-                          {result.title}
-                        </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                          {result.snippet}
-                          {result.link && (
-                            <p className="text-sm mt-2">
-                              <a
-                                href={result.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 underline font-medium"
-                              >
-                                View Source
-                              </a>
-                            </p>
-                          )}
-                        </p>
+                    </ul>
+                  </div>
+                )}
+              </>
+            )}
 
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </>
-          )}
-
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </TooltipProvider>
   );
 };
 

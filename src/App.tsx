@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -34,6 +33,7 @@ import SpeakingPractice from "./pages/SpeakingPractice";
 import WritingPracticeList from "./pages/WritingPracticeList";
 import WritingPractice from "./pages/WritingPractice";
 import CookiePolicy from "./pages/CookiePolicy";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 import ReactGA from "react-ga4";
 
@@ -70,6 +70,7 @@ const AppContent = () => {
         <Route path="/" element={<Index />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cookie-policy" element={<CookiePolicy />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/exam-info" element={<ExamInfo />} />
         <Route path="/institution-search" element={<InstitutionSearch />} />
         <Route path="/blog/why-toefl-exam" element={<WhyToeflBlog />} />

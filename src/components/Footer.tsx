@@ -71,6 +71,13 @@ const Footer = () => {
                       >
                         {link}
                       </Link>
+                    ) : link === 'Privacy Policy' ? (
+                      <Link 
+                        to="/privacy-policy"
+                        className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors duration-200"
+                      >
+                        {link}
+                      </Link>
                     ) : (
                       <a 
                         href="#"
