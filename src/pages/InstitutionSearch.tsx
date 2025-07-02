@@ -114,7 +114,7 @@ const InstitutionSearch = () => {
   };
 
   const searchInstitutionGPT = async (query: string) => {
-    if (gptRequestCount >= 150) {
+    if (gptRequestCount >= 10) {
       console.warn("GPT request limit reached");
       setGptResults([
         {
@@ -132,48 +132,56 @@ const InstitutionSearch = () => {
     setGptResults([]);
 
     try {
-      const prompt = `
-You are a helpful assistant. Answer ONLY with "YES" or "NO".
-Question: Does ${query} accept TOEFL iBT scores for admission?
-Answer:
-      `.trim();
-
-      const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: "Reply YES or NO: does the university accept TOEFL iBT?",
-          },
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-        temperature: 0,
+      const response = await openai.responses.create({
+        model: "o4-mini",
+        input: `Reply YES or NO: ${query} accept TOEFL iBT?`,
+        tools: [{ type: "web_search_preview" }],
       });
 
-      const answer = completion.choices[0].message.content?.trim().toUpperCase();
+      const messageItem = response.output.find((item) => item.type === "message");
 
-      if (answer === "YES" || answer === "NO") {
-        setGptResults([
-          {
-            title: "AI Answer",
-            link: "",
-            snippet: `This university ${answer === "YES" ? "accepts" : "does not accept"
-              } TOEFL iBT.`,
-          },
-        ]);
-      } else {
-        setGptResults([
-          {
-            title: "AI Answer",
-            link: "",
-            snippet: "Sorry, I could not determine the answer.",
-          },
-        ]);
+      if (!messageItem || !("content" in messageItem)) {
+        throw new Error("No content found in the response.");
       }
-    } catch (error: any) {
+
+      const contentItem = messageItem.content?.[0];
+      let textContent = "";
+      let annotations: any[] = [];
+
+      if (contentItem?.type === "output_text") {
+        textContent = contentItem.text?.trim() ?? "";
+        annotations = contentItem.annotations ?? [];
+      } else {
+        textContent = "Sorry, I could not provide an answer.";
+      }
+
+      // Extract YES or NO from the start of the text
+      const yesNoAnswer = textContent.split(" ")[0].toUpperCase();
+      const isYesNo = yesNoAnswer === "YES" || yesNoAnswer === "NO";
+
+      let citationUrl = "";
+      let citationTitle = "";
+
+      if (annotations.length > 0) {
+        const urlAnnotation = annotations.find((a) => a.type === "url_citation");
+        if (urlAnnotation) {
+          citationUrl = urlAnnotation.url;
+          citationTitle = urlAnnotation.title;
+        }
+      }
+
+      setGptResults([
+        {
+          title: "AI Answer",
+          link: citationUrl,
+          snippet: isYesNo
+            ? `This university ${yesNoAnswer === "YES" ? "accepts" : "does not accept"} TOEFL iBT.`
+            : textContent,
+          // sourceTitle: citationTitle,
+        },
+      ]);
+    }
+    catch (error: any) {
       console.error("GPT Search error:", error);
       setGptResults([
         {
@@ -186,6 +194,7 @@ Answer:
       setGptLoading(false);
     }
   };
+
 
   const getScoreColor = (score: number | null) => {
     if (!score) return "text-gray-500";
@@ -348,13 +357,8 @@ Answer:
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
                   <p className="text-gray-600 mt-4">Asking AI...</p>
                 </div>
-              ) : gptResults.length > 0 ? (
+              ) : gptResults.length > 0 && (
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden mt-6">
-                  <div className="p-4 border-b">
-                    <p className="text-gray-600">
-                      AI results for "{searchTerm}"
-                    </p>
-                  </div>
                   <ul className="divide-y divide-gray-200">
                     {gptResults.map((result, index) => (
                       <li key={index} className="p-4">
@@ -363,42 +367,28 @@ Answer:
                         </p>
                         <p className="text-sm text-gray-600 mt-1">
                           {result.snippet}
+                          {result.link && (
+                            <p className="text-sm mt-2">
+                              <a
+                                href={result.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 underline font-medium"
+                              >
+                                View Source
+                              </a>
+                            </p>
+                          )}
                         </p>
+
                       </li>
                     ))}
                   </ul>
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Search className="h-24 w-24 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                    No Results Found
-                  </h3>
-                  <p className="text-gray-600">
-                    No institutions or AI results found for "{searchTerm}".
-                    Try a different search term.
-                  </p>
                 </div>
               )}
             </>
           )}
 
-          <div className="mt-12 text-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-slate-200/50">
-            <h3 className="text-xl font-bold text-slate-800 mb-4">
-              Don't See Your Institution?
-            </h3>
-            <p className="text-slate-600 mb-6">
-              Our database is constantly growing. If you don't find your
-              institution, it doesn't mean they don't accept TOEFL iBT. Contact
-              the institution directly for the most up-to-date information.
-            </p>
-            <Button
-              onClick={() => navigate("/practice/full-tests")}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full px-8 py-3"
-            >
-              Start Preparing with Practice Tests
-            </Button>
-          </div>
         </div>
       </div>
       <Footer />
