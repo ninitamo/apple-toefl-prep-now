@@ -31,8 +31,7 @@ interface Institution {
 }
 
 const openai = new OpenAI({
-  // apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  apiKey: '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',
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true, // Only for development!
 });
 
@@ -128,6 +127,20 @@ const InstitutionSearch = () => {
       return;
     }
 
+
+    if (query.length > 60) {
+      console.warn("Query exceeds 60 characters");
+      setGptResults([
+        {
+          title: "Input Too Long",
+          link: "",
+          snippet: "Your query must be 60 characters or fewer.",
+        },
+      ]);
+      return;
+    }
+
+
     setGptRequestCount((prev) => prev + 1);
     setGptLoading(true);
     setGptResults([]);
@@ -136,7 +149,7 @@ const InstitutionSearch = () => {
       const response = await openai.responses.create({
         model: "o4-mini",
         input: `Reply YES or NO: ${query} accept TOEFL iBT?`,
-        tools: [{ type: "web_search_preview" }],
+        tools: [{ type: "web_search_preview", search_context_size: "low", }],
       });
 
       const messageItem = response.output.find((item) => item.type === "message");
@@ -238,6 +251,7 @@ const InstitutionSearch = () => {
               <div className="relative w-full">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-5 w-5" />
                 <Input
+                  // maxLength={20}
                   type="text"
                   placeholder="Search by university name..."
                   value={searchTerm}
