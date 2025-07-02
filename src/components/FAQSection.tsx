@@ -43,24 +43,24 @@ const FAQSection = () => {
   ];
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-200">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-gray-600 dark:text-gray-300">
             Find answers to common questions about our TOEFL preparation platform
           </p>
         </div>
 
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger className="text-left text-lg font-medium">
+            <AccordionItem key={index} value={`item-${index}`} className="border-gray-200 dark:border-gray-700">
+              <AccordionTrigger className="text-left text-lg font-medium text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-gray-600 text-base leading-relaxed">
+              <AccordionContent className="text-gray-600 dark:text-gray-300 text-base leading-relaxed">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
