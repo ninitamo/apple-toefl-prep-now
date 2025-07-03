@@ -19,6 +19,7 @@ export type Database = {
           estimated_duration: number
           id: string
           section_type: string
+          task_type: string | null
           title: string
           updated_at: string
         }
@@ -31,6 +32,7 @@ export type Database = {
           estimated_duration: number
           id?: string
           section_type: string
+          task_type?: string | null
           title: string
           updated_at?: string
         }
@@ -43,6 +45,7 @@ export type Database = {
           estimated_duration?: number
           id?: string
           section_type?: string
+          task_type?: string | null
           title?: string
           updated_at?: string
         }
