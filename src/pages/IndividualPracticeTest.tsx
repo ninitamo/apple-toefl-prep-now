@@ -179,7 +179,7 @@ const IndividualPracticeTest = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <Button variant="ghost" onClick={() => navigate('/individual-practice')}>
@@ -214,55 +214,92 @@ const IndividualPracticeTest = () => {
           <Progress value={progress} />
         </div>
 
-        {/* Reading Passage */}
-        {test.section_type === 'reading' && (
+        {/* Main Content - Two Column Layout for Reading */}
+        {test.section_type === 'reading' ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            {/* Reading Passage - Left Side */}
+            <Card className="h-fit">
+              <CardHeader>
+                <CardTitle className="text-lg">Reading Passage</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="prose max-w-none text-sm leading-relaxed max-h-96 overflow-y-auto">
+                  {test.content.split('\n\n').map((paragraph, index) => (
+                    <p key={index} className="mb-4">{paragraph}</p>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Question - Right Side */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">
+                  Question {currentQ.question_number}
+                  <Badge variant="outline" className="ml-2 text-xs">
+                    {currentQ.question_type.replace('_', ' ')}
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-6">{currentQ.question_text}</p>
+                
+                {options.length > 0 && (
+                  <RadioGroup 
+                    value={answers[currentQuestion] || ''} 
+                    onValueChange={handleAnswerChange}
+                  >
+                    {options.map((option: string, index: number) => (
+                      <div key={index} className="flex items-start space-x-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
+                        <RadioGroupItem value={index.toString()} id={`option-${index}`} />
+                        <Label 
+                          htmlFor={`option-${index}`} 
+                          className="text-sm leading-relaxed cursor-pointer flex-1"
+                        >
+                          <strong>{String.fromCharCode(65 + index)}.</strong> {option}
+                        </Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          /* Single Column Layout for Non-Reading Sections */
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle className="text-lg">Reading Passage</CardTitle>
+              <CardTitle className="text-lg">
+                Question {currentQ.question_number}
+                <Badge variant="outline" className="ml-2 text-xs">
+                  {currentQ.question_type.replace('_', ' ')}
+                </Badge>
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="prose max-w-none text-sm leading-relaxed">
-                {test.content.split('\n\n').map((paragraph, index) => (
-                  <p key={index} className="mb-4">{paragraph}</p>
-                ))}
-              </div>
+              <p className="mb-6">{currentQ.question_text}</p>
+              
+              {options.length > 0 && (
+                <RadioGroup 
+                  value={answers[currentQuestion] || ''} 
+                  onValueChange={handleAnswerChange}
+                >
+                  {options.map((option: string, index: number) => (
+                    <div key={index} className="flex items-start space-x-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
+                      <RadioGroupItem value={index.toString()} id={`option-${index}`} />
+                      <Label 
+                        htmlFor={`option-${index}`} 
+                        className="text-sm leading-relaxed cursor-pointer flex-1"
+                      >
+                        <strong>{String.fromCharCode(65 + index)}.</strong> {option}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
             </CardContent>
           </Card>
         )}
-
-        {/* Question */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="text-lg">
-              Question {currentQ.question_number}
-              <Badge variant="outline" className="ml-2 text-xs">
-                {currentQ.question_type.replace('_', ' ')}
-              </Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-6">{currentQ.question_text}</p>
-            
-            {options.length > 0 && (
-              <RadioGroup 
-                value={answers[currentQuestion] || ''} 
-                onValueChange={handleAnswerChange}
-              >
-                {options.map((option: string, index: number) => (
-                  <div key={index} className="flex items-start space-x-2 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
-                    <RadioGroupItem value={index.toString()} id={`option-${index}`} />
-                    <Label 
-                      htmlFor={`option-${index}`} 
-                      className="text-sm leading-relaxed cursor-pointer flex-1"
-                    >
-                      <strong>{String.fromCharCode(65 + index)}.</strong> {option}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            )}
-          </CardContent>
-        </Card>
 
         {/* Navigation */}
         <div className="flex justify-between">
