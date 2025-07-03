@@ -1,11 +1,10 @@
-
 import { useParams, useNavigate } from 'react-router-dom';
 import { useIndividualPracticeTest, useIndividualPracticeQuestions } from '@/hooks/useIndividualPractice';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import ReadingPractice from '@/components/ReadingPractice';
+import ReadingPractice from '@/pages/ReadingPractice';
 import SpeakingPractice from '@/components/SpeakingPractice';
 
 const IndividualPracticeTestPage = () => {
