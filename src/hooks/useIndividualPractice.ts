@@ -10,6 +10,7 @@ export interface IndividualPracticeTest {
   content: string;
   difficulty_level: string | null;
   estimated_duration: number;
+  audio_url: string | null;
   created_at: string;
   updated_at: string;
 }
