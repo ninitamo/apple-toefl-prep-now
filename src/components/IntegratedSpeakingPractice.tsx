@@ -45,18 +45,42 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
   };
 
   const startAudioPlayback = () => {
-    if (test.audio_url && audioRef.current) {
+    // Construct the correct audio URL format
+    const audioUrl = `listening/speaking-audios-individual/${test.id}.mp3`;
+    
+    if (audioRef.current) {
       setIsAudioPlaying(true);
-      audioRef.current.src = test.audio_url;
-      audioRef.current.play();
+      audioRef.current.src = audioUrl;
+      
+      audioRef.current.onloadstart = () => {
+        console.log('Audio loading started:', audioUrl);
+      };
+      
+      audioRef.current.oncanplay = () => {
+        console.log('Audio can play');
+        audioRef.current?.play().catch(error => {
+          console.error('Audio play failed:', error);
+          // Fallback to prep phase if audio fails
+          setIsAudioPlaying(false);
+          setPhase('prep');
+          startTimer(options.prep_time);
+        });
+      };
       
       audioRef.current.onended = () => {
         setIsAudioPlaying(false);
         setPhase('prep');
         startTimer(options.prep_time);
       };
+      
+      audioRef.current.onerror = (error) => {
+        console.error('Audio error:', error);
+        setIsAudioPlaying(false);
+        setPhase('prep');
+        startTimer(options.prep_time);
+      };
     } else {
-      // Fallback to prep phase if no audio
+      // Fallback to prep phase if no audio element
       setPhase('prep');
       startTimer(options.prep_time);
     }
