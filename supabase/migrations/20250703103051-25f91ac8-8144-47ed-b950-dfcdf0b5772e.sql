@@ -1,0 +1,112 @@
+
+-- Insert integrated speaking practice tests
+INSERT INTO public.individual_practice_tests (
+  id,
+  section_type,
+  title,
+  description,
+  content,
+  difficulty_level,
+  estimated_duration
+) VALUES 
+(
+  'speaking-integrated-01',
+  'speaking',
+  'Extended Library Hours During Finals',
+  'Task 2: Integrated Speaking (Reading + Listening – Campus-Related)',
+  'The university has announced that the campus library will extend its operating hours during final exam week. Instead of closing at 11:00 p.m., the library will remain open until 2:00 a.m. The administration hopes this change will give students more time to study in a quiet, well-equipped space. University officials also mentioned that additional security staff will be present during late-night hours to ensure student safety. The decision was made in response to student requests for longer study hours during busy exam periods.',
+  'intermediate',
+  3
+),
+(
+  'speaking-integrated-02',
+  'speaking',
+  'New Student Café Proposal',
+  'Task 2: Integrated Speaking (Reading + Listening – Campus-Related)',
+  'The Student Center is planning to add a new café on the first floor, offering affordable snacks and drinks. The café will remain open until midnight every day and is expected to become a popular hangout spot for students after evening classes and study sessions. University officials believe this addition will improve student life by providing a convenient and relaxing place for students to gather. The project is set to begin construction next semester.',
+  'intermediate',
+  3
+),
+(
+  'speaking-integrated-03',
+  'speaking',
+  'Parking Permit Fee Increase',
+  'Task 2: Integrated Speaking (Reading + Listening – Campus-Related)',
+  'The university will introduce a $50 fee for student parking permits starting next semester. According to the administration, this fee is necessary to help maintain existing parking lots and fund the construction of additional parking spaces. University officials believe the improved parking conditions will benefit all students and staff in the long term.',
+  'intermediate',
+  3
+),
+(
+  'speaking-integrated-04',
+  'speaking',
+  'Mandatory Safety Workshops for Dorm Residents',
+  'Task 2: Integrated Speaking (Reading + Listening – Campus-Related)',
+  'The university will now require students living in campus housing to attend monthly safety workshops. Topics will include fire safety, emergency procedures, and personal security tips. The administration believes that mandatory workshops will better prepare students to respond to emergencies and create a safer living environment for all residents.',
+  'intermediate',
+  3
+),
+(
+  'speaking-integrated-05',
+  'speaking',
+  'Digital Textbooks Proposal',
+  'Task 2: Integrated Speaking (Reading + Listening – Campus-Related)',
+  'A student committee has proposed that the university replace printed textbooks with digital versions. Supporters argue this would lower costs for students, reduce paper waste, and make materials more accessible anytime through mobile devices or computers.',
+  'intermediate',
+  3
+);
+
+-- Insert corresponding questions
+INSERT INTO public.test_questions_individual_practice (
+  id,
+  practice_test_id,
+  question_number,
+  question_type,
+  question_text,
+  options,
+  correct_answer
+) VALUES 
+(
+  'speaking-integrated-q01',
+  'speaking-integrated-01',
+  1,
+  'integrated-campus',
+  'The student expresses her opinion about the university''s decision to extend library hours. Summarize her opinion and explain the reasons she gives to support it.',
+  '{"prep_time": 30, "speaking_time": 60, "conversation": [["Student", "Hi Professor, did you hear about the library hours changing for finals?"], ["Professor", "Yes, I did. It''ll be open until 2:00 a.m. now."], ["Student", "I think that''s great. I always need extra time to study at night."], ["Professor", "It should definitely help night owls like you."], ["Student", "I live with three roommates, and it''s impossible to concentrate at home."], ["Professor", "Then this will be a good quiet place for you."], ["Student", "Are there going to be staff there that late?"], ["Professor", "Yes, the university is adding extra security and library staff."], ["Student", "That''s reassuring. I was worried about walking back so late."], ["Professor", "They''ll make sure it''s safe."], ["Student", "I''m really glad they listened to students about this."], ["Professor", "Yes, sometimes feedback makes a difference."]]}',
+  'The student supports the decision because she needs quiet study space away from her roommates and appreciates the added security for late-night safety.'
+),
+(
+  'speaking-integrated-q02',
+  'speaking-integrated-02',
+  1,
+  'integrated-campus',
+  'The student expresses his opinion about the proposed café. Summarize his opinion and explain the reasons he gives to support it.',
+  '{"prep_time": 30, "speaking_time": 60, "conversation": [["Student", "Professor, have you seen the notice about the new café?"], ["Professor", "Yes, I did."], ["Student", "I really don''t like the idea."], ["Professor", "Why not?"], ["Student", "The Student Center is one of the few quiet places left on campus."], ["Professor", "That''s true."], ["Student", "If it''s open that late, people will hang out and make noise."], ["Professor", "I can see your concern."], ["Student", "Also, students already stay up too late. This will just encourage it."], ["Professor", "It might."], ["Student", "I''d rather they used the money to improve study spaces."], ["Professor", "Good point. Have you shared your opinion with the student council?"], ["Student", "Not yet, but I''m thinking about it."]]}',
+  'The student opposes the café because it will disturb the quiet atmosphere, encourage students to stay up late, and he prefers investment in study spaces instead.'
+),
+(
+  'speaking-integrated-q03',
+  'speaking-integrated-03',
+  1,
+  'integrated-campus',
+  'The student expresses her opinion about the parking fee. Summarize her opinion and explain the reasons she gives to support it.',
+  '{"prep_time": 30, "speaking_time": 60, "conversation": [["Student", "Did you hear they''re adding a parking permit fee?"], ["Professor", "Yes, $50 starting next term."], ["Student", "I think it''s really unfair."], ["Professor", "Why''s that?"], ["Student", "A lot of students already struggle with tuition and rent."], ["Professor", "That''s a valid concern."], ["Student", "Adding another fee just makes it worse."], ["Professor", "They say it''s for maintenance and more parking spaces."], ["Student", "They''ve promised more spaces before and nothing happened."], ["Professor", "True, past delays have been frustrating."], ["Student", "I don''t trust they''ll follow through this time either."], ["Professor", "Understandable."]]}',
+  'The student thinks the parking fee is unfair because students already face financial struggles and she doubts the university will follow through on their promises based on past experience.'
+),
+(
+  'speaking-integrated-q04',
+  'speaking-integrated-04',
+  1,
+  'integrated-campus',
+  'The student expresses his opinion about the new safety workshops. Summarize his opinion and explain the reasons he gives to support it.',
+  '{"prep_time": 30, "speaking_time": 60, "conversation": [["Student", "Professor, did you hear about the new safety workshops?"], ["Professor", "Yes, dorm residents will have to attend them."], ["Student", "I think it''s a great idea."], ["Professor", "Why''s that?"], ["Student", "A lot of students don''t know what to do in an emergency."], ["Professor", "That''s true."], ["Student", "If everyone has to attend, it makes sure nobody''s left out."], ["Professor", "Good point."], ["Student", "It could prevent serious problems in the future."], ["Professor", "Exactly. Better to be prepared."], ["Student", "I''m glad the school''s finally doing this."], ["Professor", "It''ll definitely help."]]}',
+  'The student supports the safety workshops because many students lack emergency knowledge, mandatory attendance ensures everyone participates, and it can prevent future problems.'
+),
+(
+  'speaking-integrated-q05',
+  'speaking-integrated-05',
+  1,
+  'integrated-campus',
+  'The student expresses her opinion about switching to digital textbooks. Summarize her opinion and explain the reasons she gives to support it.',
+  '{"prep_time": 30, "speaking_time": 60, "conversation": [["Student", "Professor, what do you think about switching to digital textbooks?"], ["Professor", "It could be convenient."], ["Student", "I don''t like the idea at all."], ["Professor", "Why''s that?"], ["Student", "I prefer physical books. It''s easier to highlight and flip pages."], ["Professor", "A lot of students feel that way."], ["Student", "Also, not everyone has good internet access at home."], ["Professor", "That could be a problem."], ["Student", "I think forcing digital books would be unfair."], ["Professor", "Valid concern."]]}',
+  'The student opposes digital textbooks because she prefers the tactile experience of physical books and believes forcing the change would be unfair to students without reliable internet access.'
+);

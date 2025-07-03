@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from 'react-router-dom';
 import { useIndividualPracticeTest, useIndividualPracticeQuestions } from '@/hooks/useIndividualPractice';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ReadingPractice from '@/pages/ReadingPractice';
 import SpeakingPractice from '@/components/SpeakingPractice';
+import IntegratedSpeakingPractice from '@/components/IntegratedSpeakingPractice';
 
 const IndividualPracticeTestPage = () => {
   const { testId } = useParams<{ testId: string }>();
@@ -51,6 +53,8 @@ const IndividualPracticeTestPage = () => {
     );
   }
 
+  const isIntegratedSpeaking = test.section_type === 'speaking' && questions[0]?.question_type === 'integrated-campus';
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
       <Navbar />
@@ -75,8 +79,16 @@ const IndividualPracticeTestPage = () => {
             />
           )}
 
-          {test.section_type === 'speaking' && questions[0] && (
+          {test.section_type === 'speaking' && questions[0] && !isIntegratedSpeaking && (
             <SpeakingPractice 
+              test={test}
+              question={questions[0]}
+              onComplete={handleComplete}
+            />
+          )}
+
+          {isIntegratedSpeaking && questions[0] && (
+            <IntegratedSpeakingPractice 
               test={test}
               question={questions[0]}
               onComplete={handleComplete}
