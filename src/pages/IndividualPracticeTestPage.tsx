@@ -53,7 +53,13 @@ const IndividualPracticeTestPage = () => {
     );
   }
 
-  const isIntegratedSpeaking = test.section_type === 'speaking' && questions[0]?.question_type === 'integrated-campus';
+  // Determine if this is an integrated speaking task (either campus or academic)
+  const isIntegratedSpeaking = test.section_type === 'speaking' && 
+    (test.task_type === 'integrated-campus' || test.task_type === 'integrated-academic' || questions[0]?.question_type?.includes('integrated'));
+
+  // Determine if this is an independent speaking task
+  const isIndependentSpeaking = test.section_type === 'speaking' && 
+    (test.task_type === 'independent' || (!test.task_type && !questions[0]?.question_type?.includes('integrated')));
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
@@ -79,7 +85,7 @@ const IndividualPracticeTestPage = () => {
             />
           )}
 
-          {test.section_type === 'speaking' && questions[0] && !isIntegratedSpeaking && (
+          {isIndependentSpeaking && questions[0] && (
             <SpeakingPractice 
               test={test}
               question={questions[0]}

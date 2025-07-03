@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 export interface IndividualPracticeTest {
   id: string;
   section_type: string;
+  task_type: string | null;
   title: string;
   description: string | null;
   content: string;

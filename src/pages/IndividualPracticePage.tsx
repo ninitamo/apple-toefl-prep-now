@@ -46,16 +46,18 @@ const IndividualPracticePage = () => {
         // Filter speaking tests based on selected filter
         if (speakingFilter !== 'all') {
           if (speakingFilter === 'integrated') {
-            // Show tests that have integrated speaking questions
+            // Show tests that have integrated speaking questions (campus or academic)
             tests = tests.filter(test => 
+              test.task_type === 'integrated-campus' || 
+              test.task_type === 'integrated-academic' ||
               test.id.includes('integrated') || 
               test.description?.includes('Integrated Speaking')
             );
           } else if (speakingFilter === 'independent') {
-            // Show tests that don't have integrated speaking questions
+            // Show tests that are independent speaking tasks
             tests = tests.filter(test => 
-              !test.id.includes('integrated') && 
-              !test.description?.includes('Integrated Speaking')
+              test.task_type === 'independent' ||
+              (!test.task_type && !test.id.includes('integrated') && !test.description?.includes('Integrated Speaking'))
             );
           }
         }
@@ -131,6 +133,14 @@ const IndividualPracticePage = () => {
                             <IconComponent className="w-3 h-3 mr-1" />
                             {test.section_type.charAt(0).toUpperCase() + test.section_type.slice(1)}
                           </Badge>
+                          {/* Show task type badge for speaking tasks */}
+                          {test.section_type === 'speaking' && test.task_type && (
+                            <Badge variant="outline" className="text-xs">
+                              {test.task_type === 'integrated-campus' && 'Campus'}
+                              {test.task_type === 'integrated-academic' && 'Academic'}
+                              {test.task_type === 'independent' && 'Independent'}
+                            </Badge>
+                          )}
                         </div>
                         <CardTitle className="text-lg">{test.title}</CardTitle>
                         <CardDescription>{test.description}</CardDescription>
