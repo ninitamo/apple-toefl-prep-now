@@ -16,21 +16,42 @@ const IndividualPracticeTest = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [showResults, setShowResults] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(17 * 60); // 17 minutes in seconds
+  const [timeRemaining, setTimeRemaining] = useState(17 * 60);
+  const [showConfirmation, setShowConfirmation] = useState(true);
+  const [countdown, setCountdown] = useState(0);
+  const [testStarted, setTestStarted] = useState(false);
 
   const { data: test, isLoading: testLoading } = useIndividualPracticeTest(id!);
   const { data: questions, isLoading: questionsLoading } = useIndividualPracticeQuestions(id!);
 
+  // Countdown effect
   useEffect(() => {
-    if (!showResults && timeRemaining > 0) {
+    if (countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0 && !showConfirmation && !testStarted) {
+      setTestStarted(true);
+    }
+  }, [countdown, showConfirmation, testStarted]);
+
+  // Timer effect
+  useEffect(() => {
+    if (testStarted && !showResults && timeRemaining > 0) {
       const timer = setTimeout(() => {
         setTimeRemaining(timeRemaining - 1);
       }, 1000);
       return () => clearTimeout(timer);
-    } else if (timeRemaining === 0 && !showResults) {
+    } else if (timeRemaining === 0 && !showResults && testStarted) {
       handleSubmit();
     }
-  }, [timeRemaining, showResults]);
+  }, [timeRemaining, showResults, testStarted]);
+
+  const handleStartTest = () => {
+    setShowConfirmation(false);
+    setCountdown(3);
+  };
 
   const handleAnswerChange = (value: string) => {
     setAnswers(prev => ({
@@ -99,6 +120,55 @@ const IndividualPracticeTest = () => {
     );
   }
 
+  // Confirmation dialog
+  if (showConfirmation) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <Card className="max-w-md mx-auto">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Ready to Start?</CardTitle>
+            <CardDescription>
+              You are about to begin the {test.title} practice test.
+              <br />
+              Time limit: 17 minutes
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center">
+            <div className="mb-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Make sure you're in a quiet environment and ready to focus.
+              </p>
+            </div>
+            <div className="flex gap-4">
+              <Button variant="outline" onClick={() => navigate('/individual-practice')}>
+                Cancel
+              </Button>
+              <Button onClick={handleStartTest} className="bg-green-600 hover:bg-green-700">
+                I'm Ready
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Countdown screen
+  if (countdown > 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-8xl font-bold text-blue-600 mb-4">
+            {countdown}
+          </div>
+          <p className="text-xl text-gray-600 dark:text-gray-400">
+            Test starting in...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (showResults) {
     const score = calculateScore();
     return (
@@ -162,6 +232,9 @@ const IndividualPracticeTest = () => {
                   setAnswers({});
                   setShowResults(false);
                   setTimeRemaining(17 * 60);
+                  setShowConfirmation(true);
+                  setCountdown(0);
+                  setTestStarted(false);
                 }}>
                   Retake Test
                 </Button>
@@ -169,6 +242,15 @@ const IndividualPracticeTest = () => {
             </CardContent>
           </Card>
         </div>
+      </div>
+    );
+  }
+
+  // Main test interface
+  if (!testStarted) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">Preparing test...</div>
       </div>
     );
   }
