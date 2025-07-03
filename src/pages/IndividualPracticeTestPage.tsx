@@ -9,6 +9,7 @@ import ReadingPractice from '@/pages/ReadingPractice';
 import SpeakingPractice from '@/components/SpeakingPractice';
 import IntegratedSpeakingPractice from '@/components/IntegratedSpeakingPractice';
 import ListeningOnlySpeakingPractice from '@/components/ListeningOnlySpeakingPractice';
+import WritingPracticeIndividual from '@/components/WritingPracticeIndividual';
 
 const IndividualPracticeTestPage = () => {
   const { testId } = useParams<{ testId: string }>();
@@ -66,6 +67,9 @@ const IndividualPracticeTestPage = () => {
   const isIndependentSpeaking = test.section_type === 'speaking' && 
     (test.task_type === 'independent' || (!test.task_type && !questions[0]?.question_type?.includes('integrated')));
 
+  // Determine if this is a writing task
+  const isWritingTask = test.section_type === 'writing';
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
       <Navbar />
@@ -114,7 +118,15 @@ const IndividualPracticeTestPage = () => {
             />
           )}
 
-          {!['reading', 'speaking'].includes(test.section_type) && (
+          {isWritingTask && questions[0] && (
+            <WritingPracticeIndividual
+              test={test}
+              question={questions[0]}
+              onComplete={handleComplete}
+            />
+          )}
+
+          {!['reading', 'speaking', 'writing'].includes(test.section_type) && (
             <div className="text-center">
               <p className="text-gray-600 dark:text-gray-400">
                 This practice test type is not yet supported.
