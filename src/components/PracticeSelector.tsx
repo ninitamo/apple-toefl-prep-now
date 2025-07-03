@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router-dom';
 
 const PracticeSelector = () => {
   const navigate = useNavigate();
-  
+
   const practiceOptions = [
     {
       title: "Full Practice Tests",
       description: "Complete 3.5-hour TOEFL iBT practice tests with all four sections",
       icon: Clock,
       stats: "15 full tests available",
-      onClick: () => navigate('/tests')
+      onClick: () => navigate('/practice/full-tests')
     },
     {
       title: "Individual Sections",
@@ -63,7 +63,7 @@ const PracticeSelector = () => {
                     {option.stats}
                   </div>
                 </div>
-                <Button 
+                <Button
                   onClick={option.onClick}
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 group-hover:shadow-lg"
                 >
