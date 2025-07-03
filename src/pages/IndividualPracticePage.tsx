@@ -52,7 +52,7 @@ const IndividualPracticePage = () => {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
         <Navbar />
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 py-8">
           <div className="max-w-7xl mx-auto px-4">
             <div className="text-center">Loading practice tests...</div>
           </div>
@@ -65,7 +65,7 @@ const IndividualPracticePage = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
       <Navbar />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 py-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
