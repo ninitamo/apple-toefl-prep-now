@@ -10,6 +10,10 @@ import Index from "./pages/Index";
 import TestPage from "./pages/TestPage";
 import IndividualPracticePage from "./pages/IndividualPracticePage";
 import IndividualPracticeTestPage from "./pages/IndividualPracticeTestPage";
+import ExamInfo from "./pages/ExamInfo";
+import InstitutionSearch from "./pages/InstitutionSearch";
+import Contact from "./pages/Contact";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +30,10 @@ const App = () => (
               <Route path="/test/:testId" element={<TestPage />} />
               <Route path="/individual-practice" element={<IndividualPracticePage />} />
               <Route path="/individual-practice/:testId" element={<IndividualPracticeTestPage />} />
+              <Route path="/exam-info" element={<ExamInfo />} />
+              <Route path="/institution-search" element={<InstitutionSearch />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
