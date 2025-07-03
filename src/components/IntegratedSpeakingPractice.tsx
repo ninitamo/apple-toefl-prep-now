@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -45,8 +46,8 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
   };
 
   const startAudioPlayback = () => {
-    // Construct the correct audio URL format
-    const audioUrl = `listening/speaking-audios-individual/${test.id}.mp3`;
+    // Use the audio_url from the database, or fallback to constructed path if not available
+    const audioUrl = test.audio_url || `listening/speaking-audios-individual/${test.id}.mp3`;
     
     if (audioRef.current) {
       setIsAudioPlaying(true);
@@ -75,6 +76,8 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
       
       audioRef.current.onerror = (error) => {
         console.error('Audio error:', error);
+        console.log('Failed audio URL:', audioUrl);
+        console.log('Available audio_url from database:', test.audio_url);
         setIsAudioPlaying(false);
         setPhase('prep');
         startTimer(options.prep_time);
