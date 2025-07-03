@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import TestPage from "./pages/TestPage";
 import IndividualPracticePage from "./pages/IndividualPracticePage";
 import IndividualPracticeTestPage from "./pages/IndividualPracticeTestPage";
+import FullTestsList from "./pages/FullTestsList";
 import ExamInfo from "./pages/ExamInfo";
 import InstitutionSearch from "./pages/InstitutionSearch";
 import Contact from "./pages/Contact";
@@ -31,7 +32,7 @@ const App = () => (
               <Route path="/individual-practice" element={<IndividualPracticePage />} />
               <Route path="/individual-practice/:testId" element={<IndividualPracticeTestPage />} />
               <Route path="/practice/sections" element={<IndividualPracticePage />} />
-              <Route path="/practice/full-tests" element={<Index />} />
+              <Route path="/practice/full-tests" element={<FullTestsList />} />
               <Route path="/exam-info" element={<ExamInfo />} />
               <Route path="/institution-search" element={<InstitutionSearch />} />
               <Route path="/contact" element={<Contact />} />
