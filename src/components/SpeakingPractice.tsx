@@ -12,7 +12,7 @@ interface SpeakingPracticeProps {
 }
 
 const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps) => {
-  const [phase, setPhase] = useState<'directions' | 'prep' | 'speaking' | 'completed'>('directions');
+  const [phase, setPhase] = useState<'directions' | 'reading' | 'prep' | 'speaking' | 'completed'>('directions');
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -42,8 +42,8 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
   };
 
   const handleStartTask = () => {
-    setPhase('prep');
-    startTimer(options.prep_time, 'speaking');
+    setPhase('reading');
+    startTimer(5, 'prep'); // 5 seconds to read the question
   };
 
   const handleStartSpeaking = () => {
@@ -82,6 +82,8 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
 
   const getPhaseTitle = () => {
     switch (phase) {
+      case 'reading':
+        return 'Reading Time';
       case 'prep':
         return 'Preparation Time';
       case 'speaking':
@@ -93,6 +95,8 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
 
   const getPhaseColor = () => {
     switch (phase) {
+      case 'reading':
+        return 'border-yellow-400 bg-yellow-50';
       case 'prep':
         return 'border-blue-400 bg-blue-50';
       case 'speaking':
@@ -101,6 +105,21 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
         return 'border-gray-400 bg-gray-50';
     }
   };
+
+  // Auto-transition from reading to prep phase
+  useEffect(() => {
+    if (phase === 'reading' && timeLeft === 0) {
+      setPhase('prep');
+      startTimer(options.prep_time, 'speaking');
+    } else if (phase === 'prep' && timeLeft === 0) {
+      setPhase('speaking');
+      setIsRecording(true);
+      startTimer(options.speaking_time, 'completed');
+    } else if (phase === 'speaking' && timeLeft === 0) {
+      setIsRecording(false);
+      setPhase('completed');
+    }
+  }, [timeLeft, phase, options.prep_time, options.speaking_time]);
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -123,8 +142,8 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
               <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-400">
                 <h3 className="font-semibold text-blue-900 mb-3">Directions</h3>
                 <p className="text-blue-800 leading-relaxed">
-                  You will be asked a question about a familiar topic. You will have {options.prep_time} seconds 
-                  to prepare your response and {options.speaking_time} seconds to speak.
+                  You will be asked a question about a familiar topic. You will have 5 seconds to read the question, 
+                  then {options.prep_time} seconds to prepare your response and {options.speaking_time} seconds to speak.
                 </p>
               </div>
               
@@ -135,6 +154,21 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
                 >
                   Begin Task
                 </Button>
+              </div>
+            </div>
+          )}
+
+          {phase === 'reading' && (
+            <div className="space-y-4">
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h3 className="font-semibold mb-3">Question</h3>
+                <p className="text-gray-700 text-lg leading-relaxed">{question.question_text}</p>
+              </div>
+              
+              <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                <p className="text-yellow-800 text-sm">
+                  <strong>Reading Time:</strong> Take this time to carefully read and understand the question.
+                </p>
               </div>
             </div>
           )}
