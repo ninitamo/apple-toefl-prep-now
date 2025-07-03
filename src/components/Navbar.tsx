@@ -54,7 +54,7 @@ const Navbar = () => {
 
   const handleAuthClick = () => {
     if (user) {
-      navigate('/practice/reading');
+      navigate('/practice/sections');
     } else {
       navigate('/auth');
     }
@@ -124,7 +124,7 @@ const Navbar = () => {
                       Signed in as: {user.email}
                     </div>
                     <Button
-                      onClick={() => { navigate('/exam-info'); setIsMenuOpen(false); }}
+                      onClick={() => { navigate('/practice/sections'); setIsMenuOpen(false); }}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
                     >
                       Practice Tests
