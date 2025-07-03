@@ -30,21 +30,6 @@ const ToeflTestsList = () => {
     },
   });
 
-  // const getDifficultyColor = (difficulty: string) => {
-  //   switch (difficulty.toLowerCase()) {
-  //     case 'beginner':
-  //       return 'bg-green-100 text-green-800';
-  //     case 'intermediate':
-  //       return 'bg-yellow-100 text-yellow-800';
-  //     case 'advanced':
-  //       return 'bg-orange-100 text-orange-800';
-  //     case 'expert':
-  //       return 'bg-red-100 text-red-800';
-  //     default:
-  //       return 'bg-gray-100 text-gray-800';
-  //   }
-  // };
-
   const getColor = () => {
     return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
   };
@@ -75,7 +60,8 @@ const ToeflTestsList = () => {
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">TOEFL Practice Tests</h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-          Practice with TOEFL-like tests to improve your skills. Please note that these are unofficial materials.        </p>
+          Practice with TOEFL-like tests to improve your skills. Please note that these are unofficial materials.
+        </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Index from "./pages/Index";
 import TestPage from "./pages/TestPage";
+import ToeflTest from "./pages/ToeflTest";
 import IndividualPracticePage from "./pages/IndividualPracticePage";
 import IndividualPracticeTestPage from "./pages/IndividualPracticeTestPage";
 import FullTestsList from "./pages/FullTestsList";
@@ -28,7 +29,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/test/:testId" element={<TestPage />} />
+              <Route path="/test/:testId" element={<ToeflTest />} />
               <Route path="/individual-practice" element={<IndividualPracticePage />} />
               <Route path="/individual-practice/:testId" element={<IndividualPracticeTestPage />} />
               <Route path="/practice/sections" element={<IndividualPracticePage />} />
