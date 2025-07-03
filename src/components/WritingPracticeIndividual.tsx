@@ -27,10 +27,20 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
   const readingTime = questionOptions?.reading_time || 3;
   const writingTime = questionOptions?.writing_time || 20;
   const lectureConversation = questionOptions?.lecture_conversation || [];
-
+  
+  // Determine if this is an integrated task (has both reading and lecture)
+  const isIntegratedTask = test.task_type === 'integrated-lecture' || test.task_type === 'integrated-reading';
+  
   useEffect(() => {
-    // Start with reading phase
-    startTimer(readingTime * 60, 'listening');
+    if (isIntegratedTask) {
+      // Start with reading phase for integrated tasks
+      startTimer(readingTime * 60, 'listening');
+    } else {
+      // Skip directly to writing for independent tasks
+      setPhase('writing');
+      startTimer(30 * 60, 'completed'); // 30 minutes for independent tasks
+    }
+    
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current);
@@ -75,6 +85,7 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
   };
 
   if (phase === 'completed') {
+    const recommendedWords = isIntegratedTask ? '150-225' : '300+';
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
         <div className="max-w-4xl mx-auto px-4">
@@ -83,10 +94,12 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
               <CardTitle className="text-2xl font-bold text-green-600">Writing Practice Complete!</CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-6">
-              <p className="text-gray-600">You have successfully completed the integrated writing task.</p>
+              <p className="text-gray-600">
+                You have successfully completed the {isIntegratedTask ? 'integrated' : 'independent'} writing task.
+              </p>
               <div className="space-y-2">
                 <p className="font-semibold">Final Word Count: {wordCount}</p>
-                <p className="text-sm text-gray-500">Recommended: 150-225 words</p>
+                <p className="text-sm text-gray-500">Recommended: {recommendedWords} words</p>
               </div>
               <Button onClick={handleComplete} className="bg-orange-600 hover:bg-orange-700">
                 Complete Practice
@@ -115,8 +128,44 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
           </CardHeader>
           <CardContent className="space-y-6">
             
-            {/* Reading Phase */}
-            {phase === 'reading' && (
+            {/* Independent Writing Task */}
+            {!isIntegratedTask && phase === 'writing' && (
+              <div className="space-y-4">
+                <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-400">
+                  <div className="flex items-center gap-2 mb-2">
+                    <PenTool className="h-4 w-4 text-orange-600" />
+                    <span className="font-semibold text-orange-800">Independent Writing Task - Time: {formatTime(timeLeft)}</span>
+                  </div>
+                  <p className="text-orange-700 text-sm">Write an essay expressing your personal opinion on the topic.</p>
+                </div>
+                
+                <div className="bg-white p-4 rounded border">
+                  <h4 className="font-semibold mb-2">Question:</h4>
+                  <p className="text-sm text-gray-700 mb-4">{question.question_text}</p>
+                  <p className="text-xs text-gray-500">
+                    Directions: You have 30 minutes to plan and write your response. Your response will be judged on the basis of the quality of your writing and on how well your response presents and develops your ideas. An effective response will typically be 300 or more words.
+                  </p>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold">Your Response:</h3>
+                    <div className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                      Word Count: {wordCount}
+                    </div>
+                  </div>
+                  <Textarea
+                    value={response}
+                    onChange={(e) => handleResponseChange(e.target.value)}
+                    placeholder="Type your response here..."
+                    className="min-h-[500px] resize-none"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Integrated Writing Task - Reading Phase */}
+            {isIntegratedTask && phase === 'reading' && (
               <div className="space-y-4">
                 <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
                   <div className="flex items-center gap-2 mb-2">
@@ -133,8 +182,8 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
               </div>
             )}
 
-            {/* Listening Phase */}
-            {phase === 'listening' && (
+            {/* Integrated Writing Task - Listening Phase */}
+            {isIntegratedTask && phase === 'listening' && (
               <div className="space-y-4">
                 <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
                   <div className="flex items-center gap-2 mb-2">
@@ -167,8 +216,8 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
               </div>
             )}
 
-            {/* Writing Phase */}
-            {phase === 'writing' && (
+            {/* Integrated Writing Task - Writing Phase */}
+            {isIntegratedTask && phase === 'writing' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Reference Material - Left Side */}
                 <div className="space-y-4">
@@ -185,7 +234,7 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
                   <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-400">
                     <div className="flex items-center gap-2 mb-2">
                       <PenTool className="h-4 w-4 text-orange-600" />
-                      <span className="font-semibold text-orange-800">Writing Time: {formatTime(timeLeft)}</span>
+                      <span className="font-semibold text-orange-800">Integrated Writing Task - Time: {formatTime(timeLeft)}</span>
                     </div>
                   </div>
                   
