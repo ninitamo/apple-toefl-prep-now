@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import ReadingPractice from '@/pages/ReadingPractice';
 import SpeakingPractice from '@/components/SpeakingPractice';
 import IntegratedSpeakingPractice from '@/components/IntegratedSpeakingPractice';
+import ListeningOnlySpeakingPractice from '@/components/ListeningOnlySpeakingPractice';
 
 const IndividualPracticeTestPage = () => {
   const { testId } = useParams<{ testId: string }>();
@@ -55,7 +56,11 @@ const IndividualPracticeTestPage = () => {
 
   // Determine if this is an integrated speaking task (either campus or academic)
   const isIntegratedSpeaking = test.section_type === 'speaking' && 
-    (test.task_type === 'integrated-campus' || test.task_type === 'integrated-academic' || questions[0]?.question_type?.includes('integrated'));
+    (test.task_type === 'integrated-campus' || test.task_type === 'integrated-academic' || questions[0]?.question_type?.includes('integrated-academic'));
+
+  // Determine if this is a listening-only speaking task
+  const isListeningOnlySpeaking = test.section_type === 'speaking' && 
+    (test.task_type === 'integrated-listening' || questions[0]?.question_type === 'integrated-listening');
 
   // Determine if this is an independent speaking task
   const isIndependentSpeaking = test.section_type === 'speaking' && 
@@ -95,6 +100,14 @@ const IndividualPracticeTestPage = () => {
 
           {isIntegratedSpeaking && questions[0] && (
             <IntegratedSpeakingPractice 
+              test={test}
+              question={questions[0]}
+              onComplete={handleComplete}
+            />
+          )}
+
+          {isListeningOnlySpeaking && questions[0] && (
+            <ListeningOnlySpeakingPractice 
               test={test}
               question={questions[0]}
               onComplete={handleComplete}
