@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,10 +11,6 @@ import CookieConsentBanner from "@/components/CookieConsentBanner";
 import Index from "./pages/Index";
 import ExamInfo from "./pages/ExamInfo";
 import InstitutionSearch from "./pages/InstitutionSearch";
-import Terms from "./pages/Terms";
-import Privacy from "./pages/Privacy";
-import Tests from "./pages/Tests";
-import StudyMaterials from "./pages/StudyMaterials";
 import IndividualPracticePage from "./pages/IndividualPracticePage";
 import IndividualPracticeTest from "./pages/IndividualPracticeTest";
 
@@ -32,10 +29,6 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/exam-info" element={<ExamInfo />} />
                 <Route path="/institution-search" element={<InstitutionSearch />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/tests" element={<Tests />} />
-                <Route path="/study-materials" element={<StudyMaterials />} />
                 <Route path="/individual-practice" element={<IndividualPracticePage />} />
                 <Route path="/individual-practice/:id" element={<IndividualPracticeTest />} />
               </Routes>

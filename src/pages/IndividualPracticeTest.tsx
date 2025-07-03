@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, ArrowRight, Clock, CheckCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Clock, CheckCircle, SkipForward } from 'lucide-react';
 import { useIndividualPracticeTest, useIndividualPracticeQuestions } from '@/hooks/useIndividualPractice';
 
 const IndividualPracticeTest = () => {
@@ -16,24 +16,18 @@ const IndividualPracticeTest = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [showResults, setShowResults] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState(17 * 60); // 17 minutes in seconds
 
   const { data: test, isLoading: testLoading } = useIndividualPracticeTest(id!);
   const { data: questions, isLoading: questionsLoading } = useIndividualPracticeQuestions(id!);
 
   useEffect(() => {
-    if (test && !showResults) {
-      setTimeRemaining(test.estimated_duration * 60); // Convert minutes to seconds
-    }
-  }, [test, showResults]);
-
-  useEffect(() => {
-    if (timeRemaining && timeRemaining > 0 && !showResults) {
+    if (!showResults && timeRemaining > 0) {
       const timer = setTimeout(() => {
         setTimeRemaining(timeRemaining - 1);
       }, 1000);
       return () => clearTimeout(timer);
-    } else if (timeRemaining === 0) {
+    } else if (timeRemaining === 0 && !showResults) {
       handleSubmit();
     }
   }, [timeRemaining, showResults]);
@@ -48,6 +42,8 @@ const IndividualPracticeTest = () => {
   const handleNext = () => {
     if (questions && currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
+    } else {
+      handleSubmit();
     }
   };
 
@@ -55,6 +51,10 @@ const IndividualPracticeTest = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
     }
+  };
+
+  const handleSkip = () => {
+    handleNext();
   };
 
   const handleSubmit = () => {
@@ -131,14 +131,14 @@ const IndividualPracticeTest = () => {
                       <div className="flex items-start justify-between mb-2">
                         <h3 className="font-semibold">Question {question.question_number}</h3>
                         <Badge variant={isCorrect ? "default" : "destructive"}>
-                          {isCorrect ? 'Correct' : 'Incorrect'}
+                          {isCorrect ? 'Correct' : userAnswer ? 'Incorrect' : 'Skipped'}
                         </Badge>
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{question.question_text}</p>
                       
                       {options.length > 0 && (
                         <div className="space-y-1 text-sm">
-                          <p><strong>Your answer:</strong> {userAnswer ? options[parseInt(userAnswer)] : 'Not answered'}</p>
+                          <p><strong>Your answer:</strong> {userAnswer ? options[parseInt(userAnswer)] : 'Skipped'}</p>
                           <p><strong>Correct answer:</strong> {options[parseInt(question.correct_answer)]}</p>
                         </div>
                       )}
@@ -161,7 +161,7 @@ const IndividualPracticeTest = () => {
                   setCurrentQuestion(0);
                   setAnswers({});
                   setShowResults(false);
-                  setTimeRemaining(test.estimated_duration * 60);
+                  setTimeRemaining(17 * 60);
                 }}>
                   Retake Test
                 </Button>
@@ -186,12 +186,10 @@ const IndividualPracticeTest = () => {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
-          {timeRemaining !== null && (
-            <div className="flex items-center text-lg font-semibold">
-              <Clock className="w-5 h-5 mr-2" />
-              {formatTime(timeRemaining)}
-            </div>
-          )}
+          <div className="flex items-center text-lg font-semibold">
+            <Clock className="w-5 h-5 mr-2" />
+            {formatTime(timeRemaining)}
+          </div>
         </div>
 
         {/* Test Info */}
@@ -278,6 +276,10 @@ const IndividualPracticeTest = () => {
           </Button>
           
           <div className="flex gap-2">
+            <Button variant="outline" onClick={handleSkip}>
+              <SkipForward className="w-4 h-4 mr-2" />
+              Skip
+            </Button>
             {currentQuestion === questions.length - 1 ? (
               <Button onClick={handleSubmit} className="bg-green-600 hover:bg-green-700">
                 Submit Test
