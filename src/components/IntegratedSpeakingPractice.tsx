@@ -46,15 +46,17 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
   };
 
   const startAudioPlayback = () => {
-    // Use the audio_url from the database, or fallback to constructed path if not available
-    const audioUrl = test.audio_url || `listening/speaking-audios-individual/${test.id}.mp3`;
+    // Construct the full Supabase storage URL
+    const baseStorageUrl = 'https://tdirwxqcamngvsubjbdd.supabase.co/storage/v1/object/public/';
+    const audioPath = test.audio_url || `listening/speaking-audios-individual/${test.id}.mp3`;
+    const fullAudioUrl = baseStorageUrl + audioPath;
     
     if (audioRef.current) {
       setIsAudioPlaying(true);
-      audioRef.current.src = audioUrl;
+      audioRef.current.src = fullAudioUrl;
       
       audioRef.current.onloadstart = () => {
-        console.log('Audio loading started:', audioUrl);
+        console.log('Audio loading started:', fullAudioUrl);
       };
       
       audioRef.current.oncanplay = () => {
@@ -76,7 +78,7 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
       
       audioRef.current.onerror = (error) => {
         console.error('Audio error:', error);
-        console.log('Failed audio URL:', audioUrl);
+        console.log('Failed audio URL:', fullAudioUrl);
         console.log('Available audio_url from database:', test.audio_url);
         setIsAudioPlaying(false);
         setPhase('prep');
