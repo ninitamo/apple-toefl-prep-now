@@ -91,7 +91,7 @@ const ToeflTestsList = () => {
                 <span>Reading • Listening • Speaking • Writing</span>
               </div>
 
-              <Link to={`/test/${test.id}`}>
+              <Link to={`/practice/full-tests/${test.id}`}>
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600">
                   Start Practice Test
                 </Button>
