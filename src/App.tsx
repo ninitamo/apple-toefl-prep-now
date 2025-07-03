@@ -16,6 +16,12 @@ import ExamInfo from "./pages/ExamInfo";
 import InstitutionSearch from "./pages/InstitutionSearch";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import WhyToeflBlog from "./pages/WhyToeflBlog";
+import WhichToeflTestBlog from "./pages/WhichToeflTestBlog";
+import WhoNeedsToeflBlog from "./pages/WhoNeedsToeflBlog";
+import WhatToeflStandsForBlog from "./pages/WhatToeflStandsForBlog";
+import WhereToeflAcceptedBlog from "./pages/WhereToeflAcceptedBlog";
+import WhenToeflConductedBlog from "./pages/WhenToeflConductedBlog";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +44,12 @@ const App = () => (
               <Route path="/exam-info" element={<ExamInfo />} />
               <Route path="/institution-search" element={<InstitutionSearch />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/blog/why-toefl-exam" element={<WhyToeflBlog />} />
+              <Route path="/blog/which-toefl-test" element={<WhichToeflTestBlog />} />
+              <Route path="/blog/who-needs-toefl" element={<WhoNeedsToeflBlog />} />
+              <Route path="/blog/what-toefl-stands-for" element={<WhatToeflStandsForBlog />} />
+              <Route path="/blog/where-toefl-accepted" element={<WhereToeflAcceptedBlog />} />
+              <Route path="/blog/when-toefl-conducted" element={<WhenToeflConductedBlog />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
