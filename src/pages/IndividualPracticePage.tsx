@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Clock, BookOpen, Headphones, Mic, PenTool } from 'lucide-react';
 import { useIndividualPracticeTests } from '@/hooks/useIndividualPractice';
+import SpeakingPracticeFilter from '@/components/SpeakingPracticeFilter';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -27,6 +28,7 @@ const sectionColors = {
 const IndividualPracticePage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('all');
+  const [speakingFilter, setSpeakingFilter] = useState('all');
   
   const { data: allTests, isLoading } = useIndividualPracticeTests();
   const { data: readingTests } = useIndividualPracticeTests('reading');
@@ -35,13 +37,23 @@ const IndividualPracticePage = () => {
   const { data: writingTests } = useIndividualPracticeTests('writing');
 
   const getTestsByTab = () => {
+    let tests;
     switch (activeTab) {
-      case 'reading': return readingTests || [];
-      case 'listening': return listeningTests || [];
-      case 'speaking': return speakingTests || [];
-      case 'writing': return writingTests || [];
-      default: return allTests || [];
+      case 'reading': tests = readingTests || []; break;
+      case 'listening': tests = listeningTests || []; break;
+      case 'speaking': 
+        tests = speakingTests || [];
+        // Filter speaking tests based on selected filter
+        if (speakingFilter !== 'all') {
+          // For now, all current speaking tests are independent speaking (Task 1)
+          // In the future, you can add a task_type field to the database to properly filter
+          tests = speakingFilter === 'independent' ? tests : [];
+        }
+        break;
+      case 'writing': tests = writingTests || []; break;
+      default: tests = allTests || [];
     }
+    return tests;
   };
 
   const handleStartPractice = (testId: string) => {
@@ -86,6 +98,16 @@ const IndividualPracticePage = () => {
             </TabsList>
 
             <TabsContent value={activeTab} className="mt-8">
+              {/* Show speaking filter only when on speaking tab */}
+              {activeTab === 'speaking' && (
+                <div className="mb-6">
+                  <SpeakingPracticeFilter 
+                    selectedType={speakingFilter}
+                    onTypeChange={setSpeakingFilter}
+                  />
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {getTestsByTab().map((test) => {
                   const IconComponent = sectionIcons[test.section_type as keyof typeof sectionIcons];
@@ -125,7 +147,10 @@ const IndividualPracticePage = () => {
               {getTestsByTab().length === 0 && (
                 <div className="text-center py-12">
                   <p className="text-gray-600 dark:text-gray-400">
-                    No practice tests available for this section yet.
+                    {activeTab === 'speaking' && speakingFilter !== 'all' 
+                      ? `No practice tests available for the selected task type yet.`
+                      : `No practice tests available for this section yet.`
+                    }
                   </p>
                 </div>
               )}
