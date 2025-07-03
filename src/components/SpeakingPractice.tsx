@@ -106,7 +106,7 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
     }
   };
 
-  // Auto-transition from reading to prep phase
+  // Auto-transition between phases
   useEffect(() => {
     if (phase === 'reading' && timeLeft === 0) {
       setPhase('prep');
