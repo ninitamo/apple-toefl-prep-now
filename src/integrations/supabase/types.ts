@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       individual_practice_tests: {
         Row: {
+          audio_url: string | null
           content: string
           created_at: string
           description: string | null
@@ -22,6 +23,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          audio_url?: string | null
           content: string
           created_at?: string
           description?: string | null
@@ -33,6 +35,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          audio_url?: string | null
           content?: string
           created_at?: string
           description?: string | null

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,9 +14,9 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
   const [phase, setPhase] = useState<'directions' | 'reading' | 'listening' | 'prep' | 'speaking' | 'completed'>('directions');
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
-  const [currentConversationIndex, setCurrentConversationIndex] = useState(0);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const conversationTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const options = question.options as { prep_time: number; speaking_time: number; conversation: [string, string][] };
 
@@ -26,8 +25,8 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
-      if (conversationTimerRef.current) {
-        clearInterval(conversationTimerRef.current);
+      if (audioRef.current) {
+        audioRef.current.pause();
       }
     };
   }, []);
@@ -45,24 +44,22 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
     }, 1000);
   };
 
-  const startConversationPlayback = () => {
-    setCurrentConversationIndex(0);
-    const conversation = options.conversation;
-    let index = 0;
-
-    const playNext = () => {
-      if (index < conversation.length) {
-        setCurrentConversationIndex(index);
-        index++;
-        conversationTimerRef.current = setTimeout(playNext, 3000); // 3 seconds per exchange
-      } else {
-        // Conversation finished, move to prep phase
+  const startAudioPlayback = () => {
+    if (test.audio_url && audioRef.current) {
+      setIsAudioPlaying(true);
+      audioRef.current.src = test.audio_url;
+      audioRef.current.play();
+      
+      audioRef.current.onended = () => {
+        setIsAudioPlaying(false);
         setPhase('prep');
         startTimer(options.prep_time);
-      }
-    };
-
-    playNext();
+      };
+    } else {
+      // Fallback to prep phase if no audio
+      setPhase('prep');
+      startTimer(options.prep_time);
+    }
   };
 
   const handleStartTask = () => {
@@ -85,8 +82,8 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
-    if (conversationTimerRef.current) {
-      clearTimeout(conversationTimerRef.current);
+    if (audioRef.current) {
+      audioRef.current.pause();
     }
     setIsRecording(false);
     setPhase('completed');
@@ -97,14 +94,15 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
-    if (conversationTimerRef.current) {
-      clearTimeout(conversationTimerRef.current);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsAudioPlaying(false);
     }
 
     // Move to next phase based on current phase
     if (phase === 'reading') {
       setPhase('listening');
-      startConversationPlayback();
+      startAudioPlayback();
     } else if (phase === 'listening') {
       setPhase('prep');
       startTimer(options.prep_time);
@@ -115,13 +113,13 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
-    if (conversationTimerRef.current) {
-      clearTimeout(conversationTimerRef.current);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsAudioPlaying(false);
     }
     setPhase('directions');
     setIsRecording(false);
     setTimeLeft(0);
-    setCurrentConversationIndex(0);
   };
 
   const formatTime = (seconds: number) => {
@@ -165,7 +163,7 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
     if (timeLeft === 0 && timerRef.current) {
       if (phase === 'reading') {
         setPhase('listening');
-        startConversationPlayback();
+        startAudioPlayback();
       } else if (phase === 'speaking') {
         setIsRecording(false);
         setPhase('completed');
@@ -189,6 +187,9 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
         </CardHeader>
         
         <CardContent className="space-y-6">
+          {/* Hidden audio element */}
+          <audio ref={audioRef} preload="metadata" />
+
           {phase === 'directions' && (
             <div className="space-y-6">
               <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-400">
@@ -250,26 +251,13 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
               
               <div className="bg-gray-100 p-6 rounded-lg">
                 <div className="flex items-center justify-center mb-4">
-                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+                  <div className={`w-16 h-16 bg-green-500 rounded-full flex items-center justify-center ${isAudioPlaying ? 'animate-pulse' : ''}`}>
                     <Volume2 className="h-8 w-8 text-white" />
                   </div>
                 </div>
                 
-                {options.conversation && currentConversationIndex < options.conversation.length && (
-                  <div className="bg-white p-4 rounded-lg shadow">
-                    <div className="flex items-start gap-3">
-                      <div className="font-semibold text-blue-600 min-w-0">
-                        {options.conversation[currentConversationIndex][0]}:
-                      </div>
-                      <div className="text-gray-700">
-                        {options.conversation[currentConversationIndex][1]}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                
-                <p className="text-center text-gray-600 mt-4">
-                  Conversation in progress... ({currentConversationIndex + 1} of {options.conversation?.length || 0})
+                <p className="text-center text-gray-600">
+                  {isAudioPlaying ? 'Audio playing...' : 'Loading audio...'}
                 </p>
               </div>
 
