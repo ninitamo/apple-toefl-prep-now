@@ -1,102 +1,77 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Clock, Users, Award, Headphones, Mic, PenTool } from 'lucide-react';
+import { Clock, Users, Target, BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const PracticeSelector = () => {
   const navigate = useNavigate();
+  
+  const practiceOptions = [
+    {
+      title: "Full Practice Tests",
+      description: "Complete 3.5-hour TOEFL iBT practice tests with all four sections",
+      icon: Clock,
+      stats: "15 full tests available",
+      onClick: () => navigate('/tests')
+    },
+    {
+      title: "Individual Sections",
+      description: "Practice specific sections: Reading, Listening, Speaking, or Writing",
+      icon: Target,
+      stats: "Focus on your weak areas",
+      onClick: () => navigate('/individual-practice')
+    },
+    {
+      title: "Study Materials",
+      description: "Tips, strategies, and guides to improve your TOEFL performance",
+      icon: BookOpen,
+      stats: "Comprehensive resources",
+      onClick: () => navigate('/study-materials')
+    }
+  ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800 transition-colors duration-200">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-200">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Choose Your Practice Mode
+            🎯 Choose Your Practice Mode
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Select how you'd like to practice for your TOEFL test
+            Select the practice format that works best for your study goals and schedule
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Practice Full Test */}
-          <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group cursor-pointer bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 dark:bg-gray-800">
-            <CardHeader className="text-center pb-6">
-              <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Clock className="h-10 w-10 text-white" />
-              </div>
-              <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                Practice Full Test
-              </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-                Take complete TOEFL practice tests with all four sections in the official format. Perfect for comprehensive preparation.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center">
-              <div className="space-y-3 mb-8">
-                <div className="flex items-center justify-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <Clock className="h-4 w-4" />
-                  <span>≈ 2 hours per test</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {practiceOptions.map((option, index) => (
+            <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border-2 hover:border-blue-200 dark:hover:border-blue-700">
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <option.icon className="h-8 w-8 text-white" />
                 </div>
-                <div className="flex items-center justify-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <Users className="h-4 w-4" />
-                  <span>15 complete practice tests</span>
+                <CardTitle className="text-xl text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  {option.title}
+                </CardTitle>
+                <CardDescription className="text-gray-600 dark:text-gray-300">
+                  {option.description}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center">
+                <div className="mb-6">
+                  <div className="text-sm text-blue-600 dark:text-blue-400 font-medium">
+                    {option.stats}
+                  </div>
                 </div>
-                <div className="flex items-center justify-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <Award className="h-4 w-4" />
-                  <span>Official TOEFL format</span>
-                </div>
-              </div>
-              <Button 
-                onClick={() => navigate('/practice/full-tests')}
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 text-white rounded-full font-medium py-6 text-lg"
-              >
-                Practice Full Test
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Practice Individual Sections */}
-          <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group cursor-pointer bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 dark:bg-gray-800">
-            <CardHeader className="text-center pb-6">
-              <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <BookOpen className="h-10 w-10 text-white" />
-              </div>
-              <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                Practice Individual Sections
-              </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-                Focus on specific skills with targeted practice for Reading, Listening, Speaking, and Writing sections.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center">
-              <div className="grid grid-cols-2 gap-3 mb-8">
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <BookOpen className="h-4 w-4 text-blue-500" />
-                  <span>Reading</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <Headphones className="h-4 w-4 text-green-500" />
-                  <span>Listening</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <Mic className="h-4 w-4 text-purple-500" />
-                  <span>Speaking</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <PenTool className="h-4 w-4 text-orange-500" />
-                  <span>Writing</span>
-                </div>
-              </div>
-              <Button 
-                onClick={() => navigate('/practice/sections')}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:opacity-90 text-white rounded-full font-medium py-6 text-lg"
-              >
-                Practice Individual Sections
-              </Button>
-            </CardContent>
-          </Card>
+                <Button 
+                  onClick={option.onClick}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 group-hover:shadow-lg"
+                >
+                  Start Practicing
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </section>

@@ -9,6 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      individual_practice_tests: {
+        Row: {
+          content: string
+          created_at: string
+          description: string | null
+          difficulty_level: string | null
+          estimated_duration: number
+          id: string
+          section_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string | null
+          estimated_duration: number
+          id?: string
+          section_type: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string | null
+          estimated_duration?: number
+          id?: string
+          section_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       institutions: {
         Row: {
           country: string
@@ -202,6 +238,50 @@ export type Database = {
             columns: ["test_id"]
             isOneToOne: false
             referencedRelation: "toefl_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      test_questions_individual_practice: {
+        Row: {
+          correct_answer: string
+          created_at: string
+          explanation: string | null
+          id: string
+          options: Json | null
+          practice_test_id: string
+          question_number: number
+          question_text: string
+          question_type: string
+        }
+        Insert: {
+          correct_answer: string
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          options?: Json | null
+          practice_test_id: string
+          question_number: number
+          question_text: string
+          question_type: string
+        }
+        Update: {
+          correct_answer?: string
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          options?: Json | null
+          practice_test_id?: string
+          question_number?: number
+          question_text?: string
+          question_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_questions_individual_practice_practice_test_id_fkey"
+            columns: ["practice_test_id"]
+            isOneToOne: false
+            referencedRelation: "individual_practice_tests"
             referencedColumns: ["id"]
           },
         ]
