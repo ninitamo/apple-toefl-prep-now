@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,16 +5,29 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { IndividualPracticeTest, IndividualPracticeQuestion } from '@/hooks/useIndividualPractice';
 
-const ReadingPractice = () => {
+interface ReadingPracticeProps {
+  test?: IndividualPracticeTest;
+  questions?: IndividualPracticeQuestion[];
+  onComplete?: () => void;
+}
+
+const ReadingPractice = ({ test, questions, onComplete }: ReadingPracticeProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  
+  // Use provided data or fallback to hardcoded data
+  const isIndividualPractice = test && questions;
+  
+  // ... keep existing code (state variables)
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<string[]>(new Array(7).fill(''));
+  const [answers, setAnswers] = useState<string[]>(new Array(isIndividualPractice ? questions!.length : 7).fill(''));
   const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
   const [isFinished, setIsFinished] = useState(false);
   const [showResults, setShowResults] = useState(false);
 
+  // ... keep existing code (hardcoded passage and questions for fallback)
   const passage = `The emergence of cities marked one of the most significant developments in human history. Before urban centers existed, humans lived in small, nomadic groups of hunter-gatherers. The transition from these mobile communities to settled, complex societies was largely made possible by the advent of agriculture, which allowed for the production of surplus food. With a stable food supply, populations could grow, and not everyone was required to be directly involved in food production. This development led to the creation of specialized roles in society, such as artisans, traders, and rulers.
 
 Archaeological evidence suggests that some of the earliest cities emerged in Mesopotamia, in the fertile region between the Tigris and Euphrates rivers, around 3500 BCE. Cities such as Uruk, Ur, and Eridu showcased remarkable innovations for their time, including irrigation systems, written records, and monumental architecture. These urban centers became hubs of economic activity, religious worship, and political power.
@@ -24,7 +36,7 @@ Urbanization brought both advantages and challenges. On the positive side, citie
 
 Historians debate the precise causes and consequences of early urbanization. Some argue that environmental factors, such as access to fertile land and reliable water sources, were the primary drivers. Others suggest that social or religious factors played a key role, as urban centers often contained important temples and served as ceremonial hubs. Whatever the initial impetus, the rise of cities transformed human society, laying the groundwork for modern civilization.`;
 
-  const questions = [
+  const defaultQuestions = [
     {
       question: "What is the main topic of the passage?",
       options: [
@@ -92,6 +104,19 @@ Historians debate the precise causes and consequences of early urbanization. Som
 
   const correctAnswers = ['C', 'D', 'B', 'C', 'B', 'A', 'C'];
 
+  // Use provided data or fallback data
+  const currentPassage = isIndividualPractice ? test!.content : passage;
+  const currentQuestions = isIndividualPractice ? 
+    questions!.map(q => ({
+      question: q.question_text,
+      options: Array.isArray(q.options) ? q.options : [q.options?.A, q.options?.B, q.options?.C, q.options?.D].filter(Boolean)
+    })) : 
+    defaultQuestions;
+  const currentCorrectAnswers = isIndividualPractice ? 
+    questions!.map(q => q.correct_answer) : 
+    correctAnswers;
+
+  // ... keep existing code (useEffect for timer)
   useEffect(() => {
     if (timeLeft > 0 && !isFinished) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
@@ -101,12 +126,14 @@ Historians debate the precise causes and consequences of early urbanization. Som
     }
   }, [timeLeft, isFinished]);
 
+  // ... keep existing code (formatTime function)
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+  // ... keep existing code (handleAnswerSelect function)
   const handleAnswerSelect = (optionIndex: number) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = String.fromCharCode(65 + optionIndex); // Convert to A, B, C, D
@@ -118,15 +145,21 @@ Historians debate the precise causes and consequences of early urbanization. Som
     setShowResults(true);
     
     const correctCount = answers.reduce((count, answer, index) => {
-      return count + (answer === correctAnswers[index] ? 1 : 0);
+      return count + (answer === currentCorrectAnswers[index] ? 1 : 0);
     }, 0);
 
     toast({
       title: "Practice Complete!",
-      description: `You scored ${correctCount} out of ${questions.length} questions correctly.`,
+      description: `You scored ${correctCount} out of ${currentQuestions.length} questions correctly.`,
     });
+
+    // Call onComplete if provided (for individual practice)
+    if (onComplete) {
+      setTimeout(() => onComplete(), 2000);
+    }
   };
 
+  // ... keep existing code (navigation functions)
   const goToPreviousQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
@@ -134,14 +167,22 @@ Historians debate the precise causes and consequences of early urbanization. Som
   };
 
   const goToNextQuestion = () => {
-    if (currentQuestion < questions.length - 1) {
+    if (currentQuestion < currentQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     }
   };
 
   const correctCount = answers.reduce((count, answer, index) => {
-    return count + (answer === correctAnswers[index] ? 1 : 0);
+    return count + (answer === currentCorrectAnswers[index] ? 1 : 0);
   }, 0);
+
+  const handleBackNavigation = () => {
+    if (isIndividualPractice && onComplete) {
+      onComplete();
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -149,11 +190,11 @@ Historians debate the precise causes and consequences of early urbanization. Som
         <div className="flex items-center justify-between mb-6">
           <Button
             variant="outline"
-            onClick={() => navigate('/')}
+            onClick={handleBackNavigation}
             className="flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Home
+            {isIndividualPractice ? 'Back to Practice Tests' : 'Back to Home'}
           </Button>
           
           <div className="flex items-center gap-4">
@@ -176,13 +217,13 @@ Historians debate the precise causes and consequences of early urbanization. Som
           <Card className="h-fit">
             <CardHeader>
               <CardTitle className="text-xl text-blue-600">
-                📖 The Origins of Urbanization
+                📖 {isIndividualPractice ? test!.title : 'The Origins of Urbanization'}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="prose prose-sm max-w-none">
                 <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                  {passage}
+                  {currentPassage}
                 </p>
               </div>
             </CardContent>
@@ -193,7 +234,7 @@ Historians debate the precise causes and consequences of early urbanization. Som
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-xl">
-                  Question {currentQuestion + 1} of {questions.length}
+                  Question {currentQuestion + 1} of {currentQuestions.length}
                 </CardTitle>
                 <div className="flex gap-2">
                   <Button
@@ -208,7 +249,7 @@ Historians debate the precise causes and consequences of early urbanization. Som
                     variant="outline"
                     size="sm"
                     onClick={goToNextQuestion}
-                    disabled={currentQuestion === questions.length - 1}
+                    disabled={currentQuestion === currentQuestions.length - 1}
                   >
                     <ChevronRight className="h-4 w-4" />
                   </Button>
@@ -218,14 +259,14 @@ Historians debate the precise causes and consequences of early urbanization. Som
             <CardContent>
               <div className="space-y-4">
                 <h3 className="text-lg font-medium text-gray-900">
-                  {questions[currentQuestion].question}
+                  {currentQuestions[currentQuestion].question}
                 </h3>
                 
                 <div className="space-y-3">
-                  {questions[currentQuestion].options.map((option, index) => {
+                  {currentQuestions[currentQuestion].options.map((option, index) => {
                     const optionLetter = String.fromCharCode(65 + index);
                     const isSelected = answers[currentQuestion] === optionLetter;
-                    const isCorrect = showResults && correctAnswers[currentQuestion] === optionLetter;
+                    const isCorrect = showResults && currentCorrectAnswers[currentQuestion] === optionLetter;
                     const isWrong = showResults && isSelected && !isCorrect;
                     
                     return (
@@ -276,8 +317,8 @@ Historians debate the precise causes and consequences of early urbanization. Som
                   <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                     <h4 className="font-medium text-gray-900 mb-2">Results Summary:</h4>
                     <p className="text-gray-700">
-                      You answered {correctCount} out of {questions.length} questions correctly 
-                      ({Math.round((correctCount / questions.length) * 100)}%)
+                      You answered {correctCount} out of {currentQuestions.length} questions correctly 
+                      ({Math.round((correctCount / currentQuestions.length) * 100)}%)
                     </p>
                   </div>
                 )}
