@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Menu, X, BookOpen, User, LogOut } from 'lucide-react';
+import { Menu, X, BookOpen, User, LogOut, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,6 +12,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import {
   Tooltip,
   TooltipContent,
@@ -26,25 +33,38 @@ const Navbar = () => {
 
   const navItems = [
     { 
-      name: 'Practice Individual Section', 
-      href: '/practice/sections',
-      description: 'Practice specific TOEFL sections: Reading, Listening, Speaking, and Writing'
+      name: 'Materials', 
+      href: '/materials',
+      description: 'Study materials and resources for TOEFL preparation'
     },
     { 
-      name: 'Practice Full Test', 
-      href: '/practice/full-tests',
-      description: 'Take complete TOEFL practice tests under timed conditions'
-    },
-    { 
-      name: 'About Test', 
+      name: 'Articles / FAQ', 
       href: '/exam-info',
-      description: 'Learn about TOEFL test format, scoring, and requirements'
+      description: 'Learn about TOEFL test format, scoring, and frequently asked questions'
+    },
+    { 
+      name: 'About us', 
+      href: '/about',
+      description: 'Learn more about our TOEFL preparation platform and team'
     },
     { 
       name: 'Contact', 
       href: '/contact',
       description: 'Get in touch with our support team for help and questions'
     },
+  ];
+
+  const testItems = [
+    {
+      name: 'Full Test',
+      href: '/practice/full-tests',
+      description: 'Take complete TOEFL practice tests under timed conditions'
+    },
+    {
+      name: 'Individual Sections',
+      href: '/practice/sections',
+      description: 'Practice specific TOEFL sections: Reading, Listening, Speaking, and Writing'
+    }
   ];
 
   const handleSignOut = async () => {
@@ -71,6 +91,30 @@ const Navbar = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 text-sm font-medium">
+                      Tests
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="p-4 w-80">
+                        {testItems.map((item) => (
+                          <Link
+                            key={item.name}
+                            to={item.href}
+                            className="block p-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                          >
+                            <div className="font-medium text-gray-900 dark:text-gray-100">{item.name}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{item.description}</div>
+                          </Link>
+                        ))}
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+
               {navItems.map((item) => (
                 <Tooltip key={item.name}>
                   <TooltipTrigger asChild>
@@ -105,6 +149,24 @@ const Navbar = () => {
           {isMenuOpen && (
             <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50">
               <div className="px-4 py-4 space-y-4">
+                <div>
+                  <div className="font-medium text-gray-900 dark:text-gray-100 mb-2">Tests</div>
+                  <div className="pl-4 space-y-2">
+                    {testItems.map((item) => (
+                      <div key={item.name}>
+                        <Link
+                          to={item.href}
+                          className="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{item.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 {navItems.map((item) => (
                   <div key={item.name}>
                     <Link
