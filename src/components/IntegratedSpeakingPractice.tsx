@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, Mic, RotateCcw, Volume2, BookOpen } from 'lucide-react';
+import { Clock, Mic, RotateCcw, Volume2, BookOpen, SkipForward } from 'lucide-react';
 import { IndividualPracticeTest, IndividualPracticeQuestion } from '@/hooks/useIndividualPractice';
 
 interface IntegratedSpeakingPracticeProps {
@@ -90,6 +90,25 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
     }
     setIsRecording(false);
     setPhase('completed');
+  };
+
+  const handleSkip = () => {
+    // Clear any active timers
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    if (conversationTimerRef.current) {
+      clearTimeout(conversationTimerRef.current);
+    }
+
+    // Move to next phase based on current phase
+    if (phase === 'reading') {
+      setPhase('listening');
+      startConversationPlayback();
+    } else if (phase === 'listening') {
+      setPhase('prep');
+      startTimer(options.prep_time);
+    }
   };
 
   const resetTask = () => {
@@ -205,6 +224,17 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
                 <h3 className="font-semibold mb-3">{test.title}</h3>
                 <p className="text-gray-700 leading-relaxed">{test.content}</p>
               </div>
+
+              <div className="flex justify-center">
+                <Button 
+                  onClick={handleSkip}
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  <SkipForward className="h-4 w-4" />
+                  Skip Reading
+                </Button>
+              </div>
             </div>
           )}
 
@@ -241,6 +271,17 @@ const IntegratedSpeakingPractice = ({ test, question, onComplete }: IntegratedSp
                 <p className="text-center text-gray-600 mt-4">
                   Conversation in progress... ({currentConversationIndex + 1} of {options.conversation?.length || 0})
                 </p>
+              </div>
+
+              <div className="flex justify-center">
+                <Button 
+                  onClick={handleSkip}
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  <SkipForward className="h-4 w-4" />
+                  Skip Audio
+                </Button>
               </div>
             </div>
           )}
