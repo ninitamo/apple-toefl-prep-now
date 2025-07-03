@@ -45,9 +45,19 @@ const IndividualPracticePage = () => {
         tests = speakingTests || [];
         // Filter speaking tests based on selected filter
         if (speakingFilter !== 'all') {
-          // For now, all current speaking tests are independent speaking (Task 1)
-          // In the future, you can add a task_type field to the database to properly filter
-          tests = speakingFilter === 'independent' ? tests : [];
+          if (speakingFilter === 'integrated') {
+            // Show tests that have integrated speaking questions
+            tests = tests.filter(test => 
+              test.id.includes('integrated') || 
+              test.description?.includes('Integrated Speaking')
+            );
+          } else if (speakingFilter === 'independent') {
+            // Show tests that don't have integrated speaking questions
+            tests = tests.filter(test => 
+              !test.id.includes('integrated') && 
+              !test.description?.includes('Integrated Speaking')
+            );
+          }
         }
         break;
       case 'writing': tests = writingTests || []; break;
