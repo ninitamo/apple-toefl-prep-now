@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -237,17 +236,6 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
                 <p className="text-green-800">
                   You have successfully completed the independent speaking task.
                 </p>
-              </div>
-              
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">Tips for Improvement:</h4>
-                <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• Clearly state your preference in the first few seconds</li>
-                  <li>• Provide 2-3 specific reasons to support your choice</li>
-                  <li>• Include concrete examples or personal experiences</li>
-                  <li>• Use transitional phrases to organize your response</li>
-                  <li>• Practice speaking at a natural, clear pace</li>
-                </ul>
               </div>
               
               <div className="flex justify-center gap-4">
