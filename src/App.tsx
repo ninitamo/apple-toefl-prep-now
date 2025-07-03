@@ -4,40 +4,27 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { CookieConsentProvider } from "@/contexts/CookieConsentContext";
-import { AuthProvider } from "@/contexts/AuthContext";
-import CookieConsentBanner from "@/components/CookieConsentBanner";
 import Index from "./pages/Index";
-import ExamInfo from "./pages/ExamInfo";
-import InstitutionSearch from "./pages/InstitutionSearch";
+import TestPage from "./pages/TestPage";
 import IndividualPracticePage from "./pages/IndividualPracticePage";
-import IndividualPracticeTest from "./pages/IndividualPracticeTest";
+import IndividualPracticeTestPage from "./pages/IndividualPracticeTestPage";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
-      <CookieConsentProvider>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/exam-info" element={<ExamInfo />} />
-                <Route path="/institution-search" element={<InstitutionSearch />} />
-                <Route path="/individual-practice" element={<IndividualPracticePage />} />
-                <Route path="/individual-practice/:id" element={<IndividualPracticeTest />} />
-              </Routes>
-              <CookieConsentBanner />
-            </BrowserRouter>
-          </TooltipProvider>
-        </AuthProvider>
-      </CookieConsentProvider>
-    </ThemeProvider>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/test/:testId" element={<TestPage />} />
+          <Route path="/individual-practice" element={<IndividualPracticePage />} />
+          <Route path="/individual-practice/:testId" element={<IndividualPracticeTestPage />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 
