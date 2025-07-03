@@ -27,13 +27,12 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
     };
   }, []);
 
-  const startTimer = (duration: number, nextPhase: typeof phase) => {
+  const startTimer = (duration: number) => {
     setTimeLeft(duration);
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timerRef.current!);
-          setPhase(nextPhase);
           return 0;
         }
         return prev - 1;
@@ -43,7 +42,7 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
 
   const handleStartTask = () => {
     setPhase('reading');
-    startTimer(5, 'prep'); // 5 seconds to read the question
+    startTimer(5); // 5 seconds to read the question
   };
 
   const handleStartSpeaking = () => {
@@ -53,7 +52,7 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
       }
       setPhase('speaking');
       setIsRecording(true);
-      startTimer(options.speaking_time, 'completed');
+      startTimer(options.speaking_time);
     }
   };
 
@@ -106,18 +105,20 @@ const SpeakingPractice = ({ test, question, onComplete }: SpeakingPracticeProps)
     }
   };
 
-  // Auto-transition between phases
+  // Auto-transition between phases when timer reaches 0
   useEffect(() => {
-    if (phase === 'reading' && timeLeft === 0) {
-      setPhase('prep');
-      startTimer(options.prep_time, 'speaking');
-    } else if (phase === 'prep' && timeLeft === 0) {
-      setPhase('speaking');
-      setIsRecording(true);
-      startTimer(options.speaking_time, 'completed');
-    } else if (phase === 'speaking' && timeLeft === 0) {
-      setIsRecording(false);
-      setPhase('completed');
+    if (timeLeft === 0 && timerRef.current) {
+      if (phase === 'reading') {
+        setPhase('prep');
+        startTimer(options.prep_time); // Use the prep_time from options
+      } else if (phase === 'prep') {
+        setPhase('speaking');
+        setIsRecording(true);
+        startTimer(options.speaking_time);
+      } else if (phase === 'speaking') {
+        setIsRecording(false);
+        setPhase('completed');
+      }
     }
   }, [timeLeft, phase, options.prep_time, options.speaking_time]);
 
