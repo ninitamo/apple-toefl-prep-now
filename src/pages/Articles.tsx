@@ -62,10 +62,73 @@ const Articles = () => {
       author: "TOEFL Prep Team",
       link: "/blog/when-toefl-conducted",
       category: "Scheduling"
+    },
+    {
+      id: 7,
+      title: "What is a Good TOEFL Score? [2025 Guide]",
+      description: "Discover what makes a good TOEFL score in 2025 based on ETS official scoring levels. Learn about section benchmarks, CEFR levels, and top university requirements.",
+      readTime: "8 min read",
+      author: "TOEFL Prep Team",
+      link: "/blog/good-toefl-score-2025",
+      category: "Scoring"
+    },
+    {
+      id: 8,
+      title: "Is TOEFL Harder Than IELTS? [2025 Comparison Guide]",
+      description: "Compare TOEFL vs IELTS in terms of difficulty, scoring, test format, and which exam might be easier for you.",
+      readTime: "6 min read",
+      author: "TOEFL Prep Team",
+      link: "/blog/toefl-vs-ielts-difficulty",
+      category: "Test Selection"
+    },
+    {
+      id: 9,
+      title: "How to Register for TOEFL [2025 Step-by-Step Guide]",
+      description: "Learn how to register for the TOEFL test in 2025. Complete step-by-step TOEFL registration guide covers account setup, payment, and ID requirements.",
+      readTime: "5 min read",
+      author: "TOEFL Prep Team",
+      link: "/blog/how-to-register-toefl",
+      category: "Registration"
+    },
+    {
+      id: 10,
+      title: "How to Improve Your TOEFL Score [2025 Proven Strategies]",
+      description: "Want to boost your TOEFL score in 2025? This guide shows you the best tips, study tools, and strategies to improve your TOEFL iBT score across all sections.",
+      readTime: "7 min read",
+      author: "TOEFL Prep Team",
+      link: "/blog/improve-toefl-score",
+      category: "Preparation"
+    },
+    {
+      id: 11,
+      title: "TOEFL Test Day Procedures [2025 Complete Guide]",
+      description: "Learn everything you need to know about TOEFL test day procedures for 2025, including arrival time, ID requirements, allowed items, and break policies.",
+      readTime: "6 min read",
+      author: "TOEFL Prep Team",
+      link: "/blog/toefl-test-day-procedures",
+      category: "Test Day"
+    },
+    {
+      id: 12,
+      title: "TOEFL Retake Policy [2025 Guidelines]",
+      description: "Learn how many times you can take the TOEFL in 2025. Understand ETS retake rules, waiting periods, limits, and how to plan your TOEFL test attempts.",
+      readTime: "4 min read",
+      author: "TOEFL Prep Team",
+      link: "/blog/toefl-retake-policy",
+      category: "Retake Policy"
+    },
+    {
+      id: 13,
+      title: "How Long is the TOEFL? [Test Format & Duration]",
+      description: "Learn the full TOEFL iBT format, section timings, total test duration, and how to prepare for each part of the exam in 2025.",
+      readTime: "5 min read",
+      author: "TOEFL Prep Team",
+      link: "/blog/toefl-duration-format",
+      category: "Test Format"
     }
   ];
 
-  const categories = ["All", "Getting Started", "Test Selection", "Requirements", "Basics", "Acceptance", "Scheduling"];
+  const categories = ["All", "Getting Started", "Test Selection", "Requirements", "Basics", "Acceptance", "Scheduling", "Scoring", "Registration", "Preparation", "Test Day", "Retake Policy", "Test Format"];
   const [selectedCategory, setSelectedCategory] = React.useState("All");
 
   const filteredArticles = selectedCategory === "All" 
