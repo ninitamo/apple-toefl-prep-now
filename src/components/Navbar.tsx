@@ -31,17 +31,56 @@ const Navbar = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
-  const navItems = [
-    { 
-      name: 'Materials', 
-      href: '/materials',
-      description: 'Study materials and resources for TOEFL preparation'
+  const testItems = [
+    {
+      name: 'Full Test',
+      href: '/practice/full-tests',
+      description: 'Practice full TOEFL test'
     },
-    { 
-      name: 'Articles / FAQ', 
-      href: '/exam-info',
-      description: 'Learn about TOEFL test format, scoring, and frequently asked questions'
+    {
+      name: 'Individual Sections',
+      href: '/practice/sections',
+      description: 'Practice individual TOEFL sections'
+    }
+  ];
+
+  const materialsItems = [
+    {
+      name: 'Reading',
+      href: '/materials/reading',
+      description: 'Reading practice materials and exercises'
     },
+    {
+      name: 'Writing',
+      href: '/materials/writing',
+      description: 'Writing practice materials and exercises'
+    },
+    {
+      name: 'Listening',
+      href: '/materials/listening',
+      description: 'Listening practice materials and exercises'
+    },
+    {
+      name: 'Speaking',
+      href: '/materials/speaking',
+      description: 'Speaking practice materials and exercises'
+    }
+  ];
+
+  const articlesFaqItems = [
+    {
+      name: 'Blog',
+      href: '/blog',
+      description: 'TOEFL preparation articles and tips'
+    },
+    {
+      name: 'FAQ',
+      href: '/faq',
+      description: 'Frequently asked questions about TOEFL'
+    }
+  ];
+
+  const otherNavItems = [
     { 
       name: 'About us', 
       href: '/about',
@@ -52,19 +91,6 @@ const Navbar = () => {
       href: '/contact',
       description: 'Get in touch with our support team for help and questions'
     },
-  ];
-
-  const testItems = [
-    {
-      name: 'Full Test',
-      href: '/practice/full-tests',
-      description: 'Take complete TOEFL practice tests under timed conditions'
-    },
-    {
-      name: 'Individual Sections',
-      href: '/practice/sections',
-      description: 'Practice specific TOEFL sections: Reading, Listening, Speaking, and Writing'
-    }
   ];
 
   const handleSignOut = async () => {
@@ -112,10 +138,50 @@ const Navbar = () => {
                       </div>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 text-sm font-medium">
+                      Materials
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="p-4 w-80">
+                        {materialsItems.map((item) => (
+                          <Link
+                            key={item.name}
+                            to={item.href}
+                            className="block p-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                          >
+                            <div className="font-medium text-gray-900 dark:text-gray-100">{item.name}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{item.description}</div>
+                          </Link>
+                        ))}
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 text-sm font-medium">
+                      Articles / FAQ
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="p-4 w-80">
+                        {articlesFaqItems.map((item) => (
+                          <Link
+                            key={item.name}
+                            to={item.href}
+                            className="block p-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                          >
+                            <div className="font-medium text-gray-900 dark:text-gray-100">{item.name}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{item.description}</div>
+                          </Link>
+                        ))}
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
 
-              {navItems.map((item) => (
+              {otherNavItems.map((item) => (
                 <Tooltip key={item.name}>
                   <TooltipTrigger asChild>
                     <Link
@@ -167,7 +233,43 @@ const Navbar = () => {
                   </div>
                 </div>
 
-                {navItems.map((item) => (
+                <div>
+                  <div className="font-medium text-gray-900 dark:text-gray-100 mb-2">Materials</div>
+                  <div className="pl-4 space-y-2">
+                    {materialsItems.map((item) => (
+                      <div key={item.name}>
+                        <Link
+                          to={item.href}
+                          className="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{item.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="font-medium text-gray-900 dark:text-gray-100 mb-2">Articles / FAQ</div>
+                  <div className="pl-4 space-y-2">
+                    {articlesFaqItems.map((item) => (
+                      <div key={item.name}>
+                        <Link
+                          to={item.href}
+                          className="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{item.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {otherNavItems.map((item) => (
                   <div key={item.name}>
                     <Link
                       to={item.href}
