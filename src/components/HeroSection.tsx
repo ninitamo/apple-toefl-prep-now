@@ -24,17 +24,8 @@ const HeroSection = () => {
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Button
-              onClick={() => navigate('/exam-info')}
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-3 text-lg font-medium group"
-            >
-              Learn more about the exam
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
-
-            <Button
               onClick={() => navigate('/institution-search')}
-              variant="outline"
-              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-gray-900 rounded-full px-8 py-3 text-lg font-medium group"
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-3 text-lg font-medium group"
             >
               Check if your university accepts TOEFL iBT
               <Search className="ml-2 h-5 w-5 transition-transform group-hover:scale-110" />
@@ -45,11 +36,11 @@ const HeroSection = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
           <div className="flex flex-col items-center text-center">
             <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">15</div>
-            <div className="text-gray-600 dark:text-gray-300">Full-length TOEFL iBT Practice Tests</div>
+            <div className="text-gray-600 dark:text-gray-300">Full-length TOEFL iBT Free Practice Tests</div>
           </div>
           <div className="flex flex-col items-center text-center">
             <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">100+</div>
-            <div className="text-gray-600 dark:text-gray-300">Section-based Practice</div>
+            <div className="text-gray-600 dark:text-gray-300">Section-based Free Practice</div>
           </div>
           <div className="flex flex-col items-center text-center">
             <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">30+</div>

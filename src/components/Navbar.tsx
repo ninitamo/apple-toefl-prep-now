@@ -35,12 +35,12 @@ const Navbar = () => {
     {
       name: 'Full Test',
       href: '/practice/full-tests',
-      description: 'Practice full free TOEFL test'
+      description: 'Practice full TOEFL test'
     },
     {
       name: 'Individual Sections',
       href: '/practice/sections',
-      description: 'Practice individual free TOEFL sections'
+      description: 'Practice individual TOEFL sections'
     }
   ];
 

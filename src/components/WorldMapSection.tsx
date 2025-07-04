@@ -1,119 +1,108 @@
 
-import React, { useState } from "react";
-import { Globe, Search, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
+import { MapPin } from 'lucide-react';
 
-function WorldMapSection() {
-    const navigate = useNavigate();
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const continentData = [
-        { name: "North America", institutions: "7400+", color: "bg-orange-500" },
-        { name: "Europe", institutions: "2100+", color: "bg-orange-500" },
-        { name: "Asia", institutions: "2250+", color: "bg-orange-500" },
-        { name: "Oceania", institutions: "350+", color: "bg-orange-500" },
-        { name: "South America", institutions: "450+", color: "bg-orange-500" },
-        { name: "Africa", institutions: "125+", color: "bg-orange-500" },
-    ];
-
-    const handleSearchSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (searchTerm.trim()) {
-            navigate(`/institution-search?q=${encodeURIComponent(searchTerm.trim())}`);
-        } else {
-            navigate('/institution-search');
-        }
-    };
-
-    return (
-        <div className="mb-16 px-4 sm:px-6 lg:px-8">
-            {/* World Map Section */}
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-slate-200/50 dark:border-gray-700/50 transition-colors duration-200">
-                <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-slate-800 dark:text-gray-100 mb-4 flex items-center justify-center">
-                        <Globe className="mr-3 h-8 w-8 text-blue-600 dark:text-blue-400" />
-                        A Whole World of Opportunity
-                    </h2>
-                    <p className="text-xl text-slate-600 dark:text-gray-300">
-                        See where TOEFL iBT is accepted!
-                    </p>
-                </div>
-
-                {/* World Map Visualization */}
-                <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-8 mb-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {continentData.map((continent, index) => (
-                            <div key={index} className="relative">
-                                <div className="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-gray-600 hover:shadow-xl transition-shadow duration-200">
-                                    <div
-                                        className={`w-full h-3 ${continent.color} rounded-full mb-4`}
-                                    ></div>
-                                    <h3 className="text-xl font-bold text-slate-800 dark:text-gray-100 mb-2">
-                                        {continent.name}
-                                    </h3>
-                                    <p className="text-2xl font-bold text-orange-600 dark:text-orange-400 mb-1">
-                                        {continent.institutions}
-                                    </p>
-                                    <p className="text-slate-600 dark:text-gray-300 text-sm">Institutions</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Total Statistics */}
-                    <div className="text-center mt-8 p-6 bg-white dark:bg-gray-700 rounded-xl shadow-lg border border-slate-200 dark:border-gray-600">
-                        <h3 className="text-2xl font-bold text-slate-800 dark:text-gray-100 mb-2">
-                            Total Global Acceptance
-                        </h3>
-                        <div className="flex flex-col sm:flex-row justify-center items-center gap-8">
-                            <div className="text-center">
-                                <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">12,000+</div>
-                                <div className="text-slate-600 dark:text-gray-300">Institutions</div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-4xl font-bold text-purple-600 dark:text-purple-400">160+</div>
-                                <div className="text-slate-600 dark:text-gray-300">Countries</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Search Section */}
-                <div className="text-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-8">
-                    <h3 className="text-2xl font-bold text-slate-800 dark:text-gray-100 mb-4">
-                        Find Your Institution
-                    </h3>
-                    <p className="text-slate-600 dark:text-gray-300 mb-6">
-                        Search to check if your university accepts TOEFL iBT. This answer is generated by an AI model (OpenAI GPT) based on publicly available information.
-                    </p>
-
-                    <form onSubmit={handleSearchSubmit} className="max-w-md mx-auto">
-                        <div className="flex gap-3">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-5 w-5" />
-                                <Input
-                                    type="text"
-                                    placeholder="Search university..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="pl-10 pr-4 py-3 text-lg border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                                />
-                            </div>
-                            <Button
-                                type="submit"
-                                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl px-6 py-3 group"
-                            >
-                                Search
-                                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                            </Button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+const WorldMapSection = () => {
+  return (
+    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-200">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            🌍 A Whole World of Opportunity
+          </h2>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            TOEFL scores are accepted by thousands of universities and institutions worldwide
+          </p>
         </div>
-    );
-}
+
+        <div className="relative">
+          {/* World Map SVG with blue colors */}
+          <div className="flex justify-center mb-8">
+            <svg 
+              viewBox="0 0 1000 500" 
+              className="w-full max-w-4xl h-auto"
+              fill="none"
+            >
+              {/* Continents with blue colors */}
+              <g className="continents">
+                {/* North America */}
+                <path
+                  d="M150 100 L250 80 L280 120 L300 150 L280 180 L220 200 L180 180 L150 150 Z"
+                  fill="#3b82f6"
+                  className="hover:fill-blue-700 transition-colors cursor-pointer"
+                />
+                {/* Europe */}
+                <path
+                  d="M450 120 L520 110 L540 140 L520 160 L480 170 L450 150 Z"
+                  fill="#2563eb"
+                  className="hover:fill-blue-700 transition-colors cursor-pointer"
+                />
+                {/* Asia */}
+                <path
+                  d="M550 100 L750 90 L800 130 L780 180 L720 200 L650 190 L600 170 L550 140 Z"
+                  fill="#1d4ed8"
+                  className="hover:fill-blue-700 transition-colors cursor-pointer"
+                />
+                {/* Africa */}
+                <path
+                  d="M420 200 L480 190 L500 220 L520 280 L480 320 L440 300 L420 260 Z"
+                  fill="#1e40af"
+                  className="hover:fill-blue-700 transition-colors cursor-pointer"
+                />
+                {/* South America */}
+                <path
+                  d="M250 250 L300 240 L320 280 L310 350 L280 380 L250 360 L240 300 Z"
+                  fill="#2563eb"
+                  className="hover:fill-blue-700 transition-colors cursor-pointer"
+                />
+                {/* Australia */}
+                <path
+                  d="M750 320 L820 310 L840 340 L820 360 L770 370 L750 350 Z"
+                  fill="#3b82f6"
+                  className="hover:fill-blue-700 transition-colors cursor-pointer"
+                />
+              </g>
+              
+              {/* University markers */}
+              <g className="universities">
+                <circle cx="200" cy="140" r="4" fill="#1e40af" className="animate-pulse" />
+                <circle cx="480" cy="135" r="4" fill="#1e40af" className="animate-pulse" />
+                <circle cx="680" cy="145" r="4" fill="#1e40af" className="animate-pulse" />
+                <circle cx="780" cy="335" r="4" fill="#1e40af" className="animate-pulse" />
+                <circle cx="275" cy="300" r="4" fill="#1e40af" className="animate-pulse" />
+              </g>
+            </svg>
+          </div>
+
+          {/* Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+              <div className="flex items-center justify-center mb-4">
+                <MapPin className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">11,500+</div>
+              <div className="text-gray-700 dark:text-gray-300">Universities Accept TOEFL</div>
+            </div>
+            
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+              <div className="flex items-center justify-center mb-4">
+                <MapPin className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">150+</div>
+              <div className="text-gray-700 dark:text-gray-300">Countries Worldwide</div>
+            </div>
+            
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+              <div className="flex items-center justify-center mb-4">
+                <MapPin className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">100%</div>
+              <div className="text-gray-700 dark:text-gray-300">Top 100 Universities</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default WorldMapSection;
