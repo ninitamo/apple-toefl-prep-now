@@ -21,7 +21,7 @@ const FullTestsList = () => {
               className="mr-4 flex items-center gap-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to Practice Options
+              Back to Free Practice Options
             </Button>
           </div>
           <ToeflTestsList />

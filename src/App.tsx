@@ -15,6 +15,7 @@ import FullTestsList from "./pages/FullTestsList";
 import ExamInfo from "./pages/ExamInfo";
 import InstitutionSearch from "./pages/InstitutionSearch";
 import Contact from "./pages/Contact";
+import Articles from "./pages/Articles";
 import NotFound from "./pages/NotFound";
 import WhyToeflBlog from "./pages/WhyToeflBlog";
 import WhichToeflTestBlog from "./pages/WhichToeflTestBlog";
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="/exam-info" element={<ExamInfo />} />
               <Route path="/institution-search" element={<InstitutionSearch />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/articles" element={<Articles />} />
               <Route path="/blog/why-toefl-exam" element={<WhyToeflBlog />} />
               <Route path="/blog/which-toefl-test" element={<WhichToeflTestBlog />} />
               <Route path="/blog/who-needs-toefl" element={<WhoNeedsToeflBlog />} />

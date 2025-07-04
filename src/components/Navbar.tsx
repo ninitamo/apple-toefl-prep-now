@@ -35,12 +35,12 @@ const Navbar = () => {
     {
       name: 'Full Test',
       href: '/practice/full-tests',
-      description: 'Practice full TOEFL test'
+      description: 'Practice full free TOEFL test'
     },
     {
       name: 'Individual Sections',
       href: '/practice/sections',
-      description: 'Practice individual TOEFL sections'
+      description: 'Practice individual free TOEFL sections'
     }
   ];
 
@@ -69,8 +69,8 @@ const Navbar = () => {
 
   const articlesFaqItems = [
     {
-      name: 'Blog',
-      href: '/blog',
+      name: 'Articles',
+      href: '/articles',
       description: 'TOEFL preparation articles and tips'
     },
     {
@@ -291,7 +291,7 @@ const Navbar = () => {
                       onClick={() => { navigate('/practice/sections'); setIsMenuOpen(false); }}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
                     >
-                      Practice Tests
+                      Free Practice Tests
                     </Button>
                     <Button
                       onClick={() => { handleSignOut(); setIsMenuOpen(false); }}

@@ -91,18 +91,18 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
         <div className="max-w-4xl mx-auto px-4">
           <Card className="bg-white shadow-xl">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold text-green-600">Writing Practice Complete!</CardTitle>
+              <CardTitle className="text-2xl font-bold text-green-600">Free Writing Practice Complete!</CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-6">
               <p className="text-gray-600">
-                You have successfully completed the {isIntegratedTask ? 'integrated' : 'independent'} writing task.
+                You have successfully completed the {isIntegratedTask ? 'integrated' : 'independent'} free writing task.
               </p>
               <div className="space-y-2">
                 <p className="font-semibold">Final Word Count: {wordCount}</p>
                 <p className="text-sm text-gray-500">Recommended: {recommendedWords} words</p>
               </div>
               <Button onClick={handleComplete} className="bg-orange-600 hover:bg-orange-700">
-                Complete Practice
+                Complete Free Practice
               </Button>
             </CardContent>
           </Card>
@@ -117,7 +117,7 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
         <Card className="bg-white shadow-xl">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-xl">{test.title}</CardTitle>
+              <CardTitle className="text-xl">{test.title} - Free Practice</CardTitle>
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-gray-500" />
                 <span className="font-mono text-lg">
@@ -134,7 +134,7 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
                 <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-400">
                   <div className="flex items-center gap-2 mb-2">
                     <PenTool className="h-4 w-4 text-orange-600" />
-                    <span className="font-semibold text-orange-800">Independent Writing Task - Time: {formatTime(timeLeft)}</span>
+                    <span className="font-semibold text-orange-800">Independent Free Writing Task - Time: {formatTime(timeLeft)}</span>
                   </div>
                   <p className="text-orange-700 text-sm">Write an essay expressing your personal opinion on the topic.</p>
                 </div>
@@ -234,7 +234,7 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
                   <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-400">
                     <div className="flex items-center gap-2 mb-2">
                       <PenTool className="h-4 w-4 text-orange-600" />
-                      <span className="font-semibold text-orange-800">Integrated Writing Task - Time: {formatTime(timeLeft)}</span>
+                      <span className="font-semibold text-orange-800">Integrated Free Writing Task - Time: {formatTime(timeLeft)}</span>
                     </div>
                   </div>
                   
