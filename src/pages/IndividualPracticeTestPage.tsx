@@ -1,141 +1,76 @@
 
 import { useParams, useNavigate } from 'react-router-dom';
-import { useIndividualPracticeTest, useIndividualPracticeQuestions } from '@/hooks/useIndividualPractice';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import ReadingPractice from '@/pages/ReadingPractice';
-import SpeakingPractice from '@/components/SpeakingPractice';
-import IntegratedSpeakingPractice from '@/components/IntegratedSpeakingPractice';
-import ListeningOnlySpeakingPractice from '@/components/ListeningOnlySpeakingPractice';
-import WritingPracticeIndividual from '@/components/WritingPracticeIndividual';
+import { useIndividualPracticeTest, useIndividualPracticeQuestions } from '@/hooks/useIndividualPractice';
+import { useListeningPracticeTest } from '@/hooks/useListeningPractice';
+import ListeningPracticeTest from '@/components/ListeningPracticeTest';
+import IndividualPracticeTest from '@/pages/IndividualPracticeTest';
 
 const IndividualPracticeTestPage = () => {
   const { testId } = useParams<{ testId: string }>();
   const navigate = useNavigate();
-  
-  const { data: test, isLoading: testLoading } = useIndividualPracticeTest(testId!);
-  const { data: questions, isLoading: questionsLoading } = useIndividualPracticeQuestions(testId!);
 
-  const handleComplete = () => {
-    navigate('/individual-practice');
+  // Try to fetch as regular individual practice test first
+  const { data: regularTest, isLoading: regularLoading } = useIndividualPracticeTest(testId!);
+  
+  // Try to fetch as listening practice test
+  const { data: listeningData, isLoading: listeningLoading } = useListeningPracticeTest(testId!);
+
+  const handleListeningComplete = (answers: Record<string, string>) => {
+    console.log('Listening practice completed:', answers);
+    // Here you could save the results to the database if needed
   };
 
-  if (testLoading || questionsLoading) {
+  if (regularLoading || listeningLoading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
-        <Navbar />
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 py-8">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="text-center">Loading practice test...</div>
-          </div>
-        </div>
-        <Footer />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">Loading practice test...</div>
       </div>
     );
   }
 
-  if (!test || !questions || questions.length === 0) {
+  // If it's a listening test, use the listening component
+  if (listeningData?.test && listeningData?.questions) {
+    const { test, questions } = listeningData;
+    
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
-        <Navbar />
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 py-8">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="text-center">
-              <p className="text-gray-600 dark:text-gray-400 mb-4">Practice test not found.</p>
-              <Button onClick={() => navigate('/individual-practice')}>
-                Back to Practice Tests
-              </Button>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  // Determine if this is an integrated speaking task (either campus or academic)
-  const isIntegratedSpeaking = test.section_type === 'speaking' && 
-    (test.task_type === 'integrated-campus' || test.task_type === 'integrated-academic' || questions[0]?.question_type?.includes('integrated-academic'));
-
-  // Determine if this is a listening-only speaking task
-  const isListeningOnlySpeaking = test.section_type === 'speaking' && 
-    (test.task_type === 'integrated-listening' || questions[0]?.question_type === 'integrated-listening');
-
-  // Determine if this is an independent speaking task
-  const isIndependentSpeaking = test.section_type === 'speaking' && 
-    (test.task_type === 'independent' || (!test.task_type && !questions[0]?.question_type?.includes('integrated')));
-
-  // Determine if this is a writing task
-  const isWritingTask = test.section_type === 'writing';
-
-  return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
-      <Navbar />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 py-8">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="mb-6">
-            <Button
-              onClick={() => navigate('/individual-practice')}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
+          <div className="flex items-center justify-between mb-6">
+            <Button variant="ghost" onClick={() => navigate('/individual-practice')}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Practice Tests
             </Button>
           </div>
 
-          {test.section_type === 'reading' && (
-            <ReadingPractice 
-              test={test}
-              questions={questions}
-              onComplete={handleComplete}
-            />
-          )}
-
-          {isIndependentSpeaking && questions[0] && (
-            <SpeakingPractice 
-              test={test}
-              question={questions[0]}
-              onComplete={handleComplete}
-            />
-          )}
-
-          {isIntegratedSpeaking && questions[0] && (
-            <IntegratedSpeakingPractice 
-              test={test}
-              question={questions[0]}
-              onComplete={handleComplete}
-            />
-          )}
-
-          {isListeningOnlySpeaking && questions[0] && (
-            <ListeningOnlySpeakingPractice 
-              test={test}
-              question={questions[0]}
-              onComplete={handleComplete}
-            />
-          )}
-
-          {isWritingTask && questions[0] && (
-            <WritingPracticeIndividual
-              test={test}
-              question={questions[0]}
-              onComplete={handleComplete}
-            />
-          )}
-
-          {!['reading', 'speaking', 'writing'].includes(test.section_type) && (
-            <div className="text-center">
-              <p className="text-gray-600 dark:text-gray-400">
-                This practice test type is not yet supported.
-              </p>
-            </div>
-          )}
+          <ListeningPracticeTest
+            title={test.title}
+            description={test.description || ''}
+            content={test.content}
+            audioUrl={test.audio_url || ''}
+            questions={questions}
+            onComplete={handleListeningComplete}
+          />
         </div>
       </div>
-      <Footer />
+    );
+  }
+
+  // If it's a regular test, use the regular component
+  if (regularTest) {
+    return <IndividualPracticeTest />;
+  }
+
+  // If no test found
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="text-center">
+        <p className="text-gray-600 dark:text-gray-400 mb-4">Practice test not found</p>
+        <Button onClick={() => navigate('/individual-practice')}>
+          Back to Practice Tests
+        </Button>
+      </div>
     </div>
   );
 };
