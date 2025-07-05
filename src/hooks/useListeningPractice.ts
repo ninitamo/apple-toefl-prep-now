@@ -27,7 +27,11 @@ export const useListeningPracticeTest = (testId: string) => {
         test,
         questions: questions.map(q => ({
           ...q,
-          options: Array.isArray(q.options) ? q.options : JSON.parse(q.options || '[]')
+          options: Array.isArray(q.options) 
+            ? q.options as string[]
+            : typeof q.options === 'string' 
+              ? JSON.parse(q.options) 
+              : []
         }))
       };
     },
