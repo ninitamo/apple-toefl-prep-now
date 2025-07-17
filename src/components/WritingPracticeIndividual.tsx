@@ -30,11 +30,16 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
   
   // Determine if this is an integrated task (has both reading and lecture)
   const isIntegratedTask = test.task_type === 'integrated-lecture' || test.task_type === 'integrated-reading';
+  const isAcademicDiscussion = test.task_type === 'academic-discussion';
   
   useEffect(() => {
     if (isIntegratedTask) {
       // Start with reading phase for integrated tasks
       startTimer(readingTime * 60, 'listening');
+    } else if (isAcademicDiscussion) {
+      // Skip directly to writing for academic discussion (10 minutes)
+      setPhase('writing');
+      startTimer(10 * 60, 'completed');
     } else {
       // Skip directly to writing for independent tasks
       setPhase('writing');
@@ -99,17 +104,18 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
   };
 
   if (phase === 'completed') {
-    const recommendedWords = isIntegratedTask ? '150-225' : '300+';
+    const recommendedWords = isIntegratedTask ? '150-225' : isAcademicDiscussion ? '100-200' : '300+';
+    const taskType = isIntegratedTask ? 'integrated' : isAcademicDiscussion ? 'academic discussion' : 'independent';
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
         <div className="max-w-4xl mx-auto px-4">
           <Card className="bg-white shadow-xl">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold text-green-600">Free Writing Practice Complete!</CardTitle>
+              <CardTitle className="text-2xl font-bold text-green-600">Writing Practice Complete!</CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-6">
               <p className="text-gray-600">
-                You have successfully completed the {isIntegratedTask ? 'integrated' : 'independent'} free writing task.
+                You have successfully completed the {taskType} writing task.
               </p>
               <div className="space-y-2">
                 <p className="font-semibold">Final Word Count: {wordCount}</p>
@@ -142,13 +148,62 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
           </CardHeader>
           <CardContent className="space-y-6">
             
-            {/* Independent Writing Task */}
-            {!isIntegratedTask && phase === 'writing' && (
+            {/* Academic Discussion Task */}
+            {isAcademicDiscussion && phase === 'writing' && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Discussion Context - Left Side */}
+                <div className="space-y-4">
+                  <div className="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-400">
+                    <div className="flex items-center gap-2 mb-2">
+                      <PenTool className="h-4 w-4 text-purple-600" />
+                      <span className="font-semibold text-purple-800">Academic Discussion Task - Time: {formatTime(timeLeft)}</span>
+                    </div>
+                    <p className="text-purple-700 text-sm">Join the online class discussion.</p>
+                  </div>
+                  
+                  <div className="bg-white p-4 rounded border">
+                    <h4 className="font-semibold mb-2">Class Discussion:</h4>
+                    <div className="text-sm text-gray-700 space-y-4 max-h-96 overflow-y-auto whitespace-pre-line">
+                      {test.content}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Writing Area - Right Side */}
+                <div className="space-y-4">
+                  <div className="bg-white p-4 rounded border">
+                    <h4 className="font-semibold mb-2">Your Task:</h4>
+                    <p className="text-sm text-gray-700 mb-4">{question.question_text}</p>
+                    <p className="text-xs text-gray-500">
+                      Directions: You have 10 minutes to write your response. Express and support your personal opinion and make a contribution to the discussion in your own words. An effective response will contain at least 100 words.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-semibold">Your Discussion Post:</h3>
+                      <div className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                        Word Count: {wordCount}
+                      </div>
+                    </div>
+                    <Textarea
+                      value={response}
+                      onChange={(e) => handleResponseChange(e.target.value)}
+                      placeholder="Write your response to join the discussion..."
+                      className="min-h-[400px] resize-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Independent Writing Task (if any remain) */}
+            {!isIntegratedTask && !isAcademicDiscussion && phase === 'writing' && (
               <div className="space-y-4">
                 <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-400">
                   <div className="flex items-center gap-2 mb-2">
                     <PenTool className="h-4 w-4 text-orange-600" />
-                    <span className="font-semibold text-orange-800">Independent Free Writing Task - Time: {formatTime(timeLeft)}</span>
+                    <span className="font-semibold text-orange-800">Independent Writing Task - Time: {formatTime(timeLeft)}</span>
                   </div>
                   <p className="text-orange-700 text-sm">Write an essay expressing your personal opinion on the topic.</p>
                 </div>
