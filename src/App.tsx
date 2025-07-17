@@ -24,6 +24,8 @@ import WhoNeedsToeflBlog from "./pages/WhoNeedsToeflBlog";
 import WhatToeflStandsForBlog from "./pages/WhatToeflStandsForBlog";
 import WhereToeflAcceptedBlog from "./pages/WhereToeflAcceptedBlog";
 import WhenToeflConductedBlog from "./pages/WhenToeflConductedBlog";
+import CookiePolicy from "./pages/CookiePolicy";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +56,8 @@ const App = () => (
               <Route path="/blog/what-toefl-stands-for" element={<WhatToeflStandsForBlog />} />
               <Route path="/blog/where-toefl-accepted" element={<WhereToeflAcceptedBlog />} />
               <Route path="/blog/when-toefl-conducted" element={<WhenToeflConductedBlog />} />
+              <Route path="/cookie-policy" element={<CookiePolicy />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
