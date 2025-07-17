@@ -5,28 +5,19 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   const footerLinks = {
     'Study Resources': [
-      'Practice Tests',
-      'Study Guides',
-      'Vocabulary Builder',
-      'Grammar Lessons',
+      { name: 'Full Test', route: '/practice/full-tests' },
+      { name: 'Individual Test', route: '/individual-practice' },
+      { name: 'Materials', route: '/exam-info' },
+      { name: 'Articles/FAQ', route: '/articles' },
     ],
     'Support': [
-      'Help Center',
-      'Contact Us',
-      'Community Forum',
-      'Live Chat',
+      { name: 'Contact Us', route: '/contact' },
     ],
     'Company': [
-      'About Us',
-      'Careers',
-      'Press',
-      'Partners',
+      { name: 'About Us', route: '#' },
     ],
     'Legal': [
-      'Privacy Policy',
-      'Terms of Service',
-      'Cookie Policy',
-      'Accessibility',
+      { name: 'Cookie Policy', route: '/cookie-policy' },
     ],
   };
 
@@ -40,7 +31,12 @@ const Footer = () => {
               <span className="text-xl font-semibold text-white dark:text-gray-100">TOEFL Prep</span>
             </div>
             <p className="text-gray-400 dark:text-gray-300 mb-6 max-w-md">
-              Your trusted partner in TOEFL preparation. Join thousands of students who have achieved their target scores with our comprehensive platform.
+              TOEFL is a registered trademark of ETS. This product is not endorsed or approved by ETS.
+            </p>
+            <p className="text-gray-400 dark:text-gray-300 mb-6 max-w-md">
+              <Link to="/privacy-policy" className="hover:text-white dark:hover:text-gray-100 transition-colors duration-200">
+                Read our privacy policy.
+              </Link>
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors duration-200">
@@ -62,30 +58,14 @@ const Footer = () => {
             <div key={category}>
               <h3 className="text-white dark:text-gray-100 font-semibold mb-4">{category}</h3>
               <ul className="space-y-2">
-                {links.map((link) => (
-                  <li key={link}>
-                    {link === 'Cookie Policy' ? (
-                      <Link 
-                        to="/cookie-policy"
-                        className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors duration-200"
-                      >
-                        {link}
-                      </Link>
-                    ) : link === 'Privacy Policy' ? (
-                      <Link 
-                        to="/privacy-policy"
-                        className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors duration-200"
-                      >
-                        {link}
-                      </Link>
-                    ) : (
-                      <a 
-                        href="#"
-                        className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors duration-200"
-                      >
-                        {link}
-                      </a>
-                    )}
+                {links.map((link, index) => (
+                  <li key={index}>
+                    <Link 
+                      to={link.route}
+                      className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors duration-200"
+                    >
+                      {link.name}
+                    </Link>
                   </li>
                 ))}
               </ul>
