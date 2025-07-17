@@ -64,22 +64,32 @@ export const useIndividualPracticeTest = (id: string) => {
       
       // If this is a writing task and it's a lecture, we need to find the reading passage
       if (test.section_type === 'writing' && test.task_type === 'integrated-lecture') {
-        // Find the corresponding reading passage by title pattern
-        const baseTitle = test.title.replace(' Lecture', '').replace(' Complexities Lecture', '');
+        // Find the corresponding reading passage by looking for a matching title pattern
+        // Remove "Complexities Lecture" or similar suffixes to match the base title
+        const baseTitle = test.title
+          .replace('Complexities Lecture', '')
+          .replace('Challenges Lecture', '')
+          .replace('Lecture', '')
+          .replace('Urban Green Spaces', 'Benefits of Urban Green Spaces')
+          .trim();
+        
+        console.log('Looking for reading passage with title containing:', baseTitle);
+        
         const { data: readingTest, error: readingError } = await supabase
           .from('individual_practice_tests')
           .select('*')
           .eq('section_type', 'writing')
           .eq('task_type', 'integrated-reading')
-          .ilike('title', `%${baseTitle}%`)
-          .single();
+          .or(`title.ilike.%${baseTitle}%,title.ilike.%Benefits of Urban Green Spaces%`);
         
-        if (!readingError && readingTest) {
+        console.log('Found reading tests:', readingTest);
+        
+        if (!readingError && readingTest && readingTest.length > 0) {
           // Return the reading passage content as the main test, but keep the lecture's audio_url
           return {
             ...test,
-            content: readingTest.content,
-            title: readingTest.title,
+            content: readingTest[0].content,
+            title: readingTest[0].title,
             // Keep the audio_url from the lecture test
             audio_url: test.audio_url
           } as IndividualPracticeTest;
