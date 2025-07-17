@@ -1,17 +1,9 @@
 
 import { useState } from 'react';
-import { Menu, X, BookOpen, User, LogOut, ChevronDown } from 'lucide-react';
+import { Menu, X, BookOpen, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -28,7 +20,6 @@ import {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
   const testItems = [
@@ -92,19 +83,6 @@ const Navbar = () => {
       description: 'Get in touch with our support team for help and questions'
     },
   ];
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
-
-  const handleAuthClick = () => {
-    if (user) {
-      navigate('/practice/sections');
-    } else {
-      navigate('/auth');
-    }
-  };
 
   return (
     <TooltipProvider>
@@ -201,6 +179,13 @@ const Navbar = () => {
             <div className="flex items-center space-x-2">
               <ThemeToggle />
               
+              <Button
+                onClick={() => navigate('/practice/sections')}
+                className="hidden md:inline-flex bg-blue-600 hover:bg-blue-700 text-white rounded-full"
+              >
+                Start Practice
+              </Button>
+              
               <div className="md:hidden">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -282,35 +267,14 @@ const Navbar = () => {
                   </div>
                 ))}
 
-                {user ? (
-                  <div className="space-y-2 pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <div className="text-sm text-gray-600 dark:text-gray-300 px-2">
-                      Signed in as: {user.email}
-                    </div>
-                    <Button
-                      onClick={() => { navigate('/practice/sections'); setIsMenuOpen(false); }}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
-                    >
-                      Free Practice Tests
-                    </Button>
-                    <Button
-                      onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      Sign Out
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <Button
-                      onClick={() => { handleAuthClick(); setIsMenuOpen(false); }}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
-                    >
-                      Sign In
-                    </Button>
-                  </div>
-                )}
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <Button
+                    onClick={() => { navigate('/practice/sections'); setIsMenuOpen(false); }}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
+                  >
+                    Start Practice
+                  </Button>
+                </div>
               </div>
             </div>
           )}
