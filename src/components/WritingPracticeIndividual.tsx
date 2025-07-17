@@ -289,16 +289,16 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
                   </div>
                   <p className="text-gray-600 mb-2">Now listen to a lecture on the same topic</p>
                   <p className="text-sm text-gray-500">The professor will discuss points that relate to the reading passage</p>
-                </div>
-                
-                {/* Show lecture content for simulation */}
-                <div className="bg-white p-4 rounded border max-h-64 overflow-y-auto">
-                  <h4 className="font-semibold mb-2">Lecture Content:</h4>
-                  <div className="space-y-2 text-sm">
-                    <p className="text-gray-700">
-                      <span className="font-medium">Professor:</span> The professor discusses some limitations of solar energy that the reading passage does not fully cover. He explains that solar panel manufacturing involves the use of toxic materials, which can harm the environment if not properly managed. Moreover, disposing of old solar panels creates waste management challenges. The professor also notes that large-scale solar farms require significant land areas, which can disrupt local ecosystems and agriculture.
-                    </p>
-                  </div>
+                  
+                  {/* Audio player if audio_url exists */}
+                  {test.audio_url && (
+                    <div className="mt-4">
+                      <audio controls className="mx-auto">
+                        <source src={`https://tdirwxqcamngvsubjbdd.supabase.co/storage/v1/object/public/${test.audio_url}`} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
