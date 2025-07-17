@@ -80,6 +80,20 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const handleSkipPhase = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    
+    if (phase === 'reading') {
+      setPhase('listening');
+      startTimer(150, 'writing'); // 2.5 minutes for listening
+    } else if (phase === 'listening') {
+      setPhase('writing');
+      startTimer(writingTime * 60, 'completed'); // 20 minutes for writing
+    }
+  };
+
   const handleComplete = () => {
     onComplete();
   };
@@ -168,11 +182,21 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
             {isIntegratedTask && phase === 'reading' && (
               <div className="space-y-4">
                 <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
-                  <div className="flex items-center gap-2 mb-2">
-                    <BookOpen className="h-4 w-4 text-blue-600" />
-                    <span className="font-semibold text-blue-800">Reading Time: {formatTime(timeLeft)}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="h-4 w-4 text-blue-600" />
+                      <span className="font-semibold text-blue-800">Reading Time: {formatTime(timeLeft)}</span>
+                    </div>
+                    <Button 
+                      onClick={handleSkipPhase}
+                      variant="outline" 
+                      size="sm"
+                      className="text-blue-700 border-blue-300 hover:bg-blue-100"
+                    >
+                      Skip Reading
+                    </Button>
                   </div>
-                  <p className="text-blue-700 text-sm">Read the passage carefully. You may take notes.</p>
+                  <p className="text-blue-700 text-sm mt-2">Read the passage carefully. You may take notes.</p>
                 </div>
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <div className="prose max-w-none text-gray-700 leading-relaxed whitespace-pre-line">
@@ -186,11 +210,21 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
             {isIntegratedTask && phase === 'listening' && (
               <div className="space-y-4">
                 <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Volume2 className="h-4 w-4 text-green-600" />
-                    <span className="font-semibold text-green-800">Listening Time: {formatTime(timeLeft)}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Volume2 className="h-4 w-4 text-green-600" />
+                      <span className="font-semibold text-green-800">Listening Time: {formatTime(timeLeft)}</span>
+                    </div>
+                    <Button 
+                      onClick={handleSkipPhase}
+                      variant="outline" 
+                      size="sm"
+                      className="text-green-700 border-green-300 hover:bg-green-100"
+                    >
+                      Skip Listening
+                    </Button>
                   </div>
-                  <p className="text-green-700 text-sm">Listen to the lecture. You may take notes.</p>
+                  <p className="text-green-700 text-sm mt-2">Listen to the lecture. You may take notes.</p>
                 </div>
                 <div className="bg-gray-100 p-8 rounded-lg text-center">
                   <div className="flex items-center justify-center mb-4">
@@ -206,11 +240,9 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
                 <div className="bg-white p-4 rounded border max-h-64 overflow-y-auto">
                   <h4 className="font-semibold mb-2">Lecture Content:</h4>
                   <div className="space-y-2 text-sm">
-                    {lectureConversation.map((line: string[], index: number) => (
-                      <p key={index} className="text-gray-700">
-                        <span className="font-medium">{line[0]}:</span> {line[1]}
-                      </p>
-                    ))}
+                    <p className="text-gray-700">
+                      <span className="font-medium">Professor:</span> The professor discusses some limitations of solar energy that the reading passage does not fully cover. He explains that solar panel manufacturing involves the use of toxic materials, which can harm the environment if not properly managed. Moreover, disposing of old solar panels creates waste management challenges. The professor also notes that large-scale solar farms require significant land areas, which can disrupt local ecosystems and agriculture.
+                    </p>
                   </div>
                 </div>
               </div>
