@@ -53,34 +53,35 @@ export const useIndividualPracticeTest = (id: string) => {
   return useQuery({
     queryKey: ['individual-practice-test', id],
     queryFn: async () => {
-      // For writing tasks, we need to get the lecture (which has the question)
-      // but we'll also fetch the reading passage separately
-      let testQuery = supabase
+      // Get the requested test first
+      const { data: test, error: testError } = await supabase
         .from('individual_practice_tests')
         .select('*')
         .eq('id', id)
         .single();
-
-      const { data: test, error: testError } = await testQuery;
       
       if (testError) throw testError;
       
       // If this is a writing task and it's a lecture, we need to find the reading passage
       if (test.section_type === 'writing' && test.task_type === 'integrated-lecture') {
-        // Find the corresponding reading passage (should have same base ID but end in 0 instead of 1)
-        const readingId = test.id.slice(0, -1) + '0';
+        // Find the corresponding reading passage by title pattern
+        const baseTitle = test.title.replace(' Lecture', '').replace(' Complexities Lecture', '');
         const { data: readingTest, error: readingError } = await supabase
           .from('individual_practice_tests')
           .select('*')
-          .eq('id', readingId)
+          .eq('section_type', 'writing')
+          .eq('task_type', 'integrated-reading')
+          .ilike('title', `%${baseTitle}%`)
           .single();
         
         if (!readingError && readingTest) {
-          // Return the reading passage content as the main test
+          // Return the reading passage content as the main test, but keep the lecture's audio_url
           return {
             ...test,
             content: readingTest.content,
-            title: readingTest.title
+            title: readingTest.title,
+            // Keep the audio_url from the lecture test
+            audio_url: test.audio_url
           } as IndividualPracticeTest;
         }
       }
@@ -95,22 +96,29 @@ export const useIndividualPracticeQuestions = (practiceTestId: string) => {
   return useQuery({
     queryKey: ['individual-practice-questions', practiceTestId],
     queryFn: async () => {
-      // For writing tasks, the question is linked to the lecture ID, not the reading ID
+      // First get the test to understand what type it is
+      const { data: test } = await supabase
+        .from('individual_practice_tests')
+        .select('*')
+        .eq('id', practiceTestId)
+        .single();
+      
       let queryId = practiceTestId;
       
-      // Check if this is a reading passage ID for writing (ends with 0)
-      if (practiceTestId.endsWith('0')) {
-        // Try to find the corresponding lecture ID (ends with 1)
-        const lectureId = practiceTestId.slice(0, -1) + '1';
+      // If this is a reading passage for an integrated writing task, find the corresponding lecture
+      if (test?.section_type === 'writing' && test?.task_type === 'integrated-reading') {
+        // Find the corresponding lecture by title pattern
+        const baseTitle = test.title.replace('The Benefits of ', '').replace('Benefits of ', '');
         const { data: lectureTest } = await supabase
           .from('individual_practice_tests')
           .select('*')
-          .eq('id', lectureId)
           .eq('section_type', 'writing')
+          .eq('task_type', 'integrated-lecture')
+          .ilike('title', `%${baseTitle}%`)
           .single();
         
         if (lectureTest) {
-          queryId = lectureId;
+          queryId = lectureTest.id;
         }
       }
       
