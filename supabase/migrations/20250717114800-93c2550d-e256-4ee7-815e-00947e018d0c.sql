@@ -1,0 +1,64 @@
+-- Insert the solar energy integrated writing practice test
+INSERT INTO individual_practice_tests (
+  id,
+  section_type,
+  task_type,
+  title,
+  description,
+  content,
+  difficulty_level,
+  estimated_duration
+) VALUES (
+  'solar-energy-integrated-writing',
+  'writing',
+  'integrated-reading',
+  'Solar Energy: Benefits and Limitations',
+  'Integrated Writing Task: Read a passage about solar energy, listen to a lecture, then write an essay comparing both sources.',
+  'Solar energy is one of the most promising renewable energy sources. It is abundant, sustainable, and produces no harmful emissions. Many experts believe that solar power can significantly reduce our dependence on fossil fuels, thus decreasing air pollution and slowing climate change. Additionally, solar panels require little maintenance and can be installed in various locations, including rooftops and remote areas.
+
+However, critics point out that solar energy has some drawbacks. Solar panels are expensive to install initially, and their efficiency depends on weather conditions and sunlight availability. Energy storage technologies, such as batteries, are also costly and not yet advanced enough to supply power during nighttime or cloudy days.',
+  'intermediate',
+  20
+);
+
+-- Insert the writing question/prompt
+INSERT INTO test_questions_individual_practice (
+  id,
+  practice_test_id,
+  question_number,
+  question_type,
+  question_text,
+  correct_answer,
+  explanation
+) VALUES (
+  'solar-energy-writing-prompt',
+  'solar-energy-integrated-writing',
+  1,
+  'integrated',
+  'Summarize the points made in the lecture and explain how they challenge points made in the reading passage about solar energy.',
+  'A complete response should address: 1) Solar panel manufacturing uses toxic materials that can harm the environment, 2) Disposing of old solar panels creates waste management challenges, 3) Large-scale solar farms require significant land areas that can disrupt ecosystems and agriculture, 4) These points challenge the reading''s claim that solar energy is environmentally beneficial and sustainable.',
+  'The response should demonstrate understanding of both sources and clearly explain how the lecture challenges or contradicts the reading passage.'
+);
+
+-- Add a second integrated writing practice test for variety
+INSERT INTO individual_practice_tests (
+  id,
+  section_type,
+  task_type,
+  title,
+  description,
+  content,
+  difficulty_level,
+  estimated_duration,
+  audio_url
+) VALUES (
+  'lecture-solar-energy-writing',
+  'writing',
+  'integrated-lecture',
+  'Solar Energy Lecture Response',
+  'Listen to a lecture about solar energy limitations and respond based on the reading passage.',
+  'The professor discusses some limitations of solar energy that the reading passage does not fully cover. He explains that solar panel manufacturing involves the use of toxic materials, which can harm the environment if not properly managed. Moreover, disposing of old solar panels creates waste management challenges. The professor also notes that large-scale solar farms require significant land areas, which can disrupt local ecosystems and agriculture. These concerns suggest that while solar energy may seem environmentally friendly, the full lifecycle of solar technology presents environmental challenges that must be carefully considered.',
+  'intermediate',
+  20,
+  'listening/solar-energy-lecture.mp3'
+);
