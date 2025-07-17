@@ -60,9 +60,10 @@ const TeamSection = () => {
               Our Mission
             </h3>
             <p className="text-lg text-gray-700 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              We believe everyone deserves access to high-quality TOEFL preparation materials.
-              Our team combines decades of testing expertise with cutting-edge technology to create
-              the most effective and accessible TOEFL practice platform available today.
+              We are passionate enthusiasts dedicated to making high-quality TOEFL preparation accessible to everyone. By combining our love for language learning with advanced AI technology, we deliver innovative and personalized test solutions that help learners succeed efficiently and confidently.
+            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-4 italic">
+              Please note, our platform is not affiliated with or officially endorsed by ETS, the makers of the TOEFL test.
             </p>
           </div>
         </div>
