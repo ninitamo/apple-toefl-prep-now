@@ -11,93 +11,55 @@ const CookiePolicy = () => {
         
         <div className="prose prose-lg max-w-none dark:prose-invert">
           <section className="mb-6 sm:mb-8">
+            <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base leading-relaxed">
+              Our website uses cookies to improve your experience and understand how visitors interact with our site. By continuing to use our website, you agree to the use of cookies as described below.
+            </p>
+          </section>
+
+          <section className="mb-6 sm:mb-8">
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">What are cookies?</h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base leading-relaxed">
-              Cookies are small text files that are placed on your computer or mobile device when you visit our website. 
-              They are widely used to make websites work more efficiently and provide information to the site owners.
+              Cookies are small text files stored on your device by your web browser. They help us recognize your device and collect information about how you use our site.
             </p>
           </section>
 
           <section className="mb-6 sm:mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">Types of cookies we use</h2>
-            
-            <div className="mb-4 sm:mb-6">
-              <h3 className="text-lg sm:text-xl font-medium text-gray-800 dark:text-gray-200 mb-2">Essential Cookies</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-2 text-sm sm:text-base">
-                These cookies are necessary for the website to function properly. They enable basic functions like page navigation and access to secure areas.
-              </p>
-              <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 ml-4 text-sm sm:text-base space-y-1">
-                <li>Authentication cookies (to keep you logged in)</li>
-                <li>Security cookies (to prevent fraud)</li>
-                <li>Load balancing cookies (to distribute traffic)</li>
-              </ul>
-            </div>
-
-            <div className="mb-4 sm:mb-6">
-              <h3 className="text-lg sm:text-xl font-medium text-gray-800 dark:text-gray-200 mb-2">Analytics Cookies</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-2 text-sm sm:text-base">
-                These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.
-              </p>
-              <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 ml-4 text-sm sm:text-base space-y-1">
-                <li><strong>Google Analytics:</strong> We use Google Analytics to analyze website traffic and user behavior</li>
-                <li>These cookies collect information about how you use our site, which pages you visit, and how long you spend on each page</li>
-                <li>All information is anonymous and helps us improve our website</li>
-              </ul>
-            </div>
-
-            <div className="mb-4 sm:mb-6">
-              <h3 className="text-lg sm:text-xl font-medium text-gray-800 dark:text-gray-200 mb-2">Preference Cookies</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-2 text-sm sm:text-base">
-                These cookies remember your preferences and choices to provide a more personalized experience.
-              </p>
-              <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 ml-4 text-sm sm:text-base space-y-1">
-                <li>Cookie consent preferences</li>
-                <li>Language preferences</li>
-                <li>Theme preferences (dark/light mode)</li>
-              </ul>
-            </div>
-          </section>
-
-          <section className="mb-6 sm:mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">Managing your cookies</h2>
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">Cookies we use:</h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base">
-              You can control and manage cookies in several ways:
-            </p>
-            <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 ml-4 mb-4 text-sm sm:text-base space-y-1">
-              <li>Use our cookie consent banner to accept or reject non-essential cookies</li>
-              <li>Change your browser settings to block or delete cookies</li>
-              <li>Use browser plugins to manage cookies</li>
-            </ul>
-            <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-              Please note that blocking certain cookies may impact your experience on our website and some features may not work properly.
+              <strong>Google Analytics cookies:</strong> These cookies collect anonymous information about your visit, such as pages viewed, time spent on the site, and how you arrived here. This data helps us analyze and improve our website's performance and user experience.
             </p>
           </section>
 
           <section className="mb-6 sm:mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">Third-party cookies</h2>
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">What data do we collect?</h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base">
-              We may use third-party services that set their own cookies:
+              Google Analytics cookies collect data like your IP address (anonymized), device type, browser type, and usage patterns. This information is anonymous and does not identify you personally.
             </p>
-            <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 ml-4 text-sm sm:text-base">
-              <li><strong>Google Analytics:</strong> For website analytics and performance monitoring</li>
+          </section>
+
+          <section className="mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">How do we use this data?</h2>
+            <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 ml-4 text-sm sm:text-base space-y-1">
+              <li>To understand how visitors use our website</li>
+              <li>To improve the design, content, and functionality of our site</li>
+              <li>To monitor website traffic and performance</li>
             </ul>
           </section>
 
           <section className="mb-6 sm:mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">Updates to this policy</h2>
-            <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-              We may update this Cookie Policy from time to time. When we do, we will post the updated policy on this page 
-              and update the "last updated" date.
-            </p>
-            <p className="text-gray-600 dark:text-gray-300 mt-4 text-sm sm:text-base">
-              <strong>Last updated:</strong> {new Date().toLocaleDateString()}
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">Third-party services:</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base">
+              Google Analytics is a service provided by Google Inc. Their cookies are subject to Google's Privacy Policy.
             </p>
           </section>
 
-          <section>
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">Contact us</h2>
+          <section className="mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">Your choices:</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base">
+              You can opt-out of Google Analytics tracking by installing the Google Analytics Opt-out Browser Add-on, or by adjusting your browser settings to block or delete cookies. Please note that blocking cookies may affect some website features.
+            </p>
             <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-              If you have any questions about our use of cookies, please contact us through our contact page.
+              For more information on cookies and how to manage them, visit <a href="https://aboutcookies.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">aboutcookies.org</a>.
             </p>
           </section>
         </div>
