@@ -54,23 +54,29 @@ const Footer = () => {
             </div>
           </div>
           
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h3 className="text-white dark:text-gray-100 font-semibold mb-4">{category}</h3>
-              <ul className="space-y-2">
-                {links.map((link, index) => (
-                  <li key={index}>
-                    <Link 
-                      to={link.route}
-                      className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors duration-200"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {Object.entries(footerLinks).map(([category, links]) => {
+            console.log('Category:', category, 'Links:', links);
+            return (
+              <div key={category}>
+                <h3 className="text-white dark:text-gray-100 font-semibold mb-4">{category}</h3>
+                <ul className="space-y-2">
+                  {links.map((link, index) => {
+                    console.log('Link object:', link, 'Name:', link.name, 'Route:', link.route);
+                    return (
+                      <li key={index}>
+                        <Link 
+                          to={link.route}
+                          className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors duration-200"
+                        >
+                          {link.name}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            );
+          })}
         </div>
         
         <div className="border-t border-gray-800 dark:border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
