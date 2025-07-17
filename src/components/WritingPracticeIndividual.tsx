@@ -163,7 +163,7 @@ const WritingPracticeIndividual: React.FC<WritingPracticeIndividualProps> = ({
                   
                   <div className="bg-white p-4 rounded border">
                     <h4 className="font-semibold mb-2">Class Discussion:</h4>
-                    <div className="text-sm text-gray-700 space-y-4 max-h-96 overflow-y-auto whitespace-pre-line">
+                    <div className="text-sm text-gray-700 space-y-4 whitespace-pre-line">
                       {test.content}
                     </div>
                   </div>
