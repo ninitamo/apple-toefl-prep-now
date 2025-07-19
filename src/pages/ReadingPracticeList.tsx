@@ -906,14 +906,14 @@ const ReadingPracticeList = () => {
                           setQuizAnswers({});
                           setShowQuizResults(false);
                         }}
-                        className="flex items-center gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20 mb-4"
+                        className="flex items-center gap-2 mb-4"
                       >
                         <ArrowLeft className="h-4 w-4" />
                         Back to Quiz Selection
                       </Button>
                     </div>
 
-                    <Card className="bg-white/10 border-white/20 text-white backdrop-blur-sm">
+                    <Card className="bg-white border shadow-sm">
                       <CardHeader>
                         <CardTitle className="text-center">{getCurrentQuiz()?.title}</CardTitle>
                       </CardHeader>
@@ -922,18 +922,18 @@ const ReadingPracticeList = () => {
                           <>
                             <div className="mb-6">
                               <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-bold">Question {currentQuizQuestion + 1} of {getCurrentQuizQuestions().length}</h3>
+                                <h3 className="text-xl font-bold text-gray-900">Question {currentQuizQuestion + 1} of {getCurrentQuizQuestions().length}</h3>
                                 <div className="flex items-center gap-4">
-                                  <Badge variant="outline" className="border-white/20 text-white">
+                                  <Badge variant="outline" className="border-gray-300 text-gray-700">
                                     {getCurrentQuizQuestions()[currentQuizQuestion]?.type}
                                   </Badge>
-                                  <Badge variant="outline" className="border-white/20 text-white">
+                                  <Badge variant="outline" className="border-gray-300 text-gray-700">
                                     {Math.round(((currentQuizQuestion + 1) / getCurrentQuizQuestions().length) * 100)}%
                                   </Badge>
                                 </div>
                               </div>
-                              <div className="bg-white/5 p-4 rounded-lg mb-6">
-                                <h2 className="text-lg font-semibold leading-relaxed whitespace-pre-line">
+                              <div className="bg-gray-50 p-4 rounded-lg mb-6">
+                                <h2 className="text-lg font-semibold leading-relaxed whitespace-pre-line text-gray-900">
                                   {getCurrentQuizQuestions()[currentQuizQuestion]?.question}
                                 </h2>
                               </div>
@@ -946,8 +946,8 @@ const ReadingPracticeList = () => {
                                   variant={quizAnswers[currentQuizQuestion] === index ? "default" : "outline"}
                                   className={`w-full justify-start p-4 h-auto text-left ${
                                     quizAnswers[currentQuizQuestion] === index 
-                                      ? 'bg-white text-purple-700' 
-                                      : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                                      ? 'bg-blue-600 text-white' 
+                                      : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50'
                                   }`}
                                   onClick={() => handleQuizAnswer(index)}
                                 >
@@ -962,14 +962,14 @@ const ReadingPracticeList = () => {
                                 variant="outline"
                                 onClick={() => setCurrentQuizQuestion(prev => Math.max(0, prev - 1))}
                                 disabled={currentQuizQuestion === 0}
-                                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                                className="border-gray-300 text-gray-700 hover:bg-gray-50"
                               >
                                 Previous
                               </Button>
                               <Button
                                 onClick={nextQuizQuestion}
                                 disabled={quizAnswers[currentQuizQuestion] === undefined}
-                                className="bg-white text-purple-700 hover:bg-white/90 flex items-center gap-2"
+                                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
                               >
                                 {currentQuizQuestion === getCurrentQuizQuestions().length - 1 ? 'Finish Quiz' : 'Next'}
                                 <ChevronRight className="h-4 w-4" />
@@ -978,28 +978,28 @@ const ReadingPracticeList = () => {
                           </>
                         ) : (
                           <div className="text-center">
-                            <h2 className="text-2xl font-bold mb-6">Quiz Results</h2>
+                            <h2 className="text-2xl font-bold mb-6 text-gray-900">Quiz Results</h2>
                             <div className="mb-6">
-                              <div className="text-4xl font-bold text-green-400 mb-2">
+                              <div className="text-4xl font-bold text-green-600 mb-2">
                                 {getQuizScore()}/{getCurrentQuizQuestions().length}
                               </div>
-                              <p className="text-white/80">
+                              <p className="text-gray-600">
                                 You scored {Math.round((getQuizScore() / getCurrentQuizQuestions().length) * 100)}%
                               </p>
                             </div>
                             
                             <div className="space-y-4 mb-6 max-h-60 overflow-y-auto">
                               {getCurrentQuizQuestions().map((question, index) => (
-                                <div key={index} className="text-left p-4 border border-white/20 rounded-lg bg-white/5">
-                                  <p className="font-semibold mb-2 text-sm">{question.type}</p>
-                                  <p className="text-sm mb-2 text-white/90 whitespace-pre-line">{question.question}</p>
-                                  <p className="text-xs text-white/70">
-                                    Your answer: <span className={quizAnswers[index] === question.correct ? 'text-green-400' : 'text-red-400'}>
+                                <div key={index} className="text-left p-4 border border-gray-300 rounded-lg bg-gray-50">
+                                  <p className="font-semibold mb-2 text-sm text-gray-700">{question.type}</p>
+                                  <p className="text-sm mb-2 text-gray-900 whitespace-pre-line">{question.question}</p>
+                                  <p className="text-xs text-gray-600">
+                                    Your answer: <span className={quizAnswers[index] === question.correct ? 'text-green-600' : 'text-red-600'}>
                                       {question.options[quizAnswers[index]] || 'No answer'}
                                     </span>
                                   </p>
                                   {quizAnswers[index] !== question.correct && (
-                                    <p className="text-xs text-green-400">
+                                    <p className="text-xs text-green-600">
                                       Correct answer: {question.options[question.correct]}
                                     </p>
                                   )}
@@ -1009,7 +1009,7 @@ const ReadingPracticeList = () => {
                             
                             <Button 
                               onClick={resetQuiz} 
-                              className="bg-white text-purple-700 hover:bg-white/90 flex items-center gap-2 mx-auto"
+                              className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 mx-auto"
                             >
                               <RotateCcw className="h-4 w-4" />
                               Take Another Quiz
