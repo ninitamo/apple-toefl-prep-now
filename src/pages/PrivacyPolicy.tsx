@@ -28,58 +28,134 @@ const PrivacyPolicy = () => {
             </h1>
 
             <div className="prose prose-lg dark:prose-invert max-w-none">
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                Last updated: 20 July 2025
+              </p>
+              
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                We value your privacy and are committed to protecting your personal information. This Privacy Policy explains how information is collected, used, and protected when you visit our website.
+              </p>
+
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                  How We Use Your Information
+                  1. Who We Are
                 </h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                  When you enter a query into our search input (for example, the name of a university), 
-                  we send that text to OpenAI's systems to generate a response. This allows us to provide 
-                  you with an AI-generated answer and relevant reference links.
-                </p>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  We do not use your query for marketing purposes. Queries may be logged for security 
-                  and performance monitoring.
+                  This website is operated by ToeflPrep. You can contact us at [your email address].
                 </p>
               </section>
 
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                  Third-Party Processing
+                  2. What Data We Collect
                 </h2>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  Your query is processed by OpenAI, an external service provider. OpenAI retains 
-                  request and response data for up to 30 days to monitor for abuse and misuse. 
-                  You can learn more about OpenAI's data policies in{" "}
-                  <a 
-                    href="https://openai.com/privacy/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    OpenAI's Privacy Policy
-                  </a>.
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  We do not collect personal data directly (e.g., through forms or accounts). However, we use third-party services that may collect limited information through cookies.
+                </p>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                  Google Analytics
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  We use Google Analytics to understand how users interact with our website. The information collected includes:
+                </p>
+                <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 mb-4">
+                  <li>Anonymized IP address</li>
+                  <li>Browser and device type</li>
+                  <li>Pages visited</li>
+                  <li>Time spent on the site</li>
+                  <li>Referral source</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  This data is collected in an anonymized or pseudonymized form and does not directly identify you.
                 </p>
               </section>
 
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                  Data Retention
+                  3. How We Use This Data
                 </h2>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  We may retain logs of your query and the AI-generated responses for up to 30 days 
-                  for troubleshooting and analytics. These logs do not include personally identifiable 
-                  information unless you choose to enter such information in your query.
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  We use this information to:
+                </p>
+                <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 mb-4">
+                  <li>Analyze traffic and usage patterns</li>
+                  <li>Improve the performance, design, and content of our website</li>
+                  <li>Monitor website functionality and detect technical issues</li>
+                </ul>
+              </section>
+
+              <section className="mb-8">
+                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                  4. Legal Basis for Processing (If Applicable)
+                </h2>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  We process your data based on your consent, provided when you accept cookies via our cookie banner.
+                </p>
+              </section>
+
+              <section className="mb-8">
+                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                  5. Third-Party Services
+                </h2>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  We use the following service provider:
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  <strong>Google Analytics</strong> – A web analytics tool by Google Inc. Data collected is subject to Google's Privacy Policy and Terms of Service.
+                </p>
+              </section>
+
+              <section className="mb-8">
+                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                  6. Your Data Rights
+                </h2>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  Depending on your location, you may have rights under applicable privacy laws, including:
+                </p>
+                <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 mb-4">
+                  <li>The right to access the data collected</li>
+                  <li>The right to request deletion or correction</li>
+                  <li>The right to object to processing</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  You may opt out of Google Analytics by:
+                </p>
+                <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 mb-4">
+                  <li>Installing the Google Analytics Opt-Out Browser Add-on</li>
+                  <li>Adjusting your browser settings to block cookies</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  For any data-related inquiries, contact us at [your email].
+                </p>
+              </section>
+
+              <section className="mb-8">
+                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                  7. Links to Other Websites
+                </h2>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  This website may contain links to third-party websites. ToeflPrep is not responsible for the privacy practices or content of these external sites.
+                </p>
+              </section>
+
+              <section className="mb-8">
+                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                  8. Changes to This Policy
+                </h2>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  We may update this Privacy Policy from time to time. Updates will be posted on this page with an updated effective date.
                 </p>
               </section>
 
               <section>
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                  Contact Us
+                  9. Contact
                 </h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  If you have any questions about this Privacy Policy, please contact us through 
-                  our contact page.
+                  If you have any questions, concerns, or complaints regarding this Privacy Policy, you can contact us at:
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mt-2">
+                  <strong>Email:</strong> [your email address]
                 </p>
               </section>
             </div>
