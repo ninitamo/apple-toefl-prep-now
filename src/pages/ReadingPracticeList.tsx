@@ -13,6 +13,7 @@ const ReadingPracticeList = () => {
   const [showDefinition, setShowDefinition] = useState(false);
   const [masteredWords, setMasteredWords] = useState<Set<number>>(new Set());
   const [unknownWords, setUnknownWords] = useState<Set<number>>(new Set());
+  const [selectedQuiz, setSelectedQuiz] = useState<number | null>(null);
   const [currentQuizQuestion, setCurrentQuizQuestion] = useState(0);
   const [quizAnswers, setQuizAnswers] = useState<{ [key: number]: number }>({});
   const [showQuizResults, setShowQuizResults] = useState(false);
@@ -212,34 +213,130 @@ const ReadingPracticeList = () => {
     ]
   };
 
-  // Quiz questions
-  const quizQuestions = [
-    {
-      question: "What does 'abundant' mean?",
-      options: ["Existing in large quantities", "Rare and scarce", "Moving quickly", "Very small"],
-      correct: 0
+  // Quiz data - Multiple quizzes
+  const quizData = {
+    1: {
+      title: "TOEFL Reading Practice Quiz 1 (Mixed Types)",
+      questions: [
+        {
+          type: "Paragraph Ordering",
+          question: "The car stopped.\nHe applied the brakes.\nA deer appeared.\nWhich is the correct order?",
+          options: ["3-2-1", "1-3-2", "2-3-1", "3-1-2"],
+          correct: 0
+        },
+        {
+          type: "What Can You Infer?",
+          question: "Statement: She brought an umbrella and wore boots.\nWhat can you infer?",
+          options: ["It might rain", "It was hot", "She was swimming", "She was inside"],
+          correct: 0
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"This led to major economic changes.\"\nWhere should this go?",
+          options: ["After discussing inflation", "Before intro", "In a footnote", "After a chart title"],
+          correct: 0
+        },
+        {
+          type: "Paragraph Ordering",
+          question: "The alarm rang.\nShe woke up suddenly.\nIt was 6:30 AM.\nWhich is the correct order?",
+          options: ["1-2-3", "3-1-2", "2-3-1", "2-1-3"],
+          correct: 1
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"This discovery shocked the community.\"\nWhere should this go?",
+          options: ["After the discovery", "Before introduction", "In the index", "Table of contents"],
+          correct: 0
+        },
+        {
+          type: "Connectors / Transition Words",
+          question: "He failed the test. ___, he studied harder.",
+          options: ["However", "Therefore", "Consequently", "Afterward"],
+          correct: 3
+        },
+        {
+          type: "Synonym Match",
+          question: "Word: Accurate →",
+          options: ["Precise", "Lucky", "Easy", "Unclear"],
+          correct: 0
+        },
+        {
+          type: "What Can You Infer?",
+          question: "Statement: There were textbooks and notebooks on the table.\nWhat can you infer?",
+          options: ["Students studied there", "It's a café", "It's a hospital", "They played soccer"],
+          correct: 0
+        },
+        {
+          type: "Word Family Practice",
+          question: "The ___ of the machine is impressive.",
+          options: ["perform", "performance", "performing", "performed"],
+          correct: 1
+        },
+        {
+          type: "Synonym Match",
+          question: "Word: Reluctant →",
+          options: ["Willing", "Eager", "Hesitant", "Ready"],
+          correct: 2
+        },
+        {
+          type: "Paragraph Ordering",
+          question: "Ice melts.\nTemperature rises.\nWater level increases.\nCorrect order?",
+          options: ["2-1-3", "1-2-3", "3-2-1", "2-3-1"],
+          correct: 0
+        },
+        {
+          type: "Connectors / Transition Words",
+          question: "She was tired. ___, she finished her work.",
+          options: ["For example", "Although", "Still", "Furthermore"],
+          correct: 2
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"Consequently, migration increased.\"\nBest location:",
+          options: ["After war was described", "Before intro", "After bibliography", "With author bio"],
+          correct: 0
+        },
+        {
+          type: "Word Family Practice",
+          question: "She speaks very ___ during presentations.",
+          options: ["confidence", "confident", "confidently", "confide"],
+          correct: 2
+        },
+        {
+          type: "Synonym Match",
+          question: "Word: Compulsory →",
+          options: ["Optional", "Required", "Flexible", "Voluntary"],
+          correct: 1
+        }
+      ]
     },
-    {
-      question: "Which word means 'to examine closely'?",
-      options: ["Predict", "Analyze", "Migrate", "Control"],
-      correct: 1
+    2: {
+      title: "TOEFL Reading Practice Quiz 2 (Coming Soon)",
+      questions: []
     },
-    {
-      question: "What does 'abandon' mean?",
-      options: ["To support", "To increase", "To leave behind or give up", "To examine"],
-      correct: 2
+    3: {
+      title: "TOEFL Reading Practice Quiz 3 (Coming Soon)",
+      questions: []
     },
-    {
-      question: "Which word means 'to assign or distribute resources'?",
-      options: ["Accelerate", "Advocate", "Allocate", "Anticipate"],
-      correct: 2
+    4: {
+      title: "TOEFL Reading Practice Quiz 4 (Coming Soon)",
+      questions: []
     },
-    {
-      question: "What does 'migrate' mean?",
-      options: ["To stay in one place", "To move from one place to another", "To examine closely", "To predict"],
-      correct: 1
+    5: {
+      title: "TOEFL Reading Practice Quiz 5 (Coming Soon)",
+      questions: []
     }
-  ];
+  };
+
+  const getCurrentQuiz = () => {
+    if (!selectedQuiz) return null;
+    return quizData[selectedQuiz as keyof typeof quizData];
+  };
+
+  const getCurrentQuizQuestions = () => {
+    const quiz = getCurrentQuiz();
+    return quiz?.questions || [];
+  };
 
   const getCurrentWords = () => {
     if (!selectedLevel) return [];
@@ -297,7 +394,8 @@ const ReadingPracticeList = () => {
   };
 
   const nextQuizQuestion = () => {
-    if (currentQuizQuestion < quizQuestions.length - 1) {
+    const currentQuizQuestions = getCurrentQuizQuestions();
+    if (currentQuizQuestion < currentQuizQuestions.length - 1) {
       setCurrentQuizQuestion(prev => prev + 1);
     } else {
       setShowQuizResults(true);
@@ -308,11 +406,13 @@ const ReadingPracticeList = () => {
     setCurrentQuizQuestion(0);
     setQuizAnswers({});
     setShowQuizResults(false);
+    setSelectedQuiz(null);
   };
 
   const getQuizScore = () => {
     let correct = 0;
-    quizQuestions.forEach((question, index) => {
+    const currentQuizQuestions = getCurrentQuizQuestions();
+    currentQuizQuestions.forEach((question, index) => {
       if (quizAnswers[index] === question.correct) {
         correct++;
       }
@@ -385,81 +485,177 @@ const ReadingPracticeList = () => {
               </TabsContent>
 
               <TabsContent value="quiz" className="mt-8">
-                <div className="max-w-2xl mx-auto">
-                  <Card className="bg-white/10 border-white/20 text-white backdrop-blur-sm">
-                    <CardContent className="p-8">
-                      {!showQuizResults ? (
-                        <>
-                          <div className="mb-6">
-                            <div className="flex justify-between items-center mb-4">
-                              <h3 className="text-xl font-bold">Question {currentQuizQuestion + 1} of {quizQuestions.length}</h3>
-                              <Badge variant="outline" className="border-white/20 text-white">
-                                {Math.round(((currentQuizQuestion + 1) / quizQuestions.length) * 100)}%
-                              </Badge>
+                {!selectedQuiz ? (
+                  <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-8">
+                      <h2 className="text-2xl font-bold text-white mb-4">Choose a Quiz</h2>
+                      <p className="text-white/80">Select from our collection of TOEFL reading practice quizzes</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {Object.entries(quizData).map(([quizId, quiz]) => (
+                        <Card 
+                          key={quizId} 
+                          className={`cursor-pointer transition-all duration-300 hover:scale-105 bg-white/10 border-white/20 text-white backdrop-blur-sm ${
+                            quiz.questions.length === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                          }`}
+                          onClick={() => {
+                            if (quiz.questions.length > 0) {
+                              setSelectedQuiz(Number(quizId));
+                            }
+                          }}
+                        >
+                          <CardContent className="p-6 text-center">
+                            <h3 className="text-xl font-bold mb-4">{quiz.title}</h3>
+                            <div className="text-3xl font-bold mb-4 text-blue-400">
+                              {quiz.questions.length === 0 ? 'Coming Soon' : `${quiz.questions.length} Questions`}
                             </div>
-                            <h2 className="text-2xl font-semibold mb-6">{quizQuestions[currentQuizQuestion].question}</h2>
-                          </div>
-
-                          <div className="space-y-3 mb-6">
-                            {quizQuestions[currentQuizQuestion].options.map((option, index) => (
-                              <Button
-                                key={index}
-                                variant={quizAnswers[currentQuizQuestion] === index ? "default" : "outline"}
-                                className={`w-full justify-start p-4 h-auto ${
-                                  quizAnswers[currentQuizQuestion] === index 
-                                    ? 'bg-white text-purple-700' 
-                                    : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
-                                }`}
-                                onClick={() => handleQuizAnswer(index)}
-                              >
-                                <span className="mr-3 font-semibold">{String.fromCharCode(65 + index)}</span>
-                                {option}
-                              </Button>
-                            ))}
-                          </div>
-
-                          <div className="flex justify-between">
-                            <Button
-                              variant="outline"
-                              onClick={() => setCurrentQuizQuestion(prev => Math.max(0, prev - 1))}
-                              disabled={currentQuizQuestion === 0}
-                              className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                            >
-                              Previous
-                            </Button>
-                            <Button
-                              onClick={nextQuizQuestion}
-                              disabled={quizAnswers[currentQuizQuestion] === undefined}
-                              className="bg-white text-purple-700 hover:bg-white/90 flex items-center gap-2"
-                            >
-                              {currentQuizQuestion === quizQuestions.length - 1 ? 'Finish Quiz' : 'Next'}
-                              <ChevronRight className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-center">
-                          <h2 className="text-2xl font-bold mb-6">Quiz Results</h2>
-                          <div className="mb-6">
-                            <div className="text-4xl font-bold text-green-400 mb-2">
-                              {getQuizScore()}/{quizQuestions.length}
-                            </div>
-                            <p className="text-white/80">
-                              You scored {Math.round((getQuizScore() / quizQuestions.length) * 100)}%
+                            <p className="text-white/80 mb-6">
+                              {quiz.questions.length === 0 
+                                ? 'This quiz will be available soon' 
+                                : 'Mixed question types including paragraph ordering, inference, and vocabulary'
+                              }
                             </p>
+                            <Button 
+                              className={`w-full ${
+                                quiz.questions.length === 0 
+                                  ? 'bg-gray-500 cursor-not-allowed' 
+                                  : 'bg-white/20 hover:bg-white/30'
+                              } text-white border-white/20`}
+                              disabled={quiz.questions.length === 0}
+                            >
+                              {quiz.questions.length === 0 ? 'Coming Soon' : 'Start Quiz'}
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="max-w-2xl mx-auto">
+                    <div className="mb-6">
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setSelectedQuiz(null);
+                          setCurrentQuizQuestion(0);
+                          setQuizAnswers({});
+                          setShowQuizResults(false);
+                        }}
+                        className="flex items-center gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20 mb-4"
+                      >
+                        <ArrowLeft className="h-4 w-4" />
+                        Back to Quiz Selection
+                      </Button>
+                    </div>
+
+                    <Card className="bg-white/10 border-white/20 text-white backdrop-blur-sm">
+                      <CardHeader>
+                        <CardTitle className="text-center">{getCurrentQuiz()?.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-8">
+                        {!showQuizResults ? (
+                          <>
+                            <div className="mb-6">
+                              <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-xl font-bold">Question {currentQuizQuestion + 1} of {getCurrentQuizQuestions().length}</h3>
+                                <div className="flex items-center gap-4">
+                                  <Badge variant="outline" className="border-white/20 text-white">
+                                    {getCurrentQuizQuestions()[currentQuizQuestion]?.type}
+                                  </Badge>
+                                  <Badge variant="outline" className="border-white/20 text-white">
+                                    {Math.round(((currentQuizQuestion + 1) / getCurrentQuizQuestions().length) * 100)}%
+                                  </Badge>
+                                </div>
+                              </div>
+                              <div className="bg-white/5 p-4 rounded-lg mb-6">
+                                <h2 className="text-lg font-semibold leading-relaxed whitespace-pre-line">
+                                  {getCurrentQuizQuestions()[currentQuizQuestion]?.question}
+                                </h2>
+                              </div>
+                            </div>
+
+                            <div className="space-y-3 mb-6">
+                              {getCurrentQuizQuestions()[currentQuizQuestion]?.options.map((option, index) => (
+                                <Button
+                                  key={index}
+                                  variant={quizAnswers[currentQuizQuestion] === index ? "default" : "outline"}
+                                  className={`w-full justify-start p-4 h-auto text-left ${
+                                    quizAnswers[currentQuizQuestion] === index 
+                                      ? 'bg-white text-purple-700' 
+                                      : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                                  }`}
+                                  onClick={() => handleQuizAnswer(index)}
+                                >
+                                  <span className="mr-3 font-semibold">{String.fromCharCode(65 + index)}</span>
+                                  {option}
+                                </Button>
+                              ))}
+                            </div>
+
+                            <div className="flex justify-between">
+                              <Button
+                                variant="outline"
+                                onClick={() => setCurrentQuizQuestion(prev => Math.max(0, prev - 1))}
+                                disabled={currentQuizQuestion === 0}
+                                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                              >
+                                Previous
+                              </Button>
+                              <Button
+                                onClick={nextQuizQuestion}
+                                disabled={quizAnswers[currentQuizQuestion] === undefined}
+                                className="bg-white text-purple-700 hover:bg-white/90 flex items-center gap-2"
+                              >
+                                {currentQuizQuestion === getCurrentQuizQuestions().length - 1 ? 'Finish Quiz' : 'Next'}
+                                <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-center">
+                            <h2 className="text-2xl font-bold mb-6">Quiz Results</h2>
+                            <div className="mb-6">
+                              <div className="text-4xl font-bold text-green-400 mb-2">
+                                {getQuizScore()}/{getCurrentQuizQuestions().length}
+                              </div>
+                              <p className="text-white/80">
+                                You scored {Math.round((getQuizScore() / getCurrentQuizQuestions().length) * 100)}%
+                              </p>
+                            </div>
+                            
+                            <div className="space-y-4 mb-6 max-h-60 overflow-y-auto">
+                              {getCurrentQuizQuestions().map((question, index) => (
+                                <div key={index} className="text-left p-4 border border-white/20 rounded-lg bg-white/5">
+                                  <p className="font-semibold mb-2 text-sm">{question.type}</p>
+                                  <p className="text-sm mb-2 text-white/90 whitespace-pre-line">{question.question}</p>
+                                  <p className="text-xs text-white/70">
+                                    Your answer: <span className={quizAnswers[index] === question.correct ? 'text-green-400' : 'text-red-400'}>
+                                      {question.options[quizAnswers[index]] || 'No answer'}
+                                    </span>
+                                  </p>
+                                  {quizAnswers[index] !== question.correct && (
+                                    <p className="text-xs text-green-400">
+                                      Correct answer: {question.options[question.correct]}
+                                    </p>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                            
+                            <Button 
+                              onClick={resetQuiz} 
+                              className="bg-white text-purple-700 hover:bg-white/90 flex items-center gap-2 mx-auto"
+                            >
+                              <RotateCcw className="h-4 w-4" />
+                              Take Another Quiz
+                            </Button>
                           </div>
-                          <Button 
-                            onClick={resetQuiz} 
-                            className="bg-white text-purple-700 hover:bg-white/90 flex items-center gap-2 mx-auto"
-                          >
-                            <RotateCcw className="h-4 w-4" />
-                            Take Quiz Again
-                          </Button>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
               </TabsContent>
             </Tabs>
           </div>
