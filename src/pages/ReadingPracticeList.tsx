@@ -1,6 +1,5 @@
-
 import { useState } from 'react';
-import { ArrowLeft, Lock, Play, CheckCircle, Clock, RotateCcw, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronRight, RotateCcw, X, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,114 +8,16 @@ import { useNavigate } from 'react-router-dom';
 
 const ReadingPracticeList = () => {
   const navigate = useNavigate();
-  const [flippedCards, setFlippedCards] = useState<{ [key: string]: boolean }>({});
+  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [showDefinition, setShowDefinition] = useState(false);
+  const [masteredWords, setMasteredWords] = useState<Set<number>>(new Set());
+  const [unknownWords, setUnknownWords] = useState<Set<number>>(new Set());
   const [currentQuizQuestion, setCurrentQuizQuestion] = useState(0);
   const [quizAnswers, setQuizAnswers] = useState<{ [key: number]: number }>({});
   const [showQuizResults, setShowQuizResults] = useState(false);
 
-  const exercises = [
-    {
-      id: 1,
-      title: 'The Origins of Urbanization',
-      description: 'Explore the emergence of cities and their impact on human civilization.',
-      duration: '20 minutes',
-      questions: 7,
-      isFree: true,
-      isPremium: false,
-      isCompleted: false,
-      practiceUrl: '/practice/reading/urbanization',
-    },
-    {
-      id: 2,
-      title: 'Climate Change and Ocean Currents',
-      description: 'Understanding the relationship between global warming and marine ecosystems.',
-      duration: '25 minutes',
-      questions: 10,
-      isFree: false,
-      isPremium: true,
-      isCompleted: false,
-      practiceUrl: '#',
-    },
-    {
-      id: 3,
-      title: 'The History of Photography',
-      description: 'From camera obscura to digital imaging: a comprehensive overview.',
-      duration: '18 minutes',
-      questions: 8,
-      isFree: true,
-      isPremium: false,
-      isCompleted: true,
-      practiceUrl: '#',
-    },
-    {
-      id: 4,
-      title: 'Quantum Physics Fundamentals',
-      description: 'Basic principles of quantum mechanics and their real-world applications.',
-      duration: '30 minutes',
-      questions: 12,
-      isFree: false,
-      isPremium: true,
-      isCompleted: false,
-      practiceUrl: '#',
-    },
-    {
-      id: 5,
-      title: 'Ancient Greek Philosophy',
-      description: 'The foundations of Western philosophical thought from Socrates to Aristotle.',
-      duration: '22 minutes',
-      questions: 9,
-      isFree: true,
-      isPremium: false,
-      isCompleted: true,
-      practiceUrl: '#',
-    },
-    {
-      id: 6,
-      title: 'Renewable Energy Technologies',
-      description: 'Solar, wind, and hydroelectric power: the future of sustainable energy.',
-      duration: '24 minutes',
-      questions: 11,
-      isFree: false,
-      isPremium: true,
-      isCompleted: false,
-      practiceUrl: '#',
-    },
-    {
-      id: 7,
-      title: 'The Industrial Revolution',
-      description: 'How mechanization transformed society and economy in the 18th-19th centuries.',
-      duration: '23 minutes',
-      questions: 9,
-      isFree: true,
-      isPremium: false,
-      isCompleted: false,
-      practiceUrl: '#',
-    },
-    {
-      id: 8,
-      title: 'Cognitive Psychology Theories',
-      description: 'Understanding how the human mind processes information and memories.',
-      duration: '26 minutes',
-      questions: 11,
-      isFree: false,
-      isPremium: true,
-      isCompleted: false,
-      practiceUrl: '#',
-    },
-    {
-      id: 9,
-      title: 'Marine Biodiversity',
-      description: 'Exploring the rich ecosystems of ocean environments worldwide.',
-      duration: '21 minutes',
-      questions: 8,
-      isFree: true,
-      isPremium: false,
-      isCompleted: false,
-      practiceUrl: '#',
-    },
-  ];
-
-  // Vocabulary data
+  // Complete vocabulary data
   const vocabularyData = {
     Easy: [
       { word: "abundant", meaning: "existing in large quantities", example: "The region is abundant in natural resources." },
@@ -128,7 +29,50 @@ const ReadingPracticeList = () => {
       { word: "plant", meaning: "a living organism that grows in the ground", example: "She watered the plant every morning." },
       { word: "water", meaning: "a clear liquid essential for life", example: "We need water to survive." },
       { word: "animal", meaning: "a living creature that is not a plant", example: "The zoo has many kinds of animals." },
-      { word: "world", meaning: "the earth and all its people", example: "She wants to travel around the world." }
+      { word: "world", meaning: "the earth and all its people", example: "She wants to travel around the world." },
+      { word: "cold", meaning: "having a low temperature", example: "The water is too cold to swim in." },
+      { word: "forest", meaning: "a large area covered with trees", example: "The forest is home to many animals." },
+      { word: "sun", meaning: "the star that provides light and heat", example: "The sun rises in the east." },
+      { word: "change", meaning: "to become different", example: "Leaves change color in the fall." },
+      { word: "use", meaning: "to employ something for a purpose", example: "You can use this tool to fix it." },
+      { word: "build", meaning: "to construct", example: "They will build a new school." },
+      { word: "light", meaning: "visible energy from the sun or a lamp", example: "The room was full of light." },
+      { word: "time", meaning: "a measurable period", example: "What time is it?" },
+      { word: "earth", meaning: "the planet we live on", example: "Earth orbits around the sun." },
+      { word: "color", meaning: "the appearance of objects in terms of hue", example: "My favorite color is blue." },
+      { word: "warm", meaning: "somewhat hot", example: "It's warm today." },
+      { word: "job", meaning: "work that someone does", example: "She has a job as a teacher." },
+      { word: "family", meaning: "a group of related people", example: "My family is very important to me." },
+      { word: "place", meaning: "a location", example: "This park is a nice place to relax." },
+      { word: "live", meaning: "to be alive", example: "Where do you live?" },
+      { word: "see", meaning: "to use your eyes", example: "I can see the mountains." },
+      { word: "food", meaning: "something that people or animals eat", example: "We need to buy food." },
+      { word: "big", meaning: "large in size", example: "That's a big house." },
+      { word: "small", meaning: "little in size", example: "The dog is small." },
+      { word: "move", meaning: "to change location", example: "The car can move fast." },
+      { word: "start", meaning: "to begin", example: "We will start the meeting soon." },
+      { word: "end", meaning: "to finish", example: "The movie will end at 9." },
+      { word: "air", meaning: "the mixture of gases we breathe", example: "We need clean air." },
+      { word: "cloud", meaning: "a mass of water vapor in the sky", example: "The sky is full of clouds." },
+      { word: "help", meaning: "to assist", example: "Can you help me with this?" },
+      { word: "know", meaning: "to be aware of something", example: "I know the answer." },
+      { word: "talk", meaning: "to speak", example: "Let's talk about it." },
+      { word: "look", meaning: "to direct your eyes", example: "Look at the sky!" },
+      { word: "hard", meaning: "difficult", example: "This question is hard." },
+      { word: "easy", meaning: "not difficult", example: "This homework is easy." },
+      { word: "fast", meaning: "quickly", example: "He runs fast." },
+      { word: "slow", meaning: "not quick", example: "The train is slow." },
+      { word: "friend", meaning: "someone you like and trust", example: "She is my best friend." },
+      { word: "happy", meaning: "feeling good", example: "I'm very happy today." },
+      { word: "sad", meaning: "feeling unhappy", example: "She felt sad after the movie." },
+      { word: "run", meaning: "to move quickly on foot", example: "The dog can run fast." },
+      { word: "walk", meaning: "to move slowly on foot", example: "Let's walk to school." },
+      { word: "read", meaning: "to look at and understand words", example: "He likes to read books." },
+      { word: "write", meaning: "to form letters or words", example: "Write your name here." },
+      { word: "listen", meaning: "to pay attention to sound", example: "Please listen carefully." },
+      { word: "speak", meaning: "to say words", example: "He can speak three languages." },
+      { word: "clean", meaning: "free from dirt", example: "The kitchen is clean." },
+      { word: "dirty", meaning: "not clean", example: "Your hands are dirty." }
     ],
     Medium: [
       { word: "predict", meaning: "to say what will happen in the future", example: "Scientists can predict weather patterns using satellites." },
@@ -140,7 +84,50 @@ const ReadingPracticeList = () => {
       { word: "compare", meaning: "to look at similarities and differences", example: "You should compare the two theories." },
       { word: "control", meaning: "to have power over", example: "He tried to control his emotions." },
       { word: "determine", meaning: "to decide or discover", example: "The test will determine your level." },
-      { word: "evidence", meaning: "proof or support for an idea", example: "There is evidence that climate is changing." }
+      { word: "evidence", meaning: "proof or support for an idea", example: "There is evidence that climate is changing." },
+      { word: "factor", meaning: "a part that contributes to a result", example: "Genetics is a factor in health." },
+      { word: "impact", meaning: "a strong effect", example: "The policy had a major impact on trade." },
+      { word: "increase", meaning: "to become larger or more", example: "Prices increase during holidays." },
+      { word: "decrease", meaning: "to become smaller or less", example: "Pollution levels have decreased." },
+      { word: "cycle", meaning: "a repeating series of events", example: "The water cycle is essential to life." },
+      { word: "region", meaning: "an area or part of the world", example: "This region is known for rice farming." },
+      { word: "adapt", meaning: "to change for a new situation", example: "Animals adapt to their environment." },
+      { word: "survive", meaning: "to stay alive", example: "Only a few plants survived the drought." },
+      { word: "transfer", meaning: "to move from one place to another", example: "He transferred schools last year." },
+      { word: "complex", meaning: "complicated or not simple", example: "Climate is a complex system." },
+      { word: "network", meaning: "a system of connections", example: "The internet is a global network." },
+      { word: "structure", meaning: "the way something is built", example: "The structure of DNA is a double helix." },
+      { word: "maintain", meaning: "to keep something in good condition", example: "It's hard to maintain a healthy diet." },
+      { word: "evolve", meaning: "to change over time", example: "Languages evolve as people use them." },
+      { word: "species", meaning: "a group of similar organisms", example: "That species of bird is endangered." },
+      { word: "environment", meaning: "the natural world around us", example: "Pollution harms the environment." },
+      { word: "contribute", meaning: "to give or add something", example: "Many factors contribute to success." },
+      { word: "observe", meaning: "to notice or watch", example: "They observed a strange behavior." },
+      { word: "challenge", meaning: "something difficult to overcome", example: "Learning a new language is a challenge." },
+      { word: "resource", meaning: "a useful supply", example: "Water is an important natural resource." },
+      { word: "transport", meaning: "to carry from one place to another", example: "The goods were transported by truck." },
+      { word: "limit", meaning: "to restrict", example: "The law limits emissions." },
+      { word: "benefit", meaning: "a good result", example: "Exercise has many health benefits." },
+      { word: "communicate", meaning: "to share information", example: "They communicate using sign language." },
+      { word: "occur", meaning: "to happen", example: "Earthquakes often occur in this region." },
+      { word: "population", meaning: "the number of people or animals in a place", example: "The population is growing fast." },
+      { word: "establish", meaning: "to set up or start something", example: "They established a new research center." },
+      { word: "require", meaning: "to need", example: "Most plants require sunlight." },
+      { word: "select", meaning: "to choose", example: "Select one answer for each question." },
+      { word: "potential", meaning: "possibility", example: "This treatment has great potential." },
+      { word: "method", meaning: "a way of doing something", example: "Their method is efficient." },
+      { word: "data", meaning: "facts and information", example: "We collected data on rainfall." },
+      { word: "indicate", meaning: "to show or point out", example: "The sign indicates danger." },
+      { word: "reaction", meaning: "a response to something", example: "Her reaction was surprising." },
+      { word: "variation", meaning: "a difference or change", example: "There's a lot of variation in color." },
+      { word: "system", meaning: "a group of related parts", example: "The nervous system controls the body." },
+      { word: "process", meaning: "a series of steps", example: "Photosynthesis is a natural process." },
+      { word: "distribute", meaning: "to spread out or give out", example: "The food was distributed to shelters." },
+      { word: "identify", meaning: "to recognize or name", example: "Can you identify this plant?" },
+      { word: "requirement", meaning: "something that must be done", example: "The job has strict requirements." },
+      { word: "generation", meaning: "a group born around the same time", example: "Each generation faces new challenges." },
+      { word: "significant", meaning: "important or meaningful", example: "There was a significant change in price." },
+      { word: "technology", meaning: "tools and machines made by humans", example: "Technology is changing education." }
     ],
     Hard: [
       { word: "abandon", meaning: "to leave behind or give up", example: "They had to abandon the city due to flooding." },
@@ -152,7 +139,50 @@ const ReadingPracticeList = () => {
       { word: "anticipate", meaning: "to expect or predict", example: "We anticipate delays due to weather." },
       { word: "articulate", meaning: "to express clearly", example: "She articulated her argument well." },
       { word: "assess", meaning: "to evaluate or judge", example: "They assessed the damage after the storm." },
-      { word: "assumption", meaning: "a belief taken for granted", example: "The theory is based on several assumptions." }
+      { word: "assumption", meaning: "a belief taken for granted", example: "The theory is based on several assumptions." },
+      { word: "coherent", meaning: "logical and consistent", example: "The essay was well-organized and coherent." },
+      { word: "comprehensive", meaning: "covering all or most aspects", example: "We need a comprehensive strategy." },
+      { word: "compulsory", meaning: "required by law or rule", example: "Education is compulsory in many countries." },
+      { word: "conceive", meaning: "to imagine or form an idea", example: "He conceived a plan to increase sales." },
+      { word: "connotation", meaning: "an implied meaning", example: "The word 'cheap' has a negative connotation." },
+      { word: "contradict", meaning: "to go against or say the opposite", example: "His actions contradict his words." },
+      { word: "correlation", meaning: "a mutual relationship", example: "There's a correlation between income and health." },
+      { word: "credibility", meaning: "believability or trustworthiness", example: "The witness's credibility was questioned." },
+      { word: "deduce", meaning: "to draw a conclusion from evidence", example: "We can deduce that he was present." },
+      { word: "deficit", meaning: "a lack or shortage", example: "The budget shows a large deficit." },
+      { word: "derive", meaning: "to get or obtain from a source", example: "The word derives from Latin." },
+      { word: "deteriorate", meaning: "to become worse", example: "The patient's condition deteriorated." },
+      { word: "deviate", meaning: "to go off course", example: "He deviated from the original route." },
+      { word: "diminish", meaning: "to reduce or lessen", example: "His power began to diminish." },
+      { word: "elaborate", meaning: "to explain in detail", example: "Please elaborate on your point." },
+      { word: "empirical", meaning: "based on observation or experience", example: "The theory lacks empirical support." },
+      { word: "endorse", meaning: "to support or approve", example: "The athlete endorsed the product." },
+      { word: "eradicate", meaning: "to completely remove", example: "The disease was eradicated." },
+      { word: "erratic", meaning: "unpredictable or inconsistent", example: "His behavior was erratic." },
+      { word: "evaluate", meaning: "to judge or assess", example: "We need to evaluate the results." },
+      { word: "exacerbate", meaning: "to make worse", example: "The drought exacerbated food shortages." },
+      { word: "feasible", meaning: "possible or achievable", example: "That plan is not feasible." },
+      { word: "fluctuate", meaning: "to change irregularly", example: "Prices fluctuate during the year." },
+      { word: "formulate", meaning: "to create or develop", example: "The committee formulated new policies." },
+      { word: "hypothesis", meaning: "an educated guess", example: "They tested the hypothesis." },
+      { word: "implication", meaning: "a possible consequence", example: "What are the implications of this decision?" },
+      { word: "incentive", meaning: "a motivation or reward", example: "Tax breaks are an incentive to invest." },
+      { word: "inherent", meaning: "existing naturally", example: "Risk is inherent in investing." },
+      { word: "integrate", meaning: "to combine into a whole", example: "The students were integrated into the class." },
+      { word: "intervene", meaning: "to come between events", example: "The teacher had to intervene." },
+      { word: "justify", meaning: "to prove right or reasonable", example: "How do you justify your actions?" },
+      { word: "legitimate", meaning: "lawful or acceptable", example: "That is a legitimate concern." },
+      { word: "manipulate", meaning: "to control skillfully", example: "He manipulated the data." },
+      { word: "notion", meaning: "an idea or belief", example: "She rejected the notion." },
+      { word: "obscure", meaning: "unclear or hidden", example: "The meaning is obscure." },
+      { word: "paradigm", meaning: "a model or pattern", example: "This marks a new paradigm in science." },
+      { word: "perceive", meaning: "to become aware of", example: "I perceive a change in attitude." },
+      { word: "phenomenon", meaning: "an observable event", example: "Lightning is a natural phenomenon." },
+      { word: "plausible", meaning: "believable or reasonable", example: "His story seems plausible." },
+      { word: "precede", meaning: "to come before", example: "Dark clouds preceded the storm." },
+      { word: "preliminary", meaning: "initial or preparatory", example: "These are preliminary results." },
+      { word: "prevalent", meaning: "widespread", example: "This belief is prevalent in rural areas." },
+      { word: "profound", meaning: "deep or intense", example: "Her speech had a profound impact." }
     ]
   };
 
@@ -185,20 +215,52 @@ const ReadingPracticeList = () => {
     }
   ];
 
-  const handleExerciseClick = (exercise: typeof exercises[0]) => {
-    if (exercise.isFree && exercise.practiceUrl !== '#') {
-      navigate(exercise.practiceUrl);
-    } else if (!exercise.isFree) {
-      console.log('Premium content - upgrade required');
+  const getCurrentWords = () => {
+    if (!selectedLevel) return [];
+    return vocabularyData[selectedLevel as keyof typeof vocabularyData];
+  };
+
+  const getCurrentWord = () => {
+    const words = getCurrentWords();
+    return words[currentWordIndex];
+  };
+
+  const handleKnowWord = () => {
+    setMasteredWords(prev => new Set([...prev, currentWordIndex]));
+    setUnknownWords(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(currentWordIndex);
+      return newSet;
+    });
+    nextWord();
+  };
+
+  const handleDontKnowWord = () => {
+    setUnknownWords(prev => new Set([...prev, currentWordIndex]));
+    setMasteredWords(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(currentWordIndex);
+      return newSet;
+    });
+    nextWord();
+  };
+
+  const nextWord = () => {
+    const words = getCurrentWords();
+    if (currentWordIndex < words.length - 1) {
+      setCurrentWordIndex(prev => prev + 1);
+      setShowDefinition(false);
+    } else {
+      setCurrentWordIndex(0);
+      setShowDefinition(false);
     }
   };
 
-  const flipCard = (level: string, index: number) => {
-    const cardKey = `${level}-${index}`;
-    setFlippedCards(prev => ({
-      ...prev,
-      [cardKey]: !prev[cardKey]
-    }));
+  const resetPractice = () => {
+    setCurrentWordIndex(0);
+    setShowDefinition(false);
+    setMasteredWords(new Set());
+    setUnknownWords(new Set());
   };
 
   const handleQuizAnswer = (answerIndex: number) => {
@@ -232,253 +294,281 @@ const ReadingPracticeList = () => {
     return correct;
   };
 
+  const getProgressStats = () => {
+    const words = getCurrentWords();
+    const totalWords = words.length;
+    const mastered = masteredWords.size;
+    const reviewing = unknownWords.size;
+    const learning = totalWords - mastered - reviewing;
+    
+    return { mastered, reviewing, learning, totalWords };
+  };
+
+  if (!selectedLevel) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-700 via-purple-800 to-purple-900">
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-8">
+            <Button
+              variant="outline"
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Home
+            </Button>
+            
+            <div className="text-center">
+              <h1 className="text-3xl font-bold text-white">Vocabulary Practice</h1>
+              <p className="text-white/80 mt-2">Choose your difficulty level to start practicing</p>
+            </div>
+            
+            <div className="w-24"></div>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <Tabs defaultValue="vocabulary" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 bg-white/10 border-white/20">
+                <TabsTrigger value="vocabulary" className="text-white data-[state=active]:bg-white data-[state=active]:text-purple-700">Vocabulary Builder</TabsTrigger>
+                <TabsTrigger value="quiz" className="text-white data-[state=active]:bg-white data-[state=active]:text-purple-700">Vocabulary Quiz</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="vocabulary" className="mt-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {Object.entries(vocabularyData).map(([level, words]) => (
+                    <Card 
+                      key={level} 
+                      className="cursor-pointer transition-all duration-300 hover:scale-105 bg-white/10 border-white/20 text-white backdrop-blur-sm"
+                      onClick={() => setSelectedLevel(level)}
+                    >
+                      <CardContent className="p-8 text-center">
+                        <h3 className="text-2xl font-bold mb-4">{level} Words</h3>
+                        <div className="text-4xl font-bold mb-4 text-green-400">{words.length}</div>
+                        <p className="text-white/80 mb-6">
+                          {level === 'Easy' ? 'Basic vocabulary for TOEFL beginners' : 
+                           level === 'Medium' ? 'Intermediate vocabulary for TOEFL preparation' :
+                           'Advanced vocabulary for TOEFL mastery'}
+                        </p>
+                        <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/20">
+                          Start Practice
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="quiz" className="mt-8">
+                <div className="max-w-2xl mx-auto">
+                  <Card className="bg-white/10 border-white/20 text-white backdrop-blur-sm">
+                    <CardContent className="p-8">
+                      {!showQuizResults ? (
+                        <>
+                          <div className="mb-6">
+                            <div className="flex justify-between items-center mb-4">
+                              <h3 className="text-xl font-bold">Question {currentQuizQuestion + 1} of {quizQuestions.length}</h3>
+                              <Badge variant="outline" className="border-white/20 text-white">
+                                {Math.round(((currentQuizQuestion + 1) / quizQuestions.length) * 100)}%
+                              </Badge>
+                            </div>
+                            <h2 className="text-2xl font-semibold mb-6">{quizQuestions[currentQuizQuestion].question}</h2>
+                          </div>
+
+                          <div className="space-y-3 mb-6">
+                            {quizQuestions[currentQuizQuestion].options.map((option, index) => (
+                              <Button
+                                key={index}
+                                variant={quizAnswers[currentQuizQuestion] === index ? "default" : "outline"}
+                                className={`w-full justify-start p-4 h-auto ${
+                                  quizAnswers[currentQuizQuestion] === index 
+                                    ? 'bg-white text-purple-700' 
+                                    : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                                }`}
+                                onClick={() => handleQuizAnswer(index)}
+                              >
+                                <span className="mr-3 font-semibold">{String.fromCharCode(65 + index)}</span>
+                                {option}
+                              </Button>
+                            ))}
+                          </div>
+
+                          <div className="flex justify-between">
+                            <Button
+                              variant="outline"
+                              onClick={() => setCurrentQuizQuestion(prev => Math.max(0, prev - 1))}
+                              disabled={currentQuizQuestion === 0}
+                              className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                            >
+                              Previous
+                            </Button>
+                            <Button
+                              onClick={nextQuizQuestion}
+                              disabled={quizAnswers[currentQuizQuestion] === undefined}
+                              className="bg-white text-purple-700 hover:bg-white/90 flex items-center gap-2"
+                            >
+                              {currentQuizQuestion === quizQuestions.length - 1 ? 'Finish Quiz' : 'Next'}
+                              <ChevronRight className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-center">
+                          <h2 className="text-2xl font-bold mb-6">Quiz Results</h2>
+                          <div className="mb-6">
+                            <div className="text-4xl font-bold text-green-400 mb-2">
+                              {getQuizScore()}/{quizQuestions.length}
+                            </div>
+                            <p className="text-white/80">
+                              You scored {Math.round((getQuizScore() / quizQuestions.length) * 100)}%
+                            </p>
+                          </div>
+                          <Button 
+                            onClick={resetQuiz} 
+                            className="bg-white text-purple-700 hover:bg-white/90 flex items-center gap-2 mx-auto"
+                          >
+                            <RotateCcw className="h-4 w-4" />
+                            Take Quiz Again
+                          </Button>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const currentWord = getCurrentWord();
+  const stats = getProgressStats();
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-700 via-purple-800 to-purple-900">
       <div className="p-4">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-6">
           <Button
             variant="outline"
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2"
+            onClick={() => setSelectedLevel(null)}
+            className="flex items-center gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Home
+            {selectedLevel} Words
           </Button>
           
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900">Reading Practice</h1>
-            <p className="text-gray-600 mt-2">Choose from our collection of TOEFL reading exercises</p>
+          <div className="flex items-center gap-2 text-white">
+            <RotateCcw className="h-4 w-4" />
+            <span className="text-sm">Words you don't know will reappear later</span>
           </div>
-          
-          <div className="w-24"></div> {/* Spacer for centering */}
         </div>
 
-        <div className="max-w-6xl mx-auto">
-          <Tabs defaultValue="practice" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="practice">Reading Practice</TabsTrigger>
-              <TabsTrigger value="vocabulary">Vocabulary Builder</TabsTrigger>
-              <TabsTrigger value="quiz">Vocabulary Quiz</TabsTrigger>
-            </TabsList>
+        {/* Account creation banner */}
+        <div className="max-w-4xl mx-auto mb-6">
+          <div className="bg-green-500 text-white p-4 rounded-lg">
+            <p className="text-center">
+              You should <span className="underline cursor-pointer">create an account</span> to save your progress. It only takes a minute!
+            </p>
+          </div>
+        </div>
+
+        {/* Main word card */}
+        <div className="max-w-2xl mx-auto mb-6">
+          <Card className="bg-white min-h-[300px] relative">
+            <Button
+              className="absolute top-4 right-4 bg-gray-200 hover:bg-gray-300 text-gray-700"
+              size="sm"
+            >
+              NEW WORD
+            </Button>
             
-            <TabsContent value="practice" className="mt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {exercises.map((exercise) => (
-                  <Card key={exercise.id} className="relative hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
-                    <div className="absolute top-3 right-3 flex items-center gap-2">
-                      {exercise.isPremium && (
-                        <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs">
-                          Premium
-                        </Badge>
-                      )}
-                      {exercise.isCompleted && (
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                      )}
-                    </div>
-                    
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg font-bold text-gray-900 leading-tight pr-8">
-                        {exercise.title}
-                      </CardTitle>
-                    </CardHeader>
-                    
-                    <CardContent>
-                      <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                        {exercise.description}
-                      </p>
-                      
-                      <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          <span>{exercise.duration}</span>
-                        </div>
-                        <span>{exercise.questions} questions</span>
-                      </div>
-                      
-                      <Button
-                        onClick={() => handleExerciseClick(exercise)}
-                        className={`w-full ${
-                          exercise.isFree
-                            ? 'bg-blue-600 hover:bg-blue-700'
-                            : 'bg-gray-400 hover:bg-gray-500'
-                        } text-white rounded-full font-medium flex items-center gap-2 py-2 text-sm`}
-                        disabled={!exercise.isFree && exercise.practiceUrl === '#'}
-                      >
-                        {exercise.isFree ? (
-                          <>
-                            <Play className="h-3 w-3" />
-                            {exercise.isCompleted ? 'Practice Again' : 'Start Practice'}
-                          </>
-                        ) : (
-                          <>
-                            <Lock className="h-3 w-3" />
-                            Upgrade to Access
-                          </>
-                        )}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-              
-              <div className="mt-12 text-center">
-                <div className="bg-white rounded-lg p-8 shadow-sm border">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
-                    Unlock All Premium Content
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    Get access to all reading exercises, detailed explanations, and progress tracking for just $49
+            <CardContent className="p-8 flex flex-col justify-center min-h-[300px]">
+              {!showDefinition ? (
+                <div className="text-center">
+                  <h1 className="text-4xl font-bold text-gray-900 mb-6">{currentWord?.word}</h1>
+                  <p className="text-gray-500 text-lg cursor-pointer" onClick={() => setShowDefinition(true)}>
+                    Click to see definition and example →
                   </p>
-                  <Button className="bg-gradient-to-r from-purple-500 to-purple-600 hover:opacity-90 text-white px-8 py-3 rounded-full font-medium">
-                    Upgrade Now
-                  </Button>
                 </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="vocabulary" className="mt-6">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Vocabulary Builder</h2>
-                <p className="text-gray-600">Click on cards to flip and see definitions. Practice with words organized by difficulty level.</p>
-              </div>
-              
-              {Object.entries(vocabularyData).map(([level, words]) => (
-                <div key={level} className="mb-8">
-                  <div className="flex items-center gap-2 mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">{level} Level</h3>
-                    <Badge variant={level === 'Easy' ? 'default' : level === 'Medium' ? 'secondary' : 'destructive'}>
-                      {words.length} words
-                    </Badge>
-                  </div>
+              ) : (
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-4">{currentWord?.word}</h1>
+                  <p className="text-lg text-gray-700 mb-4">
+                    <span className="font-semibold">verb:</span> {currentWord?.meaning}
+                  </p>
+                  <p className="text-gray-600 italic text-lg leading-relaxed">
+                    {currentWord?.example}
+                  </p>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {words.map((wordData, index) => {
-                      const cardKey = `${level}-${index}`;
-                      const isFlipped = flippedCards[cardKey];
-                      
-                      return (
-                        <Card 
-                          key={index} 
-                          className="h-48 cursor-pointer transition-all duration-300 hover:shadow-lg"
-                          onClick={() => flipCard(level, index)}
-                        >
-                          <CardContent className="h-full flex flex-col justify-center p-6">
-                            {!isFlipped ? (
-                              <div className="text-center">
-                                <h4 className="text-xl font-bold text-gray-900 mb-2">{wordData.word}</h4>
-                                <p className="text-sm text-gray-500">Click to reveal definition</p>
-                                <RotateCcw className="h-5 w-5 text-gray-400 mx-auto mt-4" />
-                              </div>
-                            ) : (
-                              <div className="text-center">
-                                <h4 className="text-lg font-semibold text-blue-600 mb-3">{wordData.word}</h4>
-                                <p className="text-gray-700 mb-3 text-sm">{wordData.meaning}</p>
-                                <p className="text-xs text-gray-500 italic">"{wordData.example}"</p>
-                              </div>
-                            )}
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
+                  {/* Know/Don't know buttons */}
+                  <div className="mt-8 space-y-3">
+                    <Button
+                      onClick={handleKnowWord}
+                      className="w-full bg-green-500 hover:bg-green-600 text-white p-4 text-lg"
+                    >
+                      <Check className="h-5 w-5 mr-2" />
+                      I knew this word
+                    </Button>
+                    <Button
+                      onClick={handleDontKnowWord}
+                      className="w-full bg-red-500 hover:bg-red-600 text-white p-4 text-lg"
+                    >
+                      <X className="h-5 w-5 mr-2" />
+                      I didn't know this word
+                    </Button>
                   </div>
                 </div>
-              ))}
-            </TabsContent>
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
-            <TabsContent value="quiz" className="mt-6">
-              <div className="max-w-2xl mx-auto">
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Vocabulary Quiz</h2>
-                  <p className="text-gray-600">Test your knowledge of the vocabulary words.</p>
-                </div>
+        {/* Progress bars */}
+        <div className="max-w-2xl mx-auto space-y-4 text-white">
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <span>You have mastered {stats.mastered} out of {stats.totalWords} words</span>
+            </div>
+            <div className="w-full bg-white/20 rounded-full h-3">
+              <div 
+                className="bg-green-500 h-3 rounded-full transition-all duration-300"
+                style={{ width: `${(stats.mastered / stats.totalWords) * 100}%` }}
+              ></div>
+            </div>
+          </div>
 
-                {!showQuizResults ? (
-                  <Card>
-                    <CardHeader>
-                      <div className="flex justify-between items-center">
-                        <CardTitle>Question {currentQuizQuestion + 1} of {quizQuestions.length}</CardTitle>
-                        <Badge variant="outline">{Math.round(((currentQuizQuestion + 1) / quizQuestions.length) * 100)}%</Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <h3 className="text-lg font-semibold mb-6">{quizQuestions[currentQuizQuestion].question}</h3>
-                      
-                      <div className="space-y-3">
-                        {quizQuestions[currentQuizQuestion].options.map((option, index) => (
-                          <Button
-                            key={index}
-                            variant={quizAnswers[currentQuizQuestion] === index ? "default" : "outline"}
-                            className="w-full justify-start p-4 h-auto"
-                            onClick={() => handleQuizAnswer(index)}
-                          >
-                            <span className="mr-3 font-semibold">{String.fromCharCode(65 + index)}</span>
-                            {option}
-                          </Button>
-                        ))}
-                      </div>
-                      
-                      <div className="flex justify-between mt-6">
-                        <Button
-                          variant="outline"
-                          onClick={() => setCurrentQuizQuestion(prev => Math.max(0, prev - 1))}
-                          disabled={currentQuizQuestion === 0}
-                        >
-                          Previous
-                        </Button>
-                        <Button
-                          onClick={nextQuizQuestion}
-                          disabled={quizAnswers[currentQuizQuestion] === undefined}
-                          className="flex items-center gap-2"
-                        >
-                          {currentQuizQuestion === quizQuestions.length - 1 ? 'Finish Quiz' : 'Next'}
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-center">Quiz Results</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-center">
-                      <div className="mb-6">
-                        <div className="text-4xl font-bold text-blue-600 mb-2">
-                          {getQuizScore()}/{quizQuestions.length}
-                        </div>
-                        <p className="text-gray-600">
-                          You scored {Math.round((getQuizScore() / quizQuestions.length) * 100)}%
-                        </p>
-                      </div>
-                      
-                      <div className="space-y-4 mb-6">
-                        {quizQuestions.map((question, index) => (
-                          <div key={index} className="text-left p-4 border rounded-lg">
-                            <p className="font-semibold mb-2">{question.question}</p>
-                            <p className="text-sm text-gray-600">
-                              Your answer: <span className={quizAnswers[index] === question.correct ? 'text-green-600' : 'text-red-600'}>
-                                {question.options[quizAnswers[index]] || 'No answer'}
-                              </span>
-                            </p>
-                            {quizAnswers[index] !== question.correct && (
-                              <p className="text-sm text-green-600">
-                                Correct answer: {question.options[question.correct]}
-                              </p>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                      
-                      <Button onClick={resetQuiz} className="flex items-center gap-2">
-                        <RotateCcw className="h-4 w-4" />
-                        Take Quiz Again
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
-            </TabsContent>
-          </Tabs>
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <span>You are reviewing {stats.reviewing} out of {stats.totalWords} words</span>
+            </div>
+            <div className="w-full bg-white/20 rounded-full h-3">
+              <div 
+                className="bg-yellow-500 h-3 rounded-full transition-all duration-300"
+                style={{ width: `${(stats.reviewing / stats.totalWords) * 100}%` }}
+              ></div>
+            </div>
+          </div>
+
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <span>You are learning {stats.learning} out of {stats.totalWords} words</span>
+            </div>
+            <div className="w-full bg-white/20 rounded-full h-3">
+              <div 
+                className="bg-blue-500 h-3 rounded-full transition-all duration-300"
+                style={{ width: `${(stats.learning / stats.totalWords) * 100}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Feedback */}
+        <div className="max-w-2xl mx-auto mt-8 text-center">
+          <p className="text-white/80">
+            Have feedback about this card? Please email{' '}
+            <span className="underline cursor-pointer">help@redu.com</span> ☺
+          </p>
         </div>
       </div>
     </div>
