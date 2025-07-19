@@ -796,21 +796,21 @@ const ReadingPracticeList = () => {
 
   if (!selectedLevel) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-700 via-purple-800 to-purple-900">
+      <div className="min-h-screen bg-gray-50">
         <div className="p-4">
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="outline"
               onClick={() => navigate('/')}
-              className="flex items-center gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
+              className="flex items-center gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Home
             </Button>
             
             <div className="text-center">
-              <h1 className="text-3xl font-bold text-white">Vocabulary Practice</h1>
-              <p className="text-white/80 mt-2">Choose your difficulty level to start practicing</p>
+              <h1 className="text-3xl font-bold text-gray-900">Vocabulary Practice</h1>
+              <p className="text-gray-600 mt-2">Choose your difficulty level to start practicing</p>
             </div>
             
             <div className="w-24"></div>
@@ -818,9 +818,9 @@ const ReadingPracticeList = () => {
 
           <div className="max-w-4xl mx-auto">
             <Tabs defaultValue="vocabulary" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-white/10 border-white/20">
-                <TabsTrigger value="vocabulary" className="text-white data-[state=active]:bg-white data-[state=active]:text-purple-700">Vocabulary Builder</TabsTrigger>
-                <TabsTrigger value="quiz" className="text-white data-[state=active]:bg-white data-[state=active]:text-purple-700">Vocabulary Quiz</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="vocabulary">Vocabulary Builder</TabsTrigger>
+                <TabsTrigger value="quiz">Vocabulary Quiz</TabsTrigger>
               </TabsList>
               
               <TabsContent value="vocabulary" className="mt-8">
@@ -828,18 +828,18 @@ const ReadingPracticeList = () => {
                   {Object.entries(vocabularyData).map(([level, words]) => (
                     <Card 
                       key={level} 
-                      className="cursor-pointer transition-all duration-300 hover:scale-105 bg-white/10 border-white/20 text-white backdrop-blur-sm"
+                      className="cursor-pointer transition-all duration-300 hover:scale-105 bg-white border shadow-sm hover:shadow-md"
                       onClick={() => setSelectedLevel(level)}
                     >
                       <CardContent className="p-8 text-center">
-                        <h3 className="text-2xl font-bold mb-4">{level} Words</h3>
-                        <div className="text-4xl font-bold mb-4 text-green-400">{words.length}</div>
-                        <p className="text-white/80 mb-6">
+                        <h3 className="text-2xl font-bold mb-4 text-gray-900">{level} Words</h3>
+                        <div className="text-4xl font-bold mb-4 text-blue-600">{words.length}</div>
+                        <p className="text-gray-600 mb-6">
                           {level === 'Easy' ? 'Basic vocabulary for TOEFL beginners' : 
                            level === 'Medium' ? 'Intermediate vocabulary for TOEFL preparation' :
                            'Advanced vocabulary for TOEFL mastery'}
                         </p>
-                        <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/20">
+                        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                           Start Practice
                         </Button>
                       </CardContent>
@@ -852,15 +852,15 @@ const ReadingPracticeList = () => {
                 {!selectedQuiz ? (
                   <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-8">
-                      <h2 className="text-2xl font-bold text-white mb-4">Choose a Quiz</h2>
-                      <p className="text-white/80">Select from our collection of TOEFL reading practice quizzes</p>
+                      <h2 className="text-2xl font-bold text-gray-900 mb-4">Choose a Quiz</h2>
+                      <p className="text-gray-600">Select from our collection of TOEFL reading practice quizzes</p>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {Object.entries(quizData).map(([quizId, quiz]) => (
                         <Card 
                           key={quizId} 
-                          className={`cursor-pointer transition-all duration-300 hover:scale-105 bg-white/10 border-white/20 text-white backdrop-blur-sm ${
+                          className={`cursor-pointer transition-all duration-300 hover:scale-105 bg-white border shadow-sm hover:shadow-md ${
                             quiz.questions.length === 0 ? 'opacity-50 cursor-not-allowed' : ''
                           }`}
                           onClick={() => {
@@ -870,11 +870,11 @@ const ReadingPracticeList = () => {
                           }}
                         >
                           <CardContent className="p-6 text-center">
-                            <h3 className="text-xl font-bold mb-4">{quiz.title}</h3>
-                            <div className="text-3xl font-bold mb-4 text-blue-400">
+                            <h3 className="text-xl font-bold mb-4 text-gray-900">{quiz.title}</h3>
+                            <div className="text-3xl font-bold mb-4 text-blue-600">
                               {quiz.questions.length === 0 ? 'Coming Soon' : `${quiz.questions.length} Questions`}
                             </div>
-                            <p className="text-white/80 mb-6">
+                            <p className="text-gray-600 mb-6">
                               {quiz.questions.length === 0 
                                 ? 'This quiz will be available soon' 
                                 : 'Mixed question types including paragraph ordering, inference, and vocabulary'
@@ -883,9 +883,9 @@ const ReadingPracticeList = () => {
                             <Button 
                               className={`w-full ${
                                 quiz.questions.length === 0 
-                                  ? 'bg-gray-500 cursor-not-allowed' 
-                                  : 'bg-white/20 hover:bg-white/30'
-                              } text-white border-white/20`}
+                                  ? 'bg-gray-400 cursor-not-allowed text-gray-600' 
+                                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+                              }`}
                               disabled={quiz.questions.length === 0}
                             >
                               {quiz.questions.length === 0 ? 'Coming Soon' : 'Start Quiz'}
@@ -1032,19 +1032,19 @@ const ReadingPracticeList = () => {
   const stats = getProgressStats();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-700 via-purple-800 to-purple-900">
+    <div className="min-h-screen bg-gray-50">
       <div className="p-4">
         <div className="flex items-center justify-between mb-6">
           <Button
             variant="outline"
             onClick={() => setSelectedLevel(null)}
-            className="flex items-center gap-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
+            className="flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
             {selectedLevel} Words
           </Button>
           
-          <div className="flex items-center gap-2 text-white">
+          <div className="flex items-center gap-2 text-gray-600">
             <RotateCcw className="h-4 w-4" />
             <span className="text-sm">Words you don't know will reappear later</span>
           </div>
