@@ -1111,12 +1111,12 @@ const ReadingPracticeList = () => {
         </div>
 
         {/* Progress bars */}
-        <div className="max-w-2xl mx-auto space-y-4 text-white">
+        <div className="max-w-2xl mx-auto space-y-4 text-gray-900">
           <div>
             <div className="flex justify-between items-center mb-2">
               <span>You have mastered {stats.mastered} out of {stats.totalWords} words</span>
             </div>
-            <div className="w-full bg-white/20 rounded-full h-3">
+            <div className="w-full bg-gray-200 rounded-full h-3">
               <div 
                 className="bg-green-500 h-3 rounded-full transition-all duration-300"
                 style={{ width: `${(stats.mastered / stats.totalWords) * 100}%` }}
@@ -1128,7 +1128,7 @@ const ReadingPracticeList = () => {
             <div className="flex justify-between items-center mb-2">
               <span>You are reviewing {stats.reviewing} out of {stats.totalWords} words</span>
             </div>
-            <div className="w-full bg-white/20 rounded-full h-3">
+            <div className="w-full bg-gray-200 rounded-full h-3">
               <div 
                 className="bg-yellow-500 h-3 rounded-full transition-all duration-300"
                 style={{ width: `${(stats.reviewing / stats.totalWords) * 100}%` }}
@@ -1140,7 +1140,7 @@ const ReadingPracticeList = () => {
             <div className="flex justify-between items-center mb-2">
               <span>You are learning {stats.learning} out of {stats.totalWords} words</span>
             </div>
-            <div className="w-full bg-white/20 rounded-full h-3">
+            <div className="w-full bg-gray-200 rounded-full h-3">
               <div 
                 className="bg-blue-500 h-3 rounded-full transition-all duration-300"
                 style={{ width: `${(stats.learning / stats.totalWords) * 100}%` }}
@@ -1151,9 +1151,9 @@ const ReadingPracticeList = () => {
 
         {/* Feedback */}
         <div className="max-w-2xl mx-auto mt-8 text-center">
-          <p className="text-white/80">
+          <p className="text-gray-600">
             Have feedback about this card? Please email{' '}
-            <span className="underline cursor-pointer">help@redu.com</span> ☺
+            <span className="underline cursor-pointer text-blue-600">help@redu.com</span> ☺
           </p>
         </div>
       </div>
