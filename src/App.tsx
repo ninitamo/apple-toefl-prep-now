@@ -26,6 +26,7 @@ import WhenToeflConductedBlog from "./pages/WhenToeflConductedBlog";
 import CookiePolicy from "./pages/CookiePolicy";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ReadingPracticeList from "./pages/ReadingPracticeList";
+import WritingPracticeList from "./pages/WritingPracticeList";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/practice/full-tests" element={<FullTestsList />} />
             <Route path="/exam-info" element={<ExamInfo />} />
             <Route path="/materials/reading" element={<ReadingPracticeList />} />
+             <Route path="/materials/writing" element={<WritingPracticeList />} />
             <Route path="/institution-search" element={<InstitutionSearch />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/articles" element={<Articles />} />
