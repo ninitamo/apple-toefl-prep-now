@@ -28,10 +28,10 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <BookOpen className="h-8 w-8 text-blue-400" />
-              <span className="text-xl font-semibold text-white dark:text-gray-100">TOEFL Prep</span>
+              <span className="text-xl font-semibold text-white dark:text-gray-100">ToeflPrep TOEFL® Test Preparation</span>
             </div>
             <p className="text-gray-400 dark:text-gray-300 mb-6 max-w-md">
-              TOEFL is a registered trademark of ETS. This product is not endorsed or approved by ETS.
+              TOEFL® is a registered trademark of ETS. This product is not endorsed or approved by ETS.
             </p>
             <p className="text-gray-400 dark:text-gray-300 mb-6 max-w-md">
               <Link to="/privacy-policy" className="hover:text-white dark:hover:text-gray-100 transition-colors duration-200">
@@ -81,10 +81,10 @@ const Footer = () => {
         
         <div className="border-t border-gray-800 dark:border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 dark:text-gray-300 text-sm">
-            © 2024 TOEFL Prep. All rights reserved.
+            © 2024 ToeflPrep. All rights reserved.
           </p>
           <p className="text-gray-400 dark:text-gray-300 text-sm mt-2 md:mt-0">
-            Made with ❤️ for TOEFL students worldwide
+            Made with ❤️ for TOEFL® test students worldwide
           </p>
         </div>
       </div>

@@ -26,12 +26,12 @@ const Navbar = () => {
     {
       name: 'Full Test',
       href: '/practice/full-tests',
-      description: 'Practice full TOEFL test'
+      description: 'Practice full TOEFL® test'
     },
     {
       name: 'Individual Sections',
       href: '/practice/sections',
-      description: 'Practice individual TOEFL sections'
+      description: 'Practice individual TOEFL® test sections'
     }
   ];
 
@@ -62,12 +62,12 @@ const Navbar = () => {
     {
       name: 'Articles',
       href: '/articles',
-      description: 'TOEFL preparation articles and tips'
+      description: 'TOEFL® test preparation articles and tips'
     },
     {
       name: 'FAQ',
       href: '/faq',
-      description: 'Frequently asked questions about TOEFL'
+      description: 'Frequently asked questions about TOEFL® test'
     }
   ];
 
@@ -75,7 +75,7 @@ const Navbar = () => {
     { 
       name: 'About us', 
       href: '/about',
-      description: 'Learn more about our TOEFL preparation platform and team'
+      description: 'Learn more about our TOEFL® test preparation platform and team'
     },
     { 
       name: 'Contact', 
@@ -91,7 +91,7 @@ const Navbar = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
               <BookOpen className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-              <span className="text-xl font-semibold text-gray-900 dark:text-gray-100">TOEFL Prep</span>
+              <span className="text-xl font-semibold text-gray-900 dark:text-gray-100">ToeflPrep TOEFL® Test Preparation</span>
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
