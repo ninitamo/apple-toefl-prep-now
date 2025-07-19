@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 const ContactSection = () => {
   const handleEmailClick = () => {
-    window.location.href = 'mailto:toeflprep@gmail.com';
+    window.location.href = 'mailto:redu@gmail.com';
   };
 
   return (
@@ -37,7 +37,7 @@ const ContactSection = () => {
                     onClick={handleEmailClick}
                     className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
                   >
-                    Contact Us: toeflprep@gmail.com
+                    Contact Us: redu@gmail.com
                   </Button>
                 </div>
               </div>

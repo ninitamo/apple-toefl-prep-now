@@ -41,7 +41,7 @@ const PrivacyPolicy = () => {
                   1. Who We Are
                 </h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                  This website is operated by ToeflPrep. You can contact us at [your email address].
+                  This website is operated by REDU. You can contact us at [your email address].
                 </p>
               </section>
 
@@ -134,7 +134,7 @@ const PrivacyPolicy = () => {
                   7. Links to Other Websites
                 </h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                  This website may contain links to third-party websites. ToeflPrep is not responsible for the privacy practices or content of these external sites.
+                  This website may contain links to third-party websites. REDU is not responsible for the privacy practices or content of these external sites.
                 </p>
               </section>
 

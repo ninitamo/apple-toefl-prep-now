@@ -25,7 +25,7 @@ const TeamSection = () => {
             About Our Team
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Meet the founders behind ToeflPrep.
+            Meet the founders behind REDU.
           </p>
         </div>
 

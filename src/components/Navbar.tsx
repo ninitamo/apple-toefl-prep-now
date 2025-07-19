@@ -91,7 +91,7 @@ const Navbar = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
               <BookOpen className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-              <span className="text-xl font-semibold text-gray-900 dark:text-gray-100">ToeflPrep TOEFL® Test Preparation</span>
+              <span className="text-xl font-semibold text-gray-900 dark:text-gray-100">REDU TOEFL® Test Preparation</span>
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
