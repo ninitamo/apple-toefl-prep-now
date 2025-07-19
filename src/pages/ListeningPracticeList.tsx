@@ -1,24 +1,33 @@
-import { useState } from 'react';
-import { ArrowLeft, Lock, Play, CheckCircle, Clock, Headphones } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, Headphones, Target, BookOpen, Clock, FileText } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import ListeningVocabulary from '@/components/ListeningVocabulary';
 
 const ListeningPracticeList = () => {
   const navigate = useNavigate();
+  const [selectedPracticeType, setSelectedPracticeType] = useState<'quiz' | 'vocabulary' | null>(null);
 
-  const exercises = [
+  const handleBackToMainMenu = () => {
+    setSelectedPracticeType(null);
+  };
+
+  const handleBackToVocabulary = () => {
+    setSelectedPracticeType(null);
+  };
+
+  const quizExercises = [
     {
       id: 1,
       title: 'Campus Conversation: Library Resources',
       description: 'Listen to a conversation between a student and a librarian about research resources.',
       duration: '15 minutes',
       questions: 5,
-      isFree: true,
-      isPremium: false,
-      isCompleted: false,
-      practiceUrl: '/practice/listening/library-resources',
+      difficulty: 'Beginner',
+      topics: ['Campus Conversations', 'Academic Resources']
     },
     {
       id: 2,
@@ -26,10 +35,8 @@ const ListeningPracticeList = () => {
       description: 'Professor discusses the relationship between ocean currents and global climate patterns.',
       duration: '25 minutes',
       questions: 6,
-      isFree: false,
-      isPremium: true,
-      isCompleted: false,
-      practiceUrl: '#',
+      difficulty: 'Advanced',
+      topics: ['Academic Lectures', 'Science']
     },
     {
       id: 3,
@@ -37,10 +44,8 @@ const ListeningPracticeList = () => {
       description: 'Student seeks advice from an academic advisor about course selection.',
       duration: '12 minutes',
       questions: 5,
-      isFree: true,
-      isPremium: false,
-      isCompleted: true,
-      practiceUrl: '#',
+      difficulty: 'Intermediate',
+      topics: ['Campus Conversations', 'Academic Planning']
     },
     {
       id: 4,
@@ -48,10 +53,8 @@ const ListeningPracticeList = () => {
       description: 'Comprehensive overview of Renaissance painting techniques and cultural context.',
       duration: '28 minutes',
       questions: 8,
-      isFree: false,
-      isPremium: true,
-      isCompleted: false,
-      practiceUrl: '#',
+      difficulty: 'Advanced',
+      topics: ['Academic Lectures', 'Art History']
     },
     {
       id: 5,
@@ -59,165 +62,176 @@ const ListeningPracticeList = () => {
       description: 'Student discusses health insurance options with campus health center staff.',
       duration: '10 minutes',
       questions: 4,
-      isFree: true,
-      isPremium: false,
-      isCompleted: true,
-      practiceUrl: '#',
-    },
-    {
-      id: 6,
-      title: 'Academic Lecture: Psychology Research',
-      description: 'Professor explains cognitive psychology research methods and statistical analysis.',
-      duration: '30 minutes',
-      questions: 7,
-      isFree: false,
-      isPremium: true,
-      isCompleted: false,
-      practiceUrl: '#',
-    },
-    {
-      id: 7,
-      title: 'Student Discussion: Group Project',
-      description: 'Students planning their final group presentation for environmental science class.',
-      duration: '18 minutes',
-      questions: 6,
-      isFree: true,
-      isPremium: false,
-      isCompleted: false,
-      practiceUrl: '#',
-    },
-    {
-      id: 8,
-      title: 'Academic Lecture: Business Ethics',
-      description: 'Analysis of corporate responsibility and ethical decision-making in modern business.',
-      duration: '26 minutes',
-      questions: 7,
-      isFree: false,
-      isPremium: true,
-      isCompleted: false,
-      practiceUrl: '#',
-    },
-    {
-      id: 9,
-      title: 'Campus Conversation: Housing Options',
-      description: 'Student inquires about on-campus housing arrangements for the upcoming semester.',
-      duration: '14 minutes',
-      questions: 5,
-      isFree: true,
-      isPremium: false,
-      isCompleted: false,
-      practiceUrl: '#',
-    },
+      difficulty: 'Beginner',
+      topics: ['Campus Services', 'Health Care']
+    }
   ];
 
-  const handleExerciseClick = (exercise: typeof exercises[0]) => {
-    if (exercise.isFree && exercise.practiceUrl !== '#') {
-      navigate(exercise.practiceUrl);
-    } else if (!exercise.isFree) {
-      // Handle premium content - could show upgrade modal
-      console.log('Premium content - upgrade required');
-    }
-  };
+  if (selectedPracticeType === 'vocabulary') {
+    return <ListeningVocabulary onBack={handleBackToVocabulary} />;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-8">
-          <Button
-            variant="outline"
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </Button>
-          
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center justify-center gap-2">
-              <Headphones className="h-8 w-8 text-green-600" />
-              Listening Practice
-            </h1>
-            <p className="text-gray-600 mt-2">Choose from our collection of TOEFL listening exercises</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <Navbar />
+      <div className="pt-24 pb-16">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center mb-8">
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/')}
+              className="mr-4 p-2 hover:bg-white/50 dark:hover:bg-gray-700/50 rounded-full dark:text-gray-200"
+            >
+              <ArrowLeft className="h-6 w-6" />
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Listening Practice</h1>
+              <p className="text-gray-600 dark:text-gray-300 mt-2">Master listening skills with comprehensive exercises</p>
+            </div>
           </div>
-          
-          <div className="w-24"></div> {/* Spacer for centering */}
-        </div>
 
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {exercises.map((exercise) => (
-              <Card key={exercise.id} className="relative hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
-                <div className="absolute top-3 right-3 flex items-center gap-2">
-                  {exercise.isPremium && (
-                    <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs">
-                      Premium
-                    </Badge>
-                  )}
-                  {exercise.isCompleted && (
-                    <CheckCircle className="h-5 w-5 text-green-500" />
-                  )}
+          <div className="max-w-4xl mx-auto">
+            {!selectedPracticeType ? (
+              <>
+                <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4 text-center">Listening Practice</h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-12 text-center text-lg">Choose your difficulty level to start practicing</p>
+                
+                <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                  {/* Quiz Practice Card */}
+                  <Card 
+                    className="bg-white dark:bg-gray-800 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border-2 hover:border-blue-300 dark:border-gray-700 dark:hover:border-blue-500"
+                    onClick={() => setSelectedPracticeType('quiz')}
+                  >
+                    <CardContent className="p-8 text-center">
+                      <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Target className="h-10 w-10 text-white" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Quiz</h3>
+                      <p className="text-gray-600 dark:text-gray-400 mb-6">
+                        Practice TOEFL listening with campus conversations and academic lectures
+                      </p>
+                      <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                        <div className="flex justify-between">
+                          <span>Listening Exercises:</span>
+                          <span className="font-semibold">{quizExercises.length} sets</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Question Types:</span>
+                          <span className="font-semibold">Multiple formats</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Vocabulary Practice Card */}
+                  <Card 
+                    className="bg-white dark:bg-gray-800 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border-2 hover:border-green-300 dark:border-gray-700 dark:hover:border-green-500"
+                    onClick={() => setSelectedPracticeType('vocabulary')}
+                  >
+                    <CardContent className="p-8 text-center">
+                      <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <BookOpen className="h-10 w-10 text-white" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Vocabulary</h3>
+                      <p className="text-gray-600 dark:text-gray-400 mb-6">
+                        Listen to word definitions and practice academic vocabulary in context
+                      </p>
+                      <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                        <div className="flex justify-between">
+                          <span>Vocabulary Words:</span>
+                          <span className="font-semibold">20 words</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Audio Context:</span>
+                          <span className="font-semibold">Native speakers</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </>
+            ) : selectedPracticeType === 'quiz' ? (
+              <>
+                <div className="flex items-center mb-8">
+                  <Button
+                    variant="ghost"
+                    onClick={handleBackToMainMenu}
+                    className="mr-4 p-2 hover:bg-white/50 dark:hover:bg-gray-700/50 rounded-full dark:text-gray-200"
+                  >
+                    <ArrowLeft className="h-6 w-6" />
+                  </Button>
+                  <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-3">
+                    <Target className="h-8 w-8 text-blue-500" />
+                    Quiz Practice
+                  </h2>
                 </div>
                 
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-bold text-gray-900 leading-tight pr-8">
-                    {exercise.title}
-                  </CardTitle>
-                </CardHeader>
-                
-                <CardContent>
-                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                    {exercise.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      <span>{exercise.duration}</span>
-                    </div>
-                    <span>{exercise.questions} questions</span>
-                  </div>
-                  
-                  <Button
-                    onClick={() => handleExerciseClick(exercise)}
-                    className={`w-full ${
-                      exercise.isFree
-                        ? 'bg-green-600 hover:bg-green-700'
-                        : 'bg-gray-400 hover:bg-gray-500'
-                    } text-white rounded-full font-medium flex items-center gap-2 py-2 text-sm`}
-                    disabled={!exercise.isFree && exercise.practiceUrl === '#'}
-                  >
-                    {exercise.isFree ? (
-                      <>
-                        <Play className="h-3 w-3" />
-                        {exercise.isCompleted ? 'Practice Again' : 'Start Practice'}
-                      </>
-                    ) : (
-                      <>
-                        <Lock className="h-3 w-3" />
-                        Upgrade to Access
-                      </>
-                    )}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          
-          <div className="mt-12 text-center">
-            <div className="bg-white rounded-lg p-8 shadow-sm border">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Unlock All Premium Content
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Get access to all listening exercises, detailed explanations, and progress tracking for just $49
-              </p>
-              <Button className="bg-gradient-to-r from-purple-500 to-purple-600 hover:opacity-90 text-white px-8 py-3 rounded-full font-medium">
-                Upgrade Now
-              </Button>
-            </div>
+                <div className="grid gap-4">
+                  {quizExercises.map((exercise) => (
+                    <Card key={exercise.id} className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 dark:border-gray-700">
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle className="text-lg text-gray-900 dark:text-gray-100">{exercise.title}</CardTitle>
+                            <CardDescription className="text-gray-600 dark:text-gray-400 mt-1">
+                              {exercise.description}
+                            </CardDescription>
+                          </div>
+                          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                            <Headphones className="h-6 w-6 text-white" />
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid md:grid-cols-3 gap-4 mb-4">
+                          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                            <Clock className="h-4 w-4" />
+                            {exercise.duration}
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                            <FileText className="h-4 w-4" />
+                            {exercise.questions} questions
+                          </div>
+                          <div className="text-sm">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              exercise.difficulty === 'Beginner' 
+                                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                                : exercise.difficulty === 'Intermediate' 
+                                ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' 
+                                : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                            }`}>
+                              {exercise.difficulty}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <div className="mb-4">
+                          <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Topics:</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {exercise.topics.map((topic, index) => (
+                              <span key={index} className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-sm">
+                                {topic}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <Button 
+                          onClick={() => navigate(`/practice/listening/${exercise.id}`)}
+                          className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white"
+                        >
+                          Start Practice
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </>
+            ) : null}
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
