@@ -22,48 +22,48 @@ const ListeningPracticeList = () => {
   const quizExercises = [
     {
       id: 1,
-      title: 'Campus Conversation: Library Resources',
-      description: 'Listen to a conversation between a student and a librarian about research resources.',
-      duration: '15 minutes',
-      questions: 5,
+      title: 'TOEFL Listening Practice Quiz 1',
+      description: 'Practice listening skills with vocabulary, transitions, and speaker tone recognition.',
+      duration: '10 minutes',
+      questions: 15,
       difficulty: 'Beginner',
-      topics: ['Campus Conversations', 'Academic Resources']
+      topics: ['Vocabulary', 'Transitions', 'Speaker Tone']
     },
     {
       id: 2,
-      title: 'Academic Lecture: Climate Science',
-      description: 'Professor discusses the relationship between ocean currents and global climate patterns.',
-      duration: '25 minutes',
-      questions: 6,
-      difficulty: 'Advanced',
-      topics: ['Academic Lectures', 'Science']
+      title: 'TOEFL Listening Quiz 2',
+      description: 'Focus on examples, tone recognition, and lecture structure understanding.',
+      duration: '10 minutes',
+      questions: 15,
+      difficulty: 'Intermediate',
+      topics: ['Examples', 'Tone', 'Lecture Structure']
     },
     {
       id: 3,
-      title: 'Campus Conversation: Course Registration',
-      description: 'Student seeks advice from an academic advisor about course selection.',
-      duration: '12 minutes',
-      questions: 5,
+      title: 'TOEFL Listening Quiz 3',
+      description: 'Practice with transitions, conclusions, and clarification signals.',
+      duration: '10 minutes',
+      questions: 15,
       difficulty: 'Intermediate',
-      topics: ['Campus Conversations', 'Academic Planning']
+      topics: ['Transitions', 'Conclusions', 'Clarifications']
     },
     {
       id: 4,
-      title: 'Academic Lecture: Art History',
-      description: 'Comprehensive overview of Renaissance painting techniques and cultural context.',
-      duration: '28 minutes',
-      questions: 8,
+      title: 'TOEFL Listening Quiz 4',
+      description: 'Master summarization, emphasis, and interpretation skills.',
+      duration: '10 minutes',
+      questions: 15,
       difficulty: 'Advanced',
-      topics: ['Academic Lectures', 'Art History']
+      topics: ['Summarization', 'Emphasis', 'Interpretation']
     },
     {
       id: 5,
-      title: 'Campus Service: Health Center',
-      description: 'Student discusses health insurance options with campus health center staff.',
+      title: 'TOEFL Listening Quiz 5',
+      description: 'Advanced practice with analysis, contrast, and academic vocabulary.',
       duration: '10 minutes',
-      questions: 4,
-      difficulty: 'Beginner',
-      topics: ['Campus Services', 'Health Care']
+      questions: 15,
+      difficulty: 'Advanced',
+      topics: ['Analysis', 'Contrast', 'Academic Vocabulary']
     }
   ];
 
@@ -217,7 +217,7 @@ const ListeningPracticeList = () => {
                         </div>
 
                         <Button 
-                          onClick={() => navigate(`/practice/listening/${exercise.id}`)}
+                          onClick={() => navigate(`/materials/listening/quiz/${exercise.id}`)}
                           className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white"
                         >
                           Start Practice
