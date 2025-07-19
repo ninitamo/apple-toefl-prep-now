@@ -311,20 +311,384 @@ const ReadingPracticeList = () => {
       ]
     },
     2: {
-      title: "TOEFL Reading Practice Quiz 2 (Coming Soon)",
-      questions: []
+      title: "TOEFL Reading Practice Quiz 2 (Mixed Types)",
+      questions: [
+        {
+          type: "Synonym Match",
+          question: "Word: Inevitable →",
+          options: ["Avoidable", "Uncertain", "Certain", "Unlikely"],
+          correct: 2
+        },
+        {
+          type: "Word Family Practice",
+          question: "Her ___ in solving the problem impressed everyone.",
+          options: ["decide", "decision", "decisive", "decisively"],
+          correct: 1
+        },
+        {
+          type: "What Can You Infer?",
+          question: "Statement: He put on gloves and picked up a shovel.\nWhat can you infer?",
+          options: ["He was about to bake", "He was preparing for surgery", "He was going to dig", "He was writing a book"],
+          correct: 2
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"This highlights the importance of early detection.\"\nBest location:",
+          options: ["After a discussion of symptoms", "Before the title", "After the bibliography", "In the footnotes"],
+          correct: 0
+        },
+        {
+          type: "Paragraph Ordering",
+          question: "The balloon rose into the sky.\nIt drifted with the wind.\nEventually, it disappeared from view.\nCorrect order?",
+          options: ["1-2-3", "3-1-2", "2-1-3", "1-3-2"],
+          correct: 0
+        },
+        {
+          type: "Connectors / Transition Words",
+          question: "The movie was long. ___, it kept me interested the whole time.",
+          options: ["Therefore", "Nevertheless", "In contrast", "Despite"],
+          correct: 1
+        },
+        {
+          type: "Reference Word Identification",
+          question: "In the sentence \"They continued despite the obstacles,\" what does \"they\" most likely refer to?",
+          options: ["The obstacles", "The efforts", "The team", "The goal"],
+          correct: 2
+        },
+        {
+          type: "Synonym Match",
+          question: "Word: Commence →",
+          options: ["End", "Begin", "Cancel", "Delay"],
+          correct: 1
+        },
+        {
+          type: "Word Family Practice",
+          question: "The athlete trained ___ for the championship.",
+          options: ["intense", "intensity", "intensify", "intensely"],
+          correct: 3
+        },
+        {
+          type: "What Can You Infer?",
+          question: "Statement: He kept glancing at the clock and tapping his foot.\nWhat can you infer?",
+          options: ["He was relaxed", "He was bored", "He was nervous", "He was cold"],
+          correct: 2
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"This marked the beginning of a new era in transportation.\"\nBest location:",
+          options: ["After the invention of the steam engine is described", "Before the table of contents", "In a footnote", "At the end of the index"],
+          correct: 0
+        },
+        {
+          type: "Paragraph Ordering",
+          question: "The seeds were planted.\nRainfall helped them grow.\nSoon, flowers bloomed.\nCorrect order?",
+          options: ["2-1-3", "1-2-3", "1-3-2", "3-1-2"],
+          correct: 1
+        },
+        {
+          type: "Connectors / Transition Words",
+          question: "The evidence is weak. ___, the argument is unconvincing.",
+          options: ["Consequently", "However", "For example", "Furthermore"],
+          correct: 0
+        },
+        {
+          type: "Reference Word Identification",
+          question: "In the sentence \"This explains the sudden rise in temperature,\" what does \"this\" refer to?",
+          options: ["The result", "The conclusion", "The previous explanation", "The thermometer"],
+          correct: 2
+        },
+        {
+          type: "Word Family Practice",
+          question: "His ___ behavior caused concern among his friends.",
+          options: ["erratically", "erratic", "erraticism", "erratical"],
+          correct: 1
+        }
+      ]
     },
     3: {
-      title: "TOEFL Reading Practice Quiz 3 (Coming Soon)",
-      questions: []
+      title: "TOEFL Reading Practice Quiz 3",
+      questions: [
+        {
+          type: "Synonym Match",
+          question: "Word: Elaborate →",
+          options: ["Simple", "Complicated", "Short", "Hidden"],
+          correct: 1
+        },
+        {
+          type: "Word Family Practice",
+          question: "The lecture was both informative and ___.",
+          options: ["entertain", "entertained", "entertaining", "entertainment"],
+          correct: 2
+        },
+        {
+          type: "What Can You Infer?",
+          question: "Statement: She wore a name tag and stood behind the counter.\nWhat can you infer?",
+          options: ["She is shopping", "She works there", "She is lost", "She's waiting in line"],
+          correct: 1
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"This prompted immediate changes in policy.\"\nBest location:",
+          options: ["After a major incident is described", "Before the introduction", "In the appendix", "At the top of the page"],
+          correct: 0
+        },
+        {
+          type: "Paragraph Ordering",
+          question: "The alarm rang.\nHe jumped out of bed.\nHe rushed to get dressed.\nCorrect order?",
+          options: ["1-2-3", "2-1-3", "3-1-2", "1-3-2"],
+          correct: 0
+        },
+        {
+          type: "Connectors / Transition Words",
+          question: "The product was defective. ___, it had to be recalled.",
+          options: ["Nonetheless", "Moreover", "Therefore", "Instead"],
+          correct: 2
+        },
+        {
+          type: "Reference Word Identification",
+          question: "In the sentence \"It caused widespread panic,\" what does \"it\" most likely refer to?",
+          options: ["A reaction", "A discovery", "A city", "An opinion"],
+          correct: 1
+        },
+        {
+          type: "Synonym Match",
+          question: "Word: Fragile →",
+          options: ["Durable", "Weak", "Breakable", "Tough"],
+          correct: 2
+        },
+        {
+          type: "Word Family Practice",
+          question: "The ___ of the experiment surprised the scientists.",
+          options: ["resulting", "results", "result", "resulted"],
+          correct: 1
+        },
+        {
+          type: "What Can You Infer?",
+          question: "Statement: She turned off the lights and got under the blanket.\nWhat can you infer?",
+          options: ["She's going to sleep", "She's leaving", "She's starting a meeting", "She's cleaning"],
+          correct: 0
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"This raised serious ethical questions.\"\nBest location:",
+          options: ["After a controversial decision is discussed", "In the acknowledgments", "Before the table of contents", "In the title"],
+          correct: 0
+        },
+        {
+          type: "Paragraph Ordering",
+          question: "He saved the document.\nHe turned off the computer.\nHe left the office.\nCorrect order?",
+          options: ["3-2-1", "1-2-3", "2-1-3", "1-3-2"],
+          correct: 1
+        },
+        {
+          type: "Connectors / Transition Words",
+          question: "She missed the bus. ___, she was late for work.",
+          options: ["Consequently", "Meanwhile", "For instance", "Nevertheless"],
+          correct: 0
+        },
+        {
+          type: "Reference Word Identification",
+          question: "In the sentence \"These were the main reasons for failure,\" what does \"these\" refer to?",
+          options: ["The people", "The tools", "The listed causes", "The instructions"],
+          correct: 2
+        },
+        {
+          type: "Word Family Practice",
+          question: "The manager responded ___ to the complaint.",
+          options: ["polite", "politely", "politeness", "politeful"],
+          correct: 1
+        }
+      ]
     },
     4: {
-      title: "TOEFL Reading Practice Quiz 4 (Coming Soon)",
-      questions: []
+      title: "TOEFL Reading Practice Quiz 4",
+      questions: [
+        {
+          type: "Synonym Match",
+          question: "Word: Cease →",
+          options: ["Begin", "Accelerate", "Stop", "Change"],
+          correct: 2
+        },
+        {
+          type: "Word Family Practice",
+          question: "The ___ of the system requires careful planning.",
+          options: ["organize", "organization", "organizing", "organized"],
+          correct: 1
+        },
+        {
+          type: "What Can You Infer?",
+          question: "Statement: He wore a helmet and clipped into his bike.\nWhat can you infer?",
+          options: ["He's going swimming", "He's about to ride", "He's going shopping", "He's taking a test"],
+          correct: 1
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"This led scientists to reconsider their assumptions.\"\nBest location:",
+          options: ["After surprising experimental results", "In the index", "Before the author's name", "In the glossary"],
+          correct: 0
+        },
+        {
+          type: "Paragraph Ordering",
+          question: "The light turned green.\nThe car started moving.\nThe traffic cleared.\nCorrect order?",
+          options: ["3-2-1", "1-2-3", "2-1-3", "1-3-2"],
+          correct: 1
+        },
+        {
+          type: "Connectors / Transition Words",
+          question: "The forecast predicted rain. ___, we brought umbrellas.",
+          options: ["Although", "In contrast", "Accordingly", "Nevertheless"],
+          correct: 2
+        },
+        {
+          type: "Reference Word Identification",
+          question: "In the sentence \"It transformed the industry,\" what does \"it\" most likely refer to?",
+          options: ["A regulation", "An innovation", "A factory", "An employee"],
+          correct: 1
+        },
+        {
+          type: "Synonym Match",
+          question: "Word: Deteriorate →",
+          options: ["Improve", "Decay", "Strengthen", "Build"],
+          correct: 1
+        },
+        {
+          type: "Word Family Practice",
+          question: "Her ___ in the field was widely respected.",
+          options: ["expert", "expertise", "expertly", "expertize"],
+          correct: 1
+        },
+        {
+          type: "What Can You Infer?",
+          question: "Statement: The audience stood up and clapped.\nWhat can you infer?",
+          options: ["The speech ended", "The room was empty", "They were displeased", "They were impressed"],
+          correct: 3
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"This was a turning point in the debate.\"\nBest location:",
+          options: ["After a major compromise is mentioned", "In the bibliography", "Before the abstract", "In a diagram"],
+          correct: 0
+        },
+        {
+          type: "Paragraph Ordering",
+          question: "The power went out.\nThe backup generator turned on.\nThe system continued operating.\nCorrect order?",
+          options: ["1-2-3", "2-3-1", "3-1-2", "1-3-2"],
+          correct: 0
+        },
+        {
+          type: "Connectors / Transition Words",
+          question: "She is highly qualified. ___, she was not offered the job.",
+          options: ["Likewise", "Still", "Therefore", "Furthermore"],
+          correct: 1
+        },
+        {
+          type: "Reference Word Identification",
+          question: "In the sentence \"Such findings support the theory,\" what does \"such findings\" refer to?",
+          options: ["Similar results", "The theory", "The hypothesis", "The experiment itself"],
+          correct: 0
+        },
+        {
+          type: "Word Family Practice",
+          question: "He acted ___ throughout the negotiation.",
+          options: ["diplomatic", "diplomacy", "diplomatically", "diplomat"],
+          correct: 2
+        }
+      ]
     },
     5: {
-      title: "TOEFL Reading Practice Quiz 5 (Coming Soon)",
-      questions: []
+      title: "TOEFL Reading Practice Quiz 5",
+      questions: [
+        {
+          type: "Synonym Match",
+          question: "Word: Accurate →",
+          options: ["Exact", "Rough", "Random", "Quick"],
+          correct: 0
+        },
+        {
+          type: "Word Family Practice",
+          question: "The new design improved the machine's ___.",
+          options: ["efficient", "efficiency", "efficiently", "inefficient"],
+          correct: 1
+        },
+        {
+          type: "What Can You Infer?",
+          question: "Statement: She was holding a passport and standing in line at the airport.\nWhat can you infer?",
+          options: ["She is applying for a job", "She is about to travel", "She lost something", "She is shopping"],
+          correct: 1
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"This discovery challenged long-standing theories.\"\nBest location:",
+          options: ["After unexpected findings are revealed", "In the table of contents", "Before the author bio", "In the conclusion"],
+          correct: 0
+        },
+        {
+          type: "Paragraph Ordering",
+          question: "He opened the toolbox.\nHe picked up a wrench.\nHe fixed the leaking pipe.\nCorrect order?",
+          options: ["2-1-3", "1-2-3", "1-3-2", "3-1-2"],
+          correct: 1
+        },
+        {
+          type: "Connectors / Transition Words",
+          question: "The instructions were unclear. ___, many students made errors.",
+          options: ["Furthermore", "As a result", "However", "Likewise"],
+          correct: 1
+        },
+        {
+          type: "Reference Word Identification",
+          question: "In the sentence \"They responded immediately to the emergency,\" what does \"they\" most likely refer to?",
+          options: ["The victims", "The responders", "The tools", "The instructions"],
+          correct: 1
+        },
+        {
+          type: "Synonym Match",
+          question: "Word: Justify →",
+          options: ["Explain", "Deny", "Create", "Simplify"],
+          correct: 0
+        },
+        {
+          type: "Word Family Practice",
+          question: "Her work was both ___ and creative.",
+          options: ["impress", "impressed", "impressive", "impressively"],
+          correct: 2
+        },
+        {
+          type: "What Can You Infer?",
+          question: "Statement: The shelves were empty, and customers were leaving the store disappointed.\nWhat can you infer?",
+          options: ["The store was full", "The prices were too high", "Items were out of stock", "It was raining outside"],
+          correct: 2
+        },
+        {
+          type: "Sentence Insert Practice",
+          question: "Sentence to insert: \"This step is crucial for maintaining safety.\"\nBest location:",
+          options: ["After a safety procedure is explained", "In the index", "Before the abstract", "At the end of the text"],
+          correct: 0
+        },
+        {
+          type: "Paragraph Ordering",
+          question: "She completed the final exam.\nShe submitted her thesis.\nShe graduated from university.\nCorrect order?",
+          options: ["1-2-3", "2-1-3", "1-3-2", "3-2-1"],
+          correct: 0
+        },
+        {
+          type: "Connectors / Transition Words",
+          question: "The experiment failed. ___, the team learned valuable lessons.",
+          options: ["Consequently", "Nonetheless", "Similarly", "Namely"],
+          correct: 1
+        },
+        {
+          type: "Reference Word Identification",
+          question: "In the sentence \"These factors led to economic growth,\" what does \"these factors\" refer to?",
+          options: ["Specific conditions mentioned earlier", "The conclusion", "The economy", "The government"],
+          correct: 0
+        },
+        {
+          type: "Word Family Practice",
+          question: "The speaker expressed her ideas with great ___.",
+          options: ["fluent", "fluency", "fluently", "influence"],
+          correct: 1
+        }
+      ]
     }
   };
 
