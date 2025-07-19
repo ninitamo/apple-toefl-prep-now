@@ -1,13 +1,63 @@
-import React from 'react';
-import { ArrowLeft, PenTool, Clock, FileText, Target } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, PenTool, Clock, FileText, Target, BookOpen } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import ToeflGrammarQuiz from '@/components/ToeflGrammarQuiz';
 
 const WritingPracticeList = () => {
   const navigate = useNavigate();
+  const [selectedQuiz, setSelectedQuiz] = useState<number | null>(null);
+
+  const quizSets = [
+    {
+      id: 1,
+      title: 'TOEFL Grammar Quiz Set 1',
+      description: 'Test your knowledge of basic TOEFL grammar concepts',
+      questions: 15,
+      duration: '10-15 minutes',
+      difficulty: 'Beginner',
+      topics: ['Subject-Verb Agreement', 'Articles', 'Verb Tenses']
+    },
+    {
+      id: 2,
+      title: 'TOEFL Grammar Quiz Set 2',
+      description: 'Practice intermediate grammar rules for TOEFL',
+      questions: 15,
+      duration: '10-15 minutes',
+      difficulty: 'Intermediate',
+      topics: ['Passive Voice', 'Conditionals', 'Modal Verbs']
+    },
+    {
+      id: 3,
+      title: 'TOEFL Grammar Quiz Set 3',
+      description: 'Advanced grammar structures and complex sentences',
+      questions: 15,
+      duration: '10-15 minutes',
+      difficulty: 'Intermediate',
+      topics: ['Sentence Fragments', 'Prepositions', 'Comparative Forms']
+    },
+    {
+      id: 4,
+      title: 'TOEFL Grammar Quiz Set 4',
+      description: 'Mixed grammar practice with various difficulty levels',
+      questions: 15,
+      duration: '10-15 minutes',
+      difficulty: 'Advanced',
+      topics: ['Mixed Grammar', 'Word Order', 'Complex Structures']
+    },
+    {
+      id: 5,
+      title: 'TOEFL Grammar Quiz Set 5',
+      description: 'Comprehensive grammar review and practice',
+      questions: 15,
+      duration: '10-15 minutes',
+      difficulty: 'Advanced',
+      topics: ['All Grammar Areas', 'Review Practice', 'Test Preparation']
+    }
+  ];
 
   const practiceExercises = [
     {
@@ -46,6 +96,18 @@ const WritingPracticeList = () => {
   const handleExamPracticeClick = () => {
     navigate('/practice/writing/exam-mode');
   };
+
+  const handleQuizClick = (quizId: number) => {
+    setSelectedQuiz(quizId);
+  };
+
+  const handleBackToQuizzes = () => {
+    setSelectedQuiz(null);
+  };
+
+  if (selectedQuiz) {
+    return <ToeflGrammarQuiz quizSet={selectedQuiz} onBack={handleBackToQuizzes} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-100 dark:from-gray-900 dark:to-gray-800">
@@ -141,6 +203,81 @@ const WritingPracticeList = () => {
                   </ul>
                 </div>
               </div>
+            </div>
+
+            {/* TOEFL Grammar Quizzes */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
+                <BookOpen className="h-6 w-6 text-blue-500" />
+                TOEFL Grammar Quizzes
+              </h2>
+              <div className="grid gap-4">
+                {quizSets.map((quiz) => (
+                  <Card key={quiz.id} className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 dark:border-gray-700">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <CardTitle className="text-lg text-gray-900 dark:text-gray-100">{quiz.title}</CardTitle>
+                          <CardDescription className="text-gray-600 dark:text-gray-400 mt-1">
+                            {quiz.description}
+                          </CardDescription>
+                        </div>
+                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                          <BookOpen className="h-6 w-6 text-white" />
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid md:grid-cols-3 gap-4 mb-4">
+                        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                          <Clock className="h-4 w-4" />
+                          {quiz.duration}
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                          <FileText className="h-4 w-4" />
+                          {quiz.questions} questions
+                        </div>
+                        <div className="text-sm">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            quiz.difficulty === 'Beginner' 
+                              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                              : quiz.difficulty === 'Intermediate' 
+                              ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' 
+                              : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                          }`}>
+                            {quiz.difficulty}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="mb-4">
+                        <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Topics:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {quiz.topics.map((topic, index) => (
+                            <span key={index} className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-sm">
+                              {topic}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={() => handleQuizClick(quiz.id)}
+                        className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                      >
+                        Start Quiz
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="flex items-center my-8">
+              <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
+              <span className="px-4 text-gray-500 dark:text-gray-400 font-medium">Writing Practice Exercises</span>
+              <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
             </div>
 
             {/* Individual Practice Exercises */}
