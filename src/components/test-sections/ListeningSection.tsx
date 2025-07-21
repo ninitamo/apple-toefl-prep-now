@@ -341,11 +341,6 @@ const ListeningSection = ({ onNext, practiceMode = 'skip' }: ListeningSectionPro
                   />
                 )}
 
-                {/* Debug Info */}
-                <div className="mb-4 text-xs text-gray-500">
-                  <div>Original URL: {currentPassage.audio_url}</div>
-                  <div>Full URL: {fullAudioUrl}</div>
-                </div>
 
                 {/* Audio Controls */}
                 <div className="flex flex-col items-center gap-4">
@@ -429,7 +424,6 @@ const ListeningSection = ({ onNext, practiceMode = 'skip' }: ListeningSectionPro
             <Card className="mb-6">
               <CardHeader>
                 <CardTitle>Question {currentQuestion.question_number}</CardTitle>
-                <Badge variant="secondary">{currentQuestion.question_type}</Badge>
               </CardHeader>
               <CardContent>
                 <p className="text-lg mb-6">{currentQuestion.question_text}</p>

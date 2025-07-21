@@ -182,20 +182,36 @@ const ReadingSectionNew = ({ onNext, testData }: ReadingSectionProps) => {
                   <div className="bg-gray-50 p-4 rounded">
                     <p className="text-sm"><strong>Directions:</strong> Complete the summary by selecting the THREE answer choices that express the most important ideas in the passage. This question is worth 2 points.</p>
                   </div>
-                  <RadioGroup
-                    value={answers[currentQuestionData.question_number] || ''}
-                    onValueChange={(value) => handleAnswerChange(currentQuestionData.question_number, value)}
-                    className="space-y-3"
-                  >
+                  <div className="space-y-3">
                     {currentQuestionData.options?.map((option: string, index: number) => (
                       <div key={index} className="flex items-start space-x-3">
-                        <RadioGroupItem value={index.toString()} id={`q${currentQuestionData.question_number}-${index}`} className="mt-1" />
+                        <input
+                          type="checkbox"
+                          id={`q${currentQuestionData.question_number}-${index}`}
+                          className="mt-1 w-4 h-4"
+                          checked={(answers[currentQuestionData.question_number] || '').split(',').includes(index.toString())}
+                          onChange={(e) => {
+                            const currentAnswers = (answers[currentQuestionData.question_number] || '').split(',').filter(a => a);
+                            let newAnswers;
+                            if (e.target.checked) {
+                              if (currentAnswers.length < 3) {
+                                newAnswers = [...currentAnswers, index.toString()];
+                              } else {
+                                return; // Don't allow more than 3 selections
+                              }
+                            } else {
+                              newAnswers = currentAnswers.filter(a => a !== index.toString());
+                            }
+                            handleAnswerChange(currentQuestionData.question_number, newAnswers.join(','));
+                          }}
+                        />
                         <Label htmlFor={`q${currentQuestionData.question_number}-${index}`} className="text-sm leading-relaxed cursor-pointer">
                           {option}
                         </Label>
                       </div>
                     ))}
-                  </RadioGroup>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">Select exactly 3 answer choices.</p>
                 </div>
               ) : (
                 <RadioGroup

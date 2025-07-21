@@ -26,7 +26,7 @@ interface SpeakingTask {
 const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   const [tasks, setTasks] = useState<SpeakingTask[]>([]);
   const [currentTask, setCurrentTask] = useState(0);
-  const [phase, setPhase] = useState<'directions' | 'reading' | 'listening' | 'prep' | 'speaking' | 'completed'>('directions');
+  const [phase, setPhase] = useState<'directions' | 'question-reading' | 'reading' | 'listening' | 'prep' | 'speaking' | 'completed'>('directions');
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(false);
@@ -228,18 +228,10 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
     
     const timings = getTaskTimings(currentTaskData.question.question_type);
     
-    if (currentTaskData.question.question_type === 'independent') {
-      setPhase('prep');
-      startTimer(timings.prepTime, 'speaking');
-    } else if (currentTaskData.question.question_type === 'integrated-campus' || 
-               currentTaskData.question.question_type === 'integrated-academic') {
-      setPhase('reading');
-      startTimer(timings.readingTime!, 'listening');
-    } else if (currentTaskData.question.question_type === 'integrated-lecture') {
-      setPhase('listening');
-      playAudio();
-      startTimer(timings.listeningTime!, 'prep');
-    }
+    // Always start with 10 seconds to read the question
+    setPhase('question-reading');
+    startTimer(10, currentTaskData.question.question_type === 'independent' ? 'prep' : 
+              (currentTaskData.question.question_type === 'integrated-lecture' ? 'listening' : 'reading'));
   };
 
   const handlePhaseComplete = () => {
@@ -249,7 +241,21 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
 
     const timings = getTaskTimings(currentTaskData.question.question_type);
 
-    if (phase === 'reading') {
+    if (phase === 'question-reading') {
+      // After reading the question, proceed based on task type
+      if (currentTaskData.question.question_type === 'independent') {
+        setPhase('prep');
+        startTimer(timings.prepTime, 'speaking');
+      } else if (currentTaskData.question.question_type === 'integrated-campus' || 
+                 currentTaskData.question.question_type === 'integrated-academic') {
+        setPhase('reading');
+        startTimer(timings.readingTime!, 'listening');
+      } else if (currentTaskData.question.question_type === 'integrated-lecture') {
+        setPhase('listening');
+        playAudio();
+        startTimer(timings.listeningTime!, 'prep');
+      }
+    } else if (phase === 'reading') {
       setPhase('listening');
       playAudio();
       startTimer(timings.listeningTime!, 'prep');
@@ -330,6 +336,8 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
 
   const getPhaseTitle = () => {
     switch (phase) {
+      case 'question-reading':
+        return 'Reading Question';
       case 'reading':
         return 'Reading Time';
       case 'listening':
@@ -345,6 +353,8 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
 
   const getPhaseColor = () => {
     switch (phase) {
+      case 'question-reading':
+        return 'border-purple-400 bg-purple-50';
       case 'reading':
         return 'border-yellow-400 bg-yellow-50';
       case 'listening':
@@ -359,18 +369,7 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
   };
 
   const getDirections = (questionType: string) => {
-    switch (questionType) {
-      case 'independent':
-        return 'You will be asked a question about a familiar topic. You will then have 15 seconds to prepare your response and 45 seconds to speak.';
-      case 'integrated-campus':
-        return 'You will read a short paragraph and then listen to a conversation between two people. You will have 50 seconds to read the paragraph. After, you will get a question about what you read and heard. You will have 30 seconds to prepare your response and then 60 seconds to give it.';
-      case 'integrated-academic':
-        return 'You will read a short paragraph about an academic topic then listen to a lecture about it. You will have 50 seconds to read the paragraph. After, you will get a question about what you read and heard. You will have 30 seconds to prepare your response and then 60 seconds to give it.';
-      case 'integrated-lecture':
-        return 'You will listen to a lecture about an academic topic. After, you will get a question about what you heard. You will have 20 seconds to prepare your response and then 60 seconds to give it.';
-      default:
-        return '';
-    }
+    return 'You will be asked a question about a familiar topic. You will then have 15 seconds to prepare your response and 45 seconds to speak.\n\nPlease note: Your recording will not be saved or evaluated. This activity is only intended to simulate the TOEFL® iBT speaking experience.';
   };
 
   if (loading) {
@@ -455,6 +454,20 @@ const SpeakingSection = ({ testId, onNext }: SpeakingSectionProps) => {
                     >
                       Begin Task {currentTask + 1}
                     </Button>
+                  </div>
+                </div>
+              )}
+
+              {phase === 'question-reading' && (
+                <div className="space-y-4">
+                  <div className="bg-purple-50 p-6 rounded-lg border-l-4 border-purple-400">
+                    <h3 className="font-semibold mb-3">Read the Question</h3>
+                    <p className="text-gray-700 text-lg leading-relaxed">{currentTaskData.question.question_text}</p>
+                  </div>
+                  <div className="bg-purple-100 p-4 rounded-lg">
+                    <p className="text-purple-800 text-sm">
+                      <strong>Reading Time:</strong> Take 10 seconds to read and understand the question.
+                    </p>
                   </div>
                 </div>
               )}

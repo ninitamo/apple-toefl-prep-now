@@ -1,8 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Clock } from 'lucide-react';
 
 interface WritingPassage {
   id: string;
@@ -35,6 +36,38 @@ const AcademicDiscussionTask: React.FC<AcademicDiscussionTaskProps> = ({
   const [response, setResponse] = useState('');
   const [wordCount, setWordCount] = useState(0);
   const [showWordCount, setShowWordCount] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(10 * 60); // 10 minutes in seconds
+  const [isActive, setIsActive] = useState(true);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (isActive && timeLeft > 0) {
+      timerRef.current = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            setIsActive(false);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else if (timeLeft === 0) {
+      // Auto-proceed when time runs out
+      onComplete();
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [isActive, timeLeft, onComplete]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const handleResponseChange = (value: string) => {
     setResponse(value);
@@ -47,17 +80,28 @@ const AcademicDiscussionTask: React.FC<AcademicDiscussionTaskProps> = ({
       <div className="max-w-7xl mx-auto">
         {/* Directions */}
         <div className="bg-gray-50 p-4 rounded-lg mb-6">
-          <p className="text-sm mb-3">
-            <strong>Directions:</strong> Your professor is teaching a class on economics. Write a post responding 
-            to the professor's question. In your response you should:
-          </p>
-          <ul className="text-sm space-y-1 ml-4">
-            <li>• Express and support your personal opinion.</li>
-            <li>• Make a contribution to the discussion in your own words.</li>
-          </ul>
-          <p className="text-sm mt-3">
-            An effective response will contain at least 100 words.
-          </p>
+          <div className="flex justify-between items-start">
+            <div className="flex-1">
+              <p className="text-sm mb-3">
+                <strong>Directions:</strong> Your professor is teaching a class on economics. Write a post responding 
+                to the professor's question. In your response you should:
+              </p>
+              <ul className="text-sm space-y-1 ml-4">
+                <li>• Express and support your personal opinion.</li>
+                <li>• Make a contribution to the discussion in your own words.</li>
+              </ul>
+              <p className="text-sm mt-3">
+                An effective response will contain at least 100 words.
+              </p>
+              <p className="text-xs text-gray-600 mt-2">
+                <strong>Note:</strong> Your response will not be saved or evaluated. This activity is only intended to simulate the TOEFL® iBT writing experience.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 ml-4 px-3 py-1 bg-blue-100 rounded border-l-4 border-blue-400">
+              <Clock className="h-4 w-4 text-blue-600" />
+              <span className="font-semibold text-blue-700">{formatTime(timeLeft)}</span>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-6">

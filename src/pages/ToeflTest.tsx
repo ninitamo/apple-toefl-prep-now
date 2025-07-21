@@ -10,15 +10,22 @@ import ListeningSection from '@/components/test-sections/ListeningSection';
 import SpeakingSection from '@/components/test-sections/SpeakingSection';
 import WritingSection from '@/components/test-sections/WritingSection';
 import PracticeModeSelector from '@/components/PracticeModeSelector';
+import TestReviewSection from '@/components/TestReviewSection';
 import { useTestData } from '@/hooks/useTestData';
 import { BookOpen } from 'lucide-react';
 
 const ToeflTest = () => {
   const { testId } = useParams();
   const navigate = useNavigate();
-  const [currentSection, setCurrentSection] = useState<'reading' | 'listening' | 'speaking' | 'writing' | 'overview'>('overview');
+  const [currentSection, setCurrentSection] = useState<'reading' | 'listening' | 'speaking' | 'writing' | 'review' | 'overview'>('overview');
   const [testStarted, setTestStarted] = useState(false);
   const [practiceMode, setPracticeMode] = useState<'skip' | 'no-skip' | null>(null);
+  const [testScores, setTestScores] = useState({
+    reading: 0,
+    listening: 0,
+    totalReadingQuestions: 20,
+    totalListeningQuestions: 17
+  });
 
   const { data: testData, isLoading, error } = useTestData(testId || '1');
 
@@ -60,8 +67,7 @@ const ToeflTest = () => {
         setCurrentSection('writing');
         break;
       case 'writing':
-        // Test completed
-        navigate('/');
+        setCurrentSection('review');
         break;
     }
   };
@@ -165,6 +171,14 @@ const ToeflTest = () => {
       {currentSection === 'listening' && <ListeningSection onNext={nextSection} testData={testData} practiceMode={practiceMode} />}
       {currentSection === 'speaking' && <SpeakingSection testId={testId || '1'} onNext={nextSection} />}
       {currentSection === 'writing' && <WritingSection onNext={nextSection} />}
+      {currentSection === 'review' && (
+        <TestReviewSection 
+          readingScore={testScores.reading}
+          listeningScore={testScores.listening}
+          totalReadingQuestions={testScores.totalReadingQuestions}
+          totalListeningQuestions={testScores.totalListeningQuestions}
+        />
+      )}
     </div>
   );
 };
