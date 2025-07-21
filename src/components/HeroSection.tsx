@@ -7,7 +7,7 @@ const HeroSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 leading-tight">
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">REDU:</span>{' '}
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">REDU</span>{' '}
             TEST PREPARATION WITH AI-POWERED PRACTICE
           </h1>
 
@@ -24,10 +24,10 @@ const HeroSection = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
           <div className="flex flex-col items-center text-center">
             <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">15</div>
-            <div className="text-gray-600 dark:text-gray-300">Full-length TOEFL® iBT Free Practice Tests</div>
+            <div className="text-gray-600 dark:text-gray-300">Full-length Free Practice Tests</div>
           </div>
           <div className="flex flex-col items-center text-center">
-            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">100+</div>
+            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">50+</div>
             <div className="text-gray-600 dark:text-gray-300">Section-based Free Practice</div>
           </div>
           <div className="flex flex-col items-center text-center">
