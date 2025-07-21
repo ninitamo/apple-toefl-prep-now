@@ -9,6 +9,7 @@ import ReadingSectionNew from '@/components/test-sections/ReadingSectionNew';
 import ListeningSection from '@/components/test-sections/ListeningSection';
 import SpeakingSection from '@/components/test-sections/SpeakingSection';
 import WritingSection from '@/components/test-sections/WritingSection';
+import PracticeModeSelector from '@/components/PracticeModeSelector';
 import { useTestData } from '@/hooks/useTestData';
 import { BookOpen } from 'lucide-react';
 
@@ -17,6 +18,7 @@ const ToeflTest = () => {
   const navigate = useNavigate();
   const [currentSection, setCurrentSection] = useState<'reading' | 'listening' | 'speaking' | 'writing' | 'overview'>('overview');
   const [testStarted, setTestStarted] = useState(false);
+  const [practiceMode, setPracticeMode] = useState<'skip' | 'no-skip' | null>(null);
 
   const { data: testData, isLoading, error } = useTestData(testId || '1');
 
@@ -35,6 +37,10 @@ const ToeflTest = () => {
       default:
         return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const handleModeSelect = (mode: 'skip' | 'no-skip') => {
+    setPracticeMode(mode);
   };
 
   const startTest = () => {
@@ -78,6 +84,15 @@ const ToeflTest = () => {
           <p className="text-red-600 mb-4">Failed to load test data</p>
           <Button onClick={() => navigate('/')}>Back to Home</Button>
         </div>
+      </div>
+    );
+  }
+
+  // Show practice mode selector first
+  if (!practiceMode) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <PracticeModeSelector onModeSelect={handleModeSelect} />
       </div>
     );
   }
@@ -147,7 +162,7 @@ const ToeflTest = () => {
   return (
     <div className="min-h-screen bg-white">
       {currentSection === 'reading' && <ReadingSectionNew onNext={nextSection} testData={testData} />}
-      {currentSection === 'listening' && <ListeningSection onNext={nextSection} testData={testData} />}
+      {currentSection === 'listening' && <ListeningSection onNext={nextSection} testData={testData} practiceMode={practiceMode} />}
       {currentSection === 'speaking' && <SpeakingSection testId={testId || '1'} onNext={nextSection} />}
       {currentSection === 'writing' && <WritingSection onNext={nextSection} />}
     </div>
