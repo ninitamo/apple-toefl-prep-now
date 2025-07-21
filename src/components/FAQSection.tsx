@@ -26,7 +26,7 @@ const FAQSection = () => {
     },
     {
       question: "Is there a time limit for practice tests?",
-      answer: "Yes, our practice tests follow the official TOEFL iBT test timing: Reading (54-72 minutes), Listening (41-57 minutes), Speaking (17 minutes), and Writing (50 minutes). You can also practice individual tests without time limits if preferred."
+      answer: "Yes, our practice tests follow the official TOEFL iBT test timing: Reading (35 minutes), Listening (36 minutes), Speaking (16 minutes), and Writing (29 minutes). You can also practice individual tests without time limits if preferred."
     },
     {
       question: "Can I retake the same practice test?",
