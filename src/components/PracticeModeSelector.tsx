@@ -22,7 +22,7 @@ const PracticeModeSelector = ({ onModeSelect }: PracticeModeSelectorProps) => {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold mb-2">Choose Your Practice Mode</CardTitle>
           <p className="text-gray-600 dark:text-gray-400">
-            Select how you'd like to practice this TOEFL test
+            Select how you'd like to practice this TOEFL ibt test
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
