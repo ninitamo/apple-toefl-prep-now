@@ -14,7 +14,7 @@ const Footer = () => {
       { name: 'Contact Us', route: '/contact' },
     ],
     'Company': [
-      { name: 'About Us', route: '#' },
+      { name: 'About Us', route: '/about' },
     ],
     'Legal': [
       { name: 'Privacy Policy', route: '/privacy-policy' },

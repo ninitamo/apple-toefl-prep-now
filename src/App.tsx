@@ -29,6 +29,7 @@ import ReadingPracticeList from "./pages/ReadingPracticeList";
 import WritingPracticeList from "./pages/WritingPracticeList";
 import ListeningPracticeList from "./pages/ListeningPracticeList";
 import ListeningQuizPractice from "./components/ListeningQuizPractice";
+import About from "./pages/About";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
             <Route path="/materials/listening/quiz/:quizId" element={<ListeningQuizPractice />} />
             <Route path="/institution-search" element={<InstitutionSearch />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<About />} />
             <Route path="/articles" element={<Articles />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/blog/why-toefl-exam" element={<WhyToeflBlog />} />

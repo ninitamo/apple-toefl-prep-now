@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Menu, X, BookOpen, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, Link } from 'react-router-dom';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 const Navbar = () => {
@@ -121,8 +120,6 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center space-x-2">
-              <ThemeToggle />
-              
               <Button onClick={() => navigate('/practice/sections')} className="hidden md:inline-flex bg-blue-600 hover:bg-blue-700 text-white rounded-full">
                 Start Practice
               </Button>
