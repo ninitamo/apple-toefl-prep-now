@@ -1,31 +1,20 @@
-
 import { ArrowRight, Play, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-
 const HeroSection = () => {
   const navigate = useNavigate();
-
-  return (
-    <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 transition-colors duration-200">
+  return <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 transition-colors duration-200">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 leading-tight">
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              REDU
-            </span>{' '}
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">REDU:</span>{' '}
             TOEFL® IBT TEST PREPARATION WITH AI-POWERED PRACTICE
           </h1>
 
-          <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            REDU provides free, official-format practice tests that closely simulate the real TOEFL® iBT test. Take full, timed tests or focus on individual sections — practice smarter, improve faster, and build test-day confidence.
-          </p>
+          <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">REDU provides free practice tests that closely simulate the real TOEFL® iBT test. Take full, timed tests or focus on individual sections — practice smarter, improve faster, and build test-day confidence.</p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              onClick={() => navigate('/institution-search')}
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-3 text-lg font-medium group"
-            >
+            <Button onClick={() => navigate('/institution-search')} className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-3 text-lg font-medium group">
               Check if your university accepts TOEFL® iBT test
               <Search className="ml-2 h-5 w-5 transition-transform group-hover:scale-110" />
             </Button>
@@ -48,8 +37,6 @@ const HeroSection = () => {
         </div>
 
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
