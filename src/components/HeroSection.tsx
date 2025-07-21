@@ -14,7 +14,7 @@ const HeroSection = () => {
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               REDU
             </span>{' '}
-            TOEFL® iBT Test Preparation with AI-Powered Practice
+            TOEFL® IBT TEST PREPARATION WITH AI-POWERED PRACTICE
           </h1>
 
           <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
