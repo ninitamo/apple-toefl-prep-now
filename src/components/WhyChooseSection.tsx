@@ -6,7 +6,7 @@ const WhyChooseSection = () => {
     {
       icon: CheckCircle,
       title: "Official-like format",
-      description: "Closely modeled on the official TOEFL iBT, giving you an authentic test-day experience."
+      description: "Closely modeled on the official TOEFL iBT test, giving you an authentic test-day experience."
     },
     {
       icon: Clock,
@@ -28,7 +28,7 @@ const WhyChooseSection = () => {
             💡 Why Choose REDU?
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Experience the most authentic TOEFL iBT preparation with our comprehensive platform
+           Experience the most authentic AI-generated TOEFL iBT test preparation with our comprehensive platform.
           </p>
         </div>
 
