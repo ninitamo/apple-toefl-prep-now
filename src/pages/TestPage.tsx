@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import WritingDisplay from '@/components/WritingDisplay';
+import PracticeModeSelector from '@/components/PracticeModeSelector';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -48,6 +49,7 @@ const TestPage: React.FC = () => {
   const [passages, setPassages] = useState<Passage[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
+  const [practiceMode, setPracticeMode] = useState<'skip' | 'no-skip' | null>(null);
 
   useEffect(() => {
     const fetchTestData = async () => {
@@ -107,16 +109,37 @@ const TestPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="text-center">Loading test data...</div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <Navbar />
+        <div className="pt-24 pb-16 flex items-center justify-center">
+          <div className="text-center">Loading test data...</div>
+        </div>
+        <Footer />
       </div>
     );
   }
 
   if (!test) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="text-center">Test not found</div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <Navbar />
+        <div className="pt-24 pb-16 flex items-center justify-center">
+          <div className="text-center">Test not found</div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Show practice mode selector first
+  if (!practiceMode) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <Navbar />
+        <div className="pt-16">
+          <PracticeModeSelector onModeSelect={setPracticeMode} />
+        </div>
+        <Footer />
       </div>
     );
   }
@@ -177,20 +200,20 @@ const TestPage: React.FC = () => {
 
       {/* Test Sections */}
       <Tabs defaultValue="reading" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-8">
-          <TabsTrigger value="reading" className="flex items-center gap-2">
+        <TabsList className={`grid w-full grid-cols-4 mb-8 ${practiceMode === 'no-skip' ? 'pointer-events-none opacity-60' : ''}`}>
+          <TabsTrigger value="reading" className="flex items-center gap-2" disabled={practiceMode === 'no-skip'}>
             <BookOpen className="h-4 w-4" />
             Reading ({readingQuestions.length})
           </TabsTrigger>
-          <TabsTrigger value="listening" className="flex items-center gap-2">
+          <TabsTrigger value="listening" className="flex items-center gap-2" disabled={practiceMode === 'no-skip'}>
             <Headphones className="h-4 w-4" />
             Listening ({listeningQuestions.length})
           </TabsTrigger>
-          <TabsTrigger value="speaking" className="flex items-center gap-2">
+          <TabsTrigger value="speaking" className="flex items-center gap-2" disabled={practiceMode === 'no-skip'}>
             <Mic className="h-4 w-4" />
             Speaking ({speakingQuestions.length})
           </TabsTrigger>
-          <TabsTrigger value="writing" className="flex items-center gap-2">
+          <TabsTrigger value="writing" className="flex items-center gap-2" disabled={practiceMode === 'no-skip'}>
             <PenTool className="h-4 w-4" />
             Writing ({writingQuestions.length})
           </TabsTrigger>
@@ -200,6 +223,9 @@ const TestPage: React.FC = () => {
           <Card>
             <CardContent className="p-8 text-center">
               <p className="text-gray-500">Reading section will be available soon.</p>
+              <p className="text-sm text-gray-400 mt-2">
+                Practice Mode: {practiceMode === 'skip' ? 'Skip Enabled' : 'No Skip'}
+              </p>
             </CardContent>
           </Card>
         </TabsContent>
@@ -208,6 +234,9 @@ const TestPage: React.FC = () => {
           <Card>
             <CardContent className="p-8 text-center">
               <p className="text-gray-500">Listening section will be available soon.</p>
+              <p className="text-sm text-gray-400 mt-2">
+                Practice Mode: {practiceMode === 'skip' ? 'Skip Enabled' : 'No Skip'}
+              </p>
             </CardContent>
           </Card>
         </TabsContent>
@@ -216,13 +245,16 @@ const TestPage: React.FC = () => {
           <Card>
             <CardContent className="p-8 text-center">
               <p className="text-gray-500">Speaking section will be available soon.</p>
+              <p className="text-sm text-gray-400 mt-2">
+                Practice Mode: {practiceMode === 'skip' ? 'Skip Enabled' : 'No Skip'}
+              </p>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="writing">
           {writingPassages.length > 0 ? (
-            <WritingDisplay passages={writingPassages} questions={writingQuestions} />
+            <WritingDisplay passages={writingPassages} questions={writingQuestions} practiceMode={practiceMode} />
           ) : (
             <Card>
               <CardContent className="p-8 text-center">

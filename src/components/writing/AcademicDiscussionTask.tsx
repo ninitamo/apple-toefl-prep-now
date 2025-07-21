@@ -23,12 +23,14 @@ interface AcademicDiscussionTaskProps {
   discussionPassages: WritingPassage[];
   question: WritingQuestion;
   onComplete: () => void;
+  practiceMode?: 'skip' | 'no-skip';
 }
 
 const AcademicDiscussionTask: React.FC<AcademicDiscussionTaskProps> = ({
   discussionPassages,
   question,
-  onComplete
+  onComplete,
+  practiceMode = 'skip'
 }) => {
   const [response, setResponse] = useState('');
   const [wordCount, setWordCount] = useState(0);

@@ -10,6 +10,7 @@ import { Volume2, Play, Pause, SkipForward } from 'lucide-react';
 interface ListeningSectionProps {
   onNext: () => void;
   testData?: any;
+  practiceMode?: 'skip' | 'no-skip';
 }
 
 interface ListeningPassage {
@@ -32,7 +33,7 @@ interface ListeningQuestion {
   passage_id: string;
 }
 
-const ListeningSection = ({ onNext }: ListeningSectionProps) => {
+const ListeningSection = ({ onNext, practiceMode = 'skip' }: ListeningSectionProps) => {
   const { testId } = useParams<{ testId: string }>();
   const [passages, setPassages] = useState<ListeningPassage[]>([]);
   const [questions, setQuestions] = useState<ListeningQuestion[]>([]);
@@ -285,14 +286,16 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
               )}
             </div>
           </div>
-          <Button
-            onClick={handleSkipSection}
-            variant="outline"
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
-          >
-            <SkipForward className="h-4 w-4" />
-            Skip Listening Section
-          </Button>
+          {practiceMode === 'skip' && (
+            <Button
+              onClick={handleSkipSection}
+              variant="outline"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
+            >
+              <SkipForward className="h-4 w-4" />
+              Skip Listening Section
+            </Button>
+          )}
         </div>
 
         {!showQuestions ? (
@@ -366,15 +369,17 @@ const ListeningSection = ({ onNext }: ListeningSectionProps) => {
                       )}
                     </Button>
 
-                    <Button
-                      onClick={handleSkipAudio}
-                      variant="outline"
-                      size="lg"
-                      className="border-blue-600 text-blue-600 hover:bg-blue-50"
-                    >
-                      <SkipForward className="w-5 h-5 mr-2" />
-                      Skip Audio
-                    </Button>
+                    {practiceMode === 'skip' && (
+                      <Button
+                        onClick={handleSkipAudio}
+                        variant="outline"
+                        size="lg"
+                        className="border-blue-600 text-blue-600 hover:bg-blue-50"
+                      >
+                        <SkipForward className="w-5 h-5 mr-2" />
+                        Skip Audio
+                      </Button>
+                    )}
                   </div>
 
                   {/* Audio Progress */}

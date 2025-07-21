@@ -24,13 +24,15 @@ interface IntegratedWritingTaskProps {
   lecturePassages: WritingPassage[];
   question: WritingQuestion;
   onNext: () => void;
+  practiceMode?: 'skip' | 'no-skip';
 }
 
 const IntegratedWritingTask: React.FC<IntegratedWritingTaskProps> = ({
   readingPassages,
   lecturePassages,
   question,
-  onNext
+  onNext,
+  practiceMode = 'skip'
 }) => {
   const [response, setResponse] = useState('');
   const [wordCount, setWordCount] = useState(0);

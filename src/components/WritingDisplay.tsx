@@ -22,9 +22,10 @@ interface WritingDisplayProps {
   passages: WritingPassage[];
   questions: WritingQuestion[];
   onComplete?: () => void;
+  practiceMode?: 'skip' | 'no-skip';
 }
 
-const WritingDisplay: React.FC<WritingDisplayProps> = ({ passages, questions, onComplete }) => {
+const WritingDisplay: React.FC<WritingDisplayProps> = ({ passages, questions, onComplete, practiceMode = 'skip' }) => {
   const [currentTask, setCurrentTask] = useState<'integrated' | 'discussion'>('integrated');
 
   // Group passages by task type
@@ -53,6 +54,7 @@ const WritingDisplay: React.FC<WritingDisplayProps> = ({ passages, questions, on
         lecturePassages={lecturePassages}
         question={task1Question}
         onNext={handleNextTask}
+        practiceMode={practiceMode}
       />
     );
   }
@@ -64,6 +66,7 @@ const WritingDisplay: React.FC<WritingDisplayProps> = ({ passages, questions, on
         discussionPassages={discussionPassages}
         question={task2Question}
         onComplete={handleComplete}
+        practiceMode={practiceMode}
       />
     );
   }
