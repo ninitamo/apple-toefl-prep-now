@@ -17,6 +17,7 @@ const Footer = () => {
       { name: 'About Us', route: '#' },
     ],
     'Legal': [
+      { name: 'Privacy Policy', route: '/privacy-policy' },
       { name: 'Cookie Policy', route: '/cookie-policy' },
     ],
   };

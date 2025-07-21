@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Clock, Users, BookOpen, Headphones, Mic, PenTool } from 'lucide-react';
 import { toast } from 'sonner';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 interface Test {
   id: number;
@@ -142,7 +144,10 @@ const TestPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-7xl">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <Navbar />
+      <div className="pt-24 pb-16">
+        <div className="container mx-auto p-6 max-w-7xl">
       {/* Test Header */}
       <Card className="mb-8">
         <CardHeader>
@@ -227,6 +232,9 @@ const TestPage: React.FC = () => {
           )}
         </TabsContent>
       </Tabs>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };
