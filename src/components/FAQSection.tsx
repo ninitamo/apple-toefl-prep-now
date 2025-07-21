@@ -9,8 +9,8 @@ import {
 const FAQSection = () => {
   const faqs = [
     {
-      question: "How similar are your practice tests to the real TOEFL iBT?",
-      answer: "Our practice tests are carefully designed to mirror the official TOEFL iBT format, question types, difficulty levels, and timing. We follow the same structure and scoring guidelines used in the actual exam."
+      question: "How similar are your practice tests to the real TOEFL iBT test?",
+      answer: "Our practice tests are carefully designed to mirror the official TOEFL iBT test format, question types, difficulty levels, and timing. We follow the same structure and scoring guidelines used in the actual exam."
     },
     {
       question: "Can I take individual sections or do I need to complete full tests?",
@@ -18,7 +18,7 @@ const FAQSection = () => {
     },
     {
       question: "How many practice tests are available?",
-      answer: "We currently offer 15+ full-length TOEFL iBT practice tests, with over 100 section-based practice exercises. We regularly add new content to keep your preparation fresh and comprehensive."
+      answer: "We currently offer 15+ full-length TOEFL iBT test practice tests, with over 100 section-based practice exercises. We regularly add new content to keep your preparation fresh and comprehensive."
     },
     {
       question: "Do I need to download any software?",
@@ -26,7 +26,7 @@ const FAQSection = () => {
     },
     {
       question: "How do you ensure the quality of your practice materials?",
-      answer: "All our content is developed by language experts and TOEFL specialists who follow official testing standards. We regularly update our materials based on the latest exam patterns and user feedback."
+      answer: "All our content is developed by language experts and TOEFL test specialists who follow official testing standards. We regularly update our materials based on the latest exam patterns and user feedback."
     },
     {
       question: "What kind of feedback do I get after completing a test?",
@@ -34,7 +34,7 @@ const FAQSection = () => {
     },
     {
       question: "Is there a time limit for practice tests?",
-      answer: "Yes, our practice tests follow the official TOEFL iBT timing: Reading (54-72 minutes), Listening (41-57 minutes), Speaking (17 minutes), and Writing (50 minutes). You can also practice without time limits if preferred."
+      answer: "Yes, our practice tests follow the official TOEFL iBT test timing: Reading (54-72 minutes), Listening (41-57 minutes), Speaking (17 minutes), and Writing (50 minutes). You can also practice without time limits if preferred."
     },
     {
       question: "Can I retake the same practice test?",
@@ -50,7 +50,7 @@ const FAQSection = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300">
-            Find answers to common questions about our TOEFL preparation platform
+            Find answers to common questions about our TOEFL ibt test preparation platform
           </p>
         </div>
 
