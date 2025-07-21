@@ -8,7 +8,7 @@ const HeroSection = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 leading-tight">
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">REDU:</span>{' '}
-            TOEFL® IBT TEST PREPARATION WITH AI-POWERED PRACTICE
+            TEST PREPARATION WITH AI-POWERED PRACTICE
           </h1>
 
           <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">REDU provides free practice tests that closely simulate the real TOEFL® iBT test. Take full, timed tests or focus on individual sections — practice smarter, improve faster, and build test-day confidence.</p>
