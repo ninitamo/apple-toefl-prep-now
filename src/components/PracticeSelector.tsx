@@ -24,7 +24,7 @@ const PracticeSelector = () => {
     },
     {
       title: "Study Materials",
-      description: "Tips, strategies, and guides to improve your TOEFL performance",
+      description: "Vocabulary and quiz practices to improve your TOEFL ibt performance",
       icon: BookOpen,
       stats: "Comprehensive resources",
       onClick: () => navigate('/study-materials')
