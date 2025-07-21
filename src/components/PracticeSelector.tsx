@@ -10,7 +10,7 @@ const PracticeSelector = () => {
   const practiceOptions = [
     {
       title: "Full Practice Tests",
-      description: "Complete 3.5-hour TOEFL iBT practice tests with all four sections",
+      description: "Complete full practice tests with all four sections",
       icon: Clock,
       stats: "15 full tests available",
       onClick: () => navigate('/practice/full-tests')
