@@ -28,6 +28,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ReadingPracticeList from "./pages/ReadingPracticeList";
 import WritingPracticeList from "./pages/WritingPracticeList";
 import ListeningPracticeList from "./pages/ListeningPracticeList";
+import SpeakingPracticeList from "./pages/SpeakingPracticeList";
 import ListeningQuizPractice from "./components/ListeningQuizPractice";
 import About from "./pages/About";
 
@@ -52,6 +53,7 @@ const App = () => (
             <Route path="/materials/reading" element={<ReadingPracticeList />} />
             <Route path="/materials/writing" element={<WritingPracticeList />} />
             <Route path="/materials/listening" element={<ListeningPracticeList />} />
+            <Route path="/materials/speaking" element={<SpeakingPracticeList />} />
             <Route path="/materials/listening/quiz/:quizId" element={<ListeningQuizPractice />} />
             <Route path="/institution-search" element={<InstitutionSearch />} />
             <Route path="/contact" element={<Contact />} />
